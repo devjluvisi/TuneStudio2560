@@ -33,11 +33,20 @@ By Jacob LuVisi (2021)
 
 
 #include <Arduino.h>
+#include <tune_studio.h>
 
 void setup() {
-  
+  Serial.begin(9600);
+  while(!Serial)
+  Serial.println("Started serial monitor.");
+  pinMode(RGB_RED, OUTPUT);
+  pinMode(RGB_BLUE, OUTPUT);
+  pinMode(RGB_GREEN, OUTPUT);
 }
 
 void loop() {
-  
+        digitalWrite(RGB_RED, HIGH);
+        delay(1000);
+        Serial.println(String(digitalRead(RGB_RED)));
+        digitalWrite(RGB_RED, LOW);
 }

@@ -1,6 +1,6 @@
 # TuneStudio2560
 #### ⚠  As of this moment TuneStudio2560 is still in pre-development and this README *DOES NOT* represent the complete version of this project and is likely missing information.
-TuneStudio2560 is a song creator made for the Arduino Mega 2560 microcontroller. The program and hardware allow users to create their own "tunes" in order to make a simple song by playing the noises from a passive buzzer connected to the microcontroller.
+TuneStudio2560 is a song creator and playback interface made for the Arduino Mega 2560 microcontroller. The program and hardware allow users to create their own "tunes" in order to make a simple song by playing the noises from a passive buzzer connected to the microcontroller.
 #### *For best compatibility it is recommended to open and upload the project using the [PlatformIO](https://platformio.org/) extension for [Visual Studio Code](https://code.visualstudio.com/).*
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
