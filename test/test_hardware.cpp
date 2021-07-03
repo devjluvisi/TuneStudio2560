@@ -44,6 +44,26 @@ void test_rgb_led() {
     }
 }
 
+/*
+Test if each of the buttons are correctly wired.
+This checks to see if each button is reading HIGH as it should be because
+LOW signifies that the button is being pressed.
+*/
+void test_buttons() {
+    TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_1), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_2), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_3), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_4), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_5), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_ADD_SELECT), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_DEL_CANCEL), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_RST), HIGH);
+}
+
+void test_speaker1() {
+
+}
+
 void setup() {
     // Wait two seconds until the testing begins.
     delay(2000);
@@ -58,6 +78,7 @@ void setup() {
     // Begin
     UNITY_BEGIN();
     RUN_TEST(test_rgb_led);
+    RUN_TEST(test_buttons);
     UNITY_END();
 }
 
