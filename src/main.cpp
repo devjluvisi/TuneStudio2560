@@ -10,7 +10,7 @@ Official GitHub Repo:
   - (TBD)
 
 Hardware Compatability:
-  - TuneStudio2560 was created specifically for 8-bit AVR microarchitecture although 
+  - TuneStudio2560 was created specifically for 8-bit AVR microarchitecture although
   it may be possible to run TuneStudio2560 on compatible AVR boards which can supply
   the neccessarily Analog/Digital & I2C interfaces.
   - A port to the RP2040 microchip is currently under consideration.
@@ -37,16 +37,16 @@ By Jacob LuVisi (2021)
 
 void setup() {
   Serial.begin(9600);
-  while(!Serial)
-  Serial.println("Started serial monitor.");
+  while (!Serial)
+    Serial.println("Started serial monitor.");
   pinMode(RGB_RED, OUTPUT);
   pinMode(RGB_BLUE, OUTPUT);
   pinMode(RGB_GREEN, OUTPUT);
+  pinMode(SPEAKER_1, OUTPUT);
+  pinMode(SPEAKER_2, OUTPUT);
+  pinMode(TONE_FREQ, INPUT);
 }
 
 void loop() {
-        digitalWrite(RGB_RED, HIGH);
-        delay(1000);
-        Serial.println(String(digitalRead(RGB_RED)));
-        digitalWrite(RGB_RED, LOW);
+  Serial.println(analogRead(TONE_FREQ));
 }
