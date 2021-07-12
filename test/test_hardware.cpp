@@ -8,16 +8,13 @@ This taste case runs to check the RGB Led, Various LEDs, Speakers, Potentiometer
 #include <Arduino.h>
 #include <unity.h>
 #include <tune_studio.h>
+#include <LiquidCrystal_I2C.h>
 
 // The amount of times a loop should test the blinking of the RGB led.
 #define BLINK_TEST_AMOUNT 500
 // The threshold time that the user should respond with when they have to interact.
 #define USER_INTERACT_THERSHOLD 8000
 
-/*
-Test the RGB led using a digital signal.
-Tests RED, GREEN, BLUE pins.
-*/
 void test_rgb_led()
 {
     for (int i = 0; i < BLINK_TEST_AMOUNT; i++)
@@ -47,12 +44,6 @@ void test_rgb_led()
     }
 }
 
-
-/*
-Test if each of the buttons are correctly wired.
-This checks to see if each button is reading HIGH as it should be because
-LOW signifies that the button is being pressed.
-*/
 void test_buttons()
 {
     TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_1), HIGH);
@@ -140,6 +131,7 @@ void test_speaker2()
         TEST_FAIL_MESSAGE("Speaker #2 could not be heard.");
     }
 }
+
 void test_potentiometer() {
     Serial.println("Turn the Potentiometer.");
     Serial.println("Press Delete Button if there is no response on turning.");
@@ -163,7 +155,30 @@ void test_potentiometer() {
 }
 
 void test_lcd() {
-
+    LiquidCrystal_I2C lcd(0x27, 20, 4);
+    lcd.init();
+    lcd.backlight();
+    lcd.setCursor(0, 0);
+    lcd.print("Testing...");
+    lcd.setCursor(0, 1);
+    lcd.print("Second Line");
+    Serial.println("Press the SELECT button if you see text on the lcd.\nPress the DELETE button if you do not see anything.");
+    const int initalMillis = millis();
+    bool lcdRead = false;
+    while (millis() - initalMillis < USER_INTERACT_THERSHOLD) {
+        if (digitalRead(BTN_ADD_SELECT) == LOW)
+        {
+            lcdRead = true;
+            break;
+        }
+        if (digitalRead(BTN_DEL_CANCEL) == LOW)
+        {
+            break;
+        }
+    }
+    if (!lcdRead) {
+        TEST_FAIL_MESSAGE("The LCD display could not be read.");
+    }
 }
 
 void setup()
@@ -196,6 +211,7 @@ void setup()
     RUN_TEST(test_speaker1);
     RUN_TEST(test_speaker2);
     RUN_TEST(test_potentiometer);
+    RUN_TEST(test_lcd);
     UNITY_END();
 }
 
