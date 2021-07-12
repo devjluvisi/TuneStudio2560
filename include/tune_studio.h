@@ -6,6 +6,10 @@ This header file contains basic definitions that are used in TuneStudio2560.
 */
 
 // LEDs
+#ifndef tune_studio_h
+#define tune_studio_h
+
+#include <LiquidCrystal_I2C.h>
 
 #ifndef RGB_BRIGHTNESS
     /*
@@ -139,7 +143,55 @@ void test_potentiometer();
  */
 void test_lcd();
 
-void home_screen();
-void mode_select_screen();
-void update_action();
+// METHODS FOR TUNESTUDIO2560 MAIN PROGRAM
+
+/**
+ * @brief The primary LCD object which controls the main LCD.
+ *
+ */
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+/**
+ * @brief A enum of all different types of screens the user can be on.
+ * The type of screen the user is on depends what is loaded onto the screen.
+ *
+ */
+enum CurrentAction {
+    HOME_SCREEN,
+    MODE_SELECT_SCREEN,
+    LISTEN_MODE_SONG_SELECT,
+    LISTEN_MODE_SONG_PLAY,
+    LISTEN_MODE_DELETE_SONG,
+    LISTEN_MODE_FLUSH_EEPROM,
+    CREATOR_MODE_CREATE_NEW,
+    CREATER_MODE_SAVE_CURRENT,
+    CREATER_MODE_DELETE_SONG
+};
+
+/**
+ * @brief A custom delay function which checks if an immediate interrupt is occuring.
+ * Works the same as the normal arduino delay(ms) function just with a custom handler.
+ * @param milliseconds The time to delay for.
+ */
+void delay(int milliseconds);
+
+/**
+ * @brief Print a large body of text onto the LCD. This method uses a custom way of printing it to look nicer
+ * by printing each individual character and seperating lines when neccessary.
+ *
+ * @param message The message to print to the LCD.
+ */
+void print_large_text(String message);
+
+/**
+ * @brief Updates the current action. Usually used in interrupts.
+ *
+ * @param newAction The new action to set.
+ */
+void update_action(CurrentAction newAction);
+/**
+ * @brief A method ran when the select button is clicked. Is on an interrupt.
+ */
 void select_btn_click();
+
+#endif
