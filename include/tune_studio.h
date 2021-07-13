@@ -71,9 +71,9 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #define BTN_DEL_CANCEL 3
 #endif
 
-#ifndef BTN_RST
+#ifndef BTN_OPTION
     /*The pin of the reset button which can be used to delete songs and flush EEPROM.*/
-#define BTN_RST 4
+#define BTN_OPTION 4
 #endif
 
 // Potentiometer (Frequency Changer)
@@ -91,6 +91,12 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #define SPEAKER_2 A1
 #endif
 
+// The rate at which additional button presses & interrupts should be ignored.
+
+#ifndef DEBOUNCE_RATE
+#define DEBOUNCE_RATE 1000
+#endif
+
 // I2C 16x2 Sunflounder LCD
 
 #define LCD1602_SDA 20
@@ -99,6 +105,15 @@ This header file contains basic definitions that are used in TuneStudio2560.
 // Extra Declarations
 #define ANALOG_MAX 255
 #define ANALOG_MIN 0
+
+#define TEXT_SCROLL_SPEED 135
+
+/**
+ * @brief A list of all of the tone pins.
+ */
+uint_fast8_t TONE_PINS[] = {
+    BTN_TONE_1, BTN_TONE_2, BTN_TONE_3, BTN_TONE_4, BTN_TONE_5
+};
 
 /*
 UNIT TESTING:
@@ -143,6 +158,59 @@ void test_potentiometer();
  */
 void test_lcd();
 
+// CUSTOM LCD SYMBOLS use lcd.write(hex num) to write the characters.
+
+/*Custom Char symbol for music note.*/
+#define MUSIC_NOTE_SYMBOL 0x00
+byte MUSIC_NOTE[] = {
+  0x04,
+  0x06,
+  0x05,
+  0x04,
+  0x04,
+  0x0C,
+  0x1C,
+  0x0C
+};
+
+/*Custom Char symbol for a playing song symbol.*/
+#define PLAYING_SONG_SYMBOL 0x01
+byte PLAYING_SONG[] = {
+  0x10,
+  0x18,
+  0x1C,
+  0x1E,
+  0x1E,
+  0x1C,
+  0x18,
+  0x10
+};
+
+/*Custom Char symbol for a paused song symbol.*/
+#define PAUSE_SONG_SYMBOL 0x02
+byte PAUSE_SONG[] = {
+  0x00,
+  0x1B,
+  0x1B,
+  0x1B,
+  0x1B,
+  0x1B,
+  0x1B,
+  0x00
+};
+/*Custom Char symbol for a progress block.*/
+#define PROGRESS_BLOCK_SYMBOL 0x03
+byte PROGRESS_BLOCK[] = {
+  0x1F,
+  0x1F,
+  0x1F,
+  0x1F,
+  0x1F,
+  0x1F,
+  0x1F,
+  0x1F
+};
+
 // METHODS FOR TUNESTUDIO2560 MAIN PROGRAM
 
 /**
@@ -158,15 +226,22 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
  */
 enum CurrentAction {
     HOME_SCREEN,
-    MODE_SELECT_SCREEN,
     LISTEN_MODE_SONG_SELECT,
     LISTEN_MODE_SONG_PLAY,
     LISTEN_MODE_DELETE_SONG,
     LISTEN_MODE_FLUSH_EEPROM,
+    CREATOR_MODE_HOME,
     CREATOR_MODE_CREATE_NEW,
     CREATER_MODE_SAVE_CURRENT,
     CREATER_MODE_DELETE_SONG
 };
+
+/**
+ * @brief Returns if there is currently an interrupt waiting in progress.
+ *
+ * @return If the interrupt flag is true.
+ */
+bool isInterrupt();
 
 /**
  * @brief A custom delay function which checks if an immediate interrupt is occuring.
@@ -193,5 +268,45 @@ void update_action(CurrentAction newAction);
  * @brief A method ran when the select button is clicked. Is on an interrupt.
  */
 void select_btn_click();
+/**
+ * @brief A method ran when the cancel/delete button is clicked. Is on an interrupt.
+ *
+ */
+void cancel_btn_click();
 
+/**
+ * @brief Scrolls the bottom text on a screen while leaving the top part the same.
+ *
+ * @param top The text to be displayed on the first row.
+ * @param bottom The text to be displayed on the second row (scrolling).
+ * @param forward Direction of the scroll.
+ */
+void print_bottom_scrolling_text(String top, String bottom, bool forward = true);
+
+/**
+ * @brief Scrolls the bottom text on a screen while leaving the top part the same.
+ * Version 2 uses a different sort of scrolling algorithm. Some may find it better
+ * then v1.
+ *
+ * @param top The text to be displayed on the first row.
+ * @param bottom The text to be displayed on the second row (scrolling).
+ */
+void print_bottom_scrolling_text_v2(String top, String bottom);
+
+/**
+ * @brief Checks for & updates Debounce rate.
+ *
+ * @param buttonPin The pin of the button to check for.
+ * @return If the button is being pressed.
+ */
+bool isPressed(uint8_t buttonPin);
+
+/**
+ * @brief Checks for & updates Debounce rate.
+ *
+ * @param buttonPin The pin of the button to check for.
+ * @param buttonPin2 The pin of the second button to check for.
+ * @return If both of the buttons are being pressed.
+ */
+bool isPressed(uint8_t buttonPin1, uint8_t buttonPin2);
 #endif
