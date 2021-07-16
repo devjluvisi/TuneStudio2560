@@ -9,7 +9,9 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #ifndef tune_studio_h
 #define tune_studio_h
 
+#ifndef LiquidCrystal_I2C_h
 #include <LiquidCrystal_I2C.h>
+#endif
 
 #ifndef RGB_BRIGHTNESS
     /*
@@ -94,6 +96,18 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #define DEBOUNCE_RATE 1000
 #endif
 
+// The rate that each tone in the song should be seperated by.
+
+#ifndef TONE_PAUSE
+#define TONE_PAUSE 100
+#endif
+
+// The maximum allowed length for a song.
+
+#ifndef MAX_SONG_LENGTH
+#define MAX_SONG_LENGTH 255
+#endif
+
 // I2C 16x2 Sunflounder LCD
 
 #define LCD1602_SDA 20
@@ -103,12 +117,14 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #define ANALOG_MAX 255
 #define ANALOG_MIN 0
 
+// The speed at new characters appear on a scrolling LCD.
 #define TEXT_SCROLL_SPEED 135
+
 
 /**
  * @brief A list of all of the tone pins.
  */
-uint_fast8_t TONE_PINS[] = {
+inline uint_fast8_t TONE_PINS[] = {
     BTN_TONE_1, BTN_TONE_2, BTN_TONE_3, BTN_TONE_4, BTN_TONE_5
 };
 
@@ -152,7 +168,7 @@ void test_lcd();
 
 /*Custom Char symbol for music note.*/
 #define MUSIC_NOTE_SYMBOL 0x00
-byte MUSIC_NOTE[] = {
+inline byte MUSIC_NOTE[] = {
   0x04,
   0x06,
   0x05,
@@ -165,7 +181,7 @@ byte MUSIC_NOTE[] = {
 
 /*Custom Char symbol for a playing song symbol.*/
 #define PLAYING_SONG_SYMBOL 0x01
-byte PLAYING_SONG[] = {
+inline byte PLAYING_SONG[] = {
   0x10,
   0x18,
   0x1C,
@@ -178,7 +194,7 @@ byte PLAYING_SONG[] = {
 
 /*Custom Char symbol for a paused song symbol.*/
 #define PAUSE_SONG_SYMBOL 0x02
-byte PAUSE_SONG[] = {
+inline byte PAUSE_SONG[] = {
   0x00,
   0x1B,
   0x1B,
@@ -190,7 +206,7 @@ byte PAUSE_SONG[] = {
 };
 /*Custom Char symbol for a progress block.*/
 #define PROGRESS_BLOCK_SYMBOL 0x03
-byte PROGRESS_BLOCK[] = {
+inline byte PROGRESS_BLOCK[] = {
   0x1F,
   0x1F,
   0x1F,
@@ -207,7 +223,7 @@ byte PROGRESS_BLOCK[] = {
  * @brief The primary LCD object which controls the main LCD.
  *
  */
-LiquidCrystal_I2C lcd(0x27, 20, 4);
+inline LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 /**
  * @brief A enum of all different types of screens the user can be on.
@@ -289,7 +305,7 @@ void print_bottom_scrolling_text_v2(String top, String bottom);
  * @param buttonPin The pin of the button to check for.
  * @return If the button is being pressed.
  */
-bool isPressed(uint8_t buttonPin);
+bool is_pressed(uint8_t buttonPin);
 
 /**
  * @brief Checks for & updates Debounce rate.
@@ -298,5 +314,25 @@ bool isPressed(uint8_t buttonPin);
  * @param buttonPin2 The pin of the second button to check for.
  * @return If both of the buttons are being pressed.
  */
-bool isPressed(uint8_t buttonPin1, uint8_t buttonPin2);
+bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2);
+
+
+// Audio Methods
+
+/**
+ * @brief Get the current frequency from the potentiometer.
+ * Whatever tune button was pressed previously is not accounted for.
+ *
+ * @return The current frequency read by the potentiometer. (0 and 1023)
+ */
+uint16_t get_current_freq();
+
+/**
+ * @brief Gets the current NOTE that is in queue. Takes into account BOTH the tune button and the
+ * potentiometer in order to generate a note. This method is the final method used to add notes to
+ * a song.
+ * @return Returns the frequency of the note.
+ */
+uint16_t get_current_note();
+
 #endif

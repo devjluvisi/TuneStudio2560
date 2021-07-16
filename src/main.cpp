@@ -40,6 +40,7 @@ Check tune_studio.h for variables which are not defined here.
 #include <tune_studio.h>
 #include <EEPROM.h>
 #include <pitches.h>
+#include <song.h>
 
 //TODO: Implement the adding of songs.
 
@@ -57,7 +58,6 @@ volatile bool immediateInterrupt = false;
  */
 volatile unsigned long lastInterruptFire = 0;
 volatile unsigned long lastButtonPress = 0;
-
 
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
@@ -175,6 +175,7 @@ public:
     print_bottom_scrolling_text_v2("[Creator Mode]", "To exit, press the DEL/CANCEL button.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Create a song using the 5 tune buttons.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "To add a tune, press the tune button and then press SELECT.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "To add a delay in the song press SELECT without pressing a tune button before.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "To just listen to a note without adding press a tune button without select.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Adjust the frequency of the tune using the potentiometer.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Delete notes using the DEL/CANCEL button.");
@@ -200,26 +201,6 @@ public:
       lcd.print("-END");
       hasDrawn = true;
     }
-    // Testing some noises.
-    Serial.println("Testing A4");
-    tone(SPEAKER_1, NOTE_B0, 75);
-    delay(750); // Wait some time.
-
-    Serial.println("Testing A4");
-    tone(SPEAKER_1, NOTE_F3, 75);
-    delay(750); // Wait some time.
-
-    Serial.println("Testing A4");
-    tone(SPEAKER_1, NOTE_CS5, 75);
-    delay(750); // Wait some time.
-
-    Serial.println("Testing A4");
-    tone(SPEAKER_1, NOTE_C7, 75);
-    delay(750); // Wait some time.
-
-    Serial.println("Testing A4");
-    tone(SPEAKER_1, NOTE_DS8, 75);
-    delay(750); // Wait some time.
   }
 };
 
@@ -253,27 +234,27 @@ public:
       hasDrawn = true;
     }
     if (selectedSong == -1) {
-      if (isPressed(BTN_TONE_1)) {
+      if (is_pressed(BTN_TONE_1)) {
         Serial.println("PRESSED TONE 1");
         selectedSong = 1;
         delay(1000);
       }
-      if (isPressed(BTN_TONE_2)) {
+      if (is_pressed(BTN_TONE_2)) {
         Serial.println("PRESSED TONE 2");
         selectedSong = 2;
         delay(1000);
       }
-      if (isPressed(BTN_TONE_3)) {
+      if (is_pressed(BTN_TONE_3)) {
         Serial.println("PRESSED TONE 3");
         selectedSong = 3;
         delay(1000);
       }
-      if (isPressed(BTN_TONE_4)) {
+      if (is_pressed(BTN_TONE_4)) {
         Serial.println("PRESSED TONE 4");
         selectedSong = 4;
         delay(1000);
       }
-      if (isPressed(BTN_TONE_5)) {
+      if (is_pressed(BTN_TONE_5)) {
         Serial.println("PRESSED TONE 5");
         selectedSong = 5;
         delay(1000);
@@ -552,7 +533,7 @@ void cancel_btn_click() {
   lastButtonPress = millis();
 }
 
-bool isPressed(uint8_t buttonPin) {
+bool is_pressed(uint8_t buttonPin) {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return false;
   }
@@ -560,9 +541,10 @@ bool isPressed(uint8_t buttonPin) {
     lastButtonPress = millis();
     return true;
   }
+  return false;
 }
 
-bool isPressed(uint8_t buttonPin1, uint8_t buttonPin2) {
+bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return false;
   }
@@ -570,6 +552,5 @@ bool isPressed(uint8_t buttonPin1, uint8_t buttonPin2) {
     lastButtonPress = millis();
     return true;
   }
+  return false;
 }
-
-
