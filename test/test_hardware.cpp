@@ -53,7 +53,7 @@ void test_buttons()
     TEST_ASSERT_EQUAL(digitalRead(BTN_TONE_5), HIGH);
     TEST_ASSERT_EQUAL(digitalRead(BTN_ADD_SELECT), HIGH);
     TEST_ASSERT_EQUAL(digitalRead(BTN_DEL_CANCEL), HIGH);
-    TEST_ASSERT_EQUAL(digitalRead(BTN_RST), HIGH);
+    TEST_ASSERT_EQUAL(digitalRead(BTN_OPTION), HIGH);
 }
 
 void test_speaker1()
@@ -91,44 +91,6 @@ void test_speaker1()
     if (!speakerHeard)
     {
         TEST_FAIL_MESSAGE("Speaker #1 could not be heard.");
-    }
-}
-
-void test_speaker2()
-{
-    TEST_ASSERT_EQUAL(analogRead(SPEAKER_1), 0);
-    Serial.println("[SPEAKER #2] Playing tone 1...");
-    tone(SPEAKER_1, 30, 200);
-    delay(250);
-    Serial.println("[SPEAKER #2] Playing tone 2...");
-    tone(SPEAKER_1, 30, 200);
-    delay(250);
-    Serial.println("[SPEAKER #2] Playing tone 3...");
-    tone(SPEAKER_1, 30, 200);
-    delay(250);
-    Serial.println("[SPEAKER #2] Press button SELECT if you heard the speaker play a sound. Press button DEL if you did not hear it.");
-    bool speakerHeard = false;
-    const int initalMilis = millis();
-    while (true)
-    {
-        if (digitalRead(BTN_ADD_SELECT) == LOW)
-        {
-            speakerHeard = true;
-            break;
-        }
-        if (digitalRead(BTN_DEL_CANCEL) == LOW)
-        {
-            break;
-        }
-        // Check if the time has run out.
-        if (millis() - initalMilis > USER_INTERACT_THERSHOLD)
-        {
-            break;
-        }
-    }
-    if (!speakerHeard)
-    {
-        TEST_FAIL_MESSAGE("Speaker #2 could not be heard.");
     }
 }
 
@@ -199,9 +161,8 @@ void setup()
     pinMode(BTN_TONE_5, INPUT_PULLUP);
     pinMode(BTN_ADD_SELECT, INPUT_PULLUP);
     pinMode(BTN_DEL_CANCEL, INPUT_PULLUP);
-    pinMode(BTN_RST, INPUT_PULLUP);
+    pinMode(BTN_OPTION, INPUT_PULLUP);
     pinMode(SPEAKER_1, OUTPUT);
-    pinMode(SPEAKER_2, OUTPUT);
     pinMode(TONE_FREQ, INPUT);
 
     // Begin
@@ -209,7 +170,6 @@ void setup()
     RUN_TEST(test_rgb_led);
     RUN_TEST(test_buttons);
     RUN_TEST(test_speaker1);
-    RUN_TEST(test_speaker2);
     RUN_TEST(test_potentiometer);
     RUN_TEST(test_lcd);
     UNITY_END();

@@ -87,9 +87,6 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #ifndef SPEAKER_1
 #define SPEAKER_1 A2
 #endif
-#ifndef SPEAKER_2
-#define SPEAKER_2 A1
-#endif
 
 // The rate at which additional button presses & interrupts should be ignored.
 
@@ -138,13 +135,6 @@ void test_buttons();
  * speaker is working or not.
  */
 void test_speaker1();
-
-
-/**
- * @brief Tests the second speaker. Plays 3 tones and then asks the user to input if the
- * speaker is working or not.
- */
-void test_speaker2();
 
 /**
  * @brief Asks the user to adjust the value of the potentiometer to test

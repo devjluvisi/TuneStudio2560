@@ -16,7 +16,7 @@ TuneStudio2560 is a song creator and playback interface made for the Arduino Meg
 > Parts
 - 1x Arduino Mega 2560 *(or compatible)* Microcontroller
 - 1x Full Size Breadboard
-- 2x Passive Buzzers
+- 1x Passive Buzzer
 - 5x LEDS
   - *Green, Blue, Red, Yellow, and White.*
 - 1x RGB LED

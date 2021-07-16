@@ -39,6 +39,7 @@ Check tune_studio.h for variables which are not defined here.
 #include <Arduino.h>
 #include <tune_studio.h>
 #include <EEPROM.h>
+#include <pitches.h>
 
 //TODO: Implement the adding of songs.
 
@@ -173,12 +174,13 @@ public:
     print_bottom_scrolling_text_v2("[Creator Mode]", "To start, press the SELECT button.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "To exit, press the DEL/CANCEL button.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Create a song using the 5 tune buttons.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Adjust the frequency using the potentiometer.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "To add a tune, press the tune button and then press SELECT.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "To just listen to a note without adding press a tune button without select.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "Adjust the frequency of the tune using the potentiometer.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Delete notes using the DEL/CANCEL button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Save the song by pressing SELECT button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To just listen to a note without adding press OPTION+tune button.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "Save the song by pressing OPTION+SELECT button.");
     print_bottom_scrolling_text_v2("[Creator Mode]", "Delete the current song (exit) by pressing OPTION+DEL.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Play current track by pressing OPTION+ADD.");
+    print_bottom_scrolling_text_v2("[Creator Mode]", "Play current track by pressing OPTION twice.");
   }
 };
 
@@ -198,7 +200,26 @@ public:
       lcd.print("-END");
       hasDrawn = true;
     }
+    // Testing some noises.
+    Serial.println("Testing A4");
+    tone(SPEAKER_1, NOTE_B0, 75);
+    delay(750); // Wait some time.
 
+    Serial.println("Testing A4");
+    tone(SPEAKER_1, NOTE_F3, 75);
+    delay(750); // Wait some time.
+
+    Serial.println("Testing A4");
+    tone(SPEAKER_1, NOTE_CS5, 75);
+    delay(750); // Wait some time.
+
+    Serial.println("Testing A4");
+    tone(SPEAKER_1, NOTE_C7, 75);
+    delay(750); // Wait some time.
+
+    Serial.println("Testing A4");
+    tone(SPEAKER_1, NOTE_DS8, 75);
+    delay(750); // Wait some time.
   }
 };
 
@@ -324,7 +345,6 @@ void setup()
   pinMode(BTN_OPTION, INPUT_PULLUP);
   pinMode(TONE_FREQ, INPUT);
   pinMode(SPEAKER_1, OUTPUT);
-  pinMode(SPEAKER_2, OUTPUT);
 
   // Interrupt to handle when the select button is pressed.
   attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, CHANGE);
