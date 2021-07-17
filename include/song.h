@@ -16,13 +16,28 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 
+ // The delay that should be added to the song when the user adds a pause.
+#ifndef PAUSE_DELAY
+#define PAUSE_DELAY 500
+#endif
+
+ // Defines what number should be used to indicate that the song should wait while pausing.
+#ifndef PAUSE_NOTE
+#define PAUSE_NOTE 0x01
+#endif
+
+// Represents a part of the song array that has not yet been filled. (Empty)
+#ifndef EMPTY_NOTE
+#define EMPTY_NOTE 0x00
+#endif
+
 class song {
 private:
     uint8_t _pin; // The pin to send the frequencies to.
-    uint16_t _noteDelay; // The delay between playing each note of the song.
+    uint8_t _noteDelay; // The delay between playing each note of the song.
     uint8_t _noteLength; // The length that the note should be played for.
     uint32_t _maxLength = MAX_SONG_LENGTH; // Quick access to the size of the array.
-    uint32_t _songData[MAX_SONG_LENGTH] = {}; // A array of all of the different tones.
+    uint16_t _songData[MAX_SONG_LENGTH] = { 0 }; // A array of all of the different tones.
 public:
     /**
      * @brief Construct a new song object.
@@ -35,8 +50,6 @@ public:
     song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
     /**
      * @brief Play a note at a specified pin.
-     *
-     * @param pin The pin to send the frequency to.
      * @param note The note to play.
      */
     void play_note(uint16_t note);
@@ -51,19 +64,16 @@ public:
      */
     void add_note(uint16_t note);
     /**
-     * @brief Adds a pause to the song for a specified number of milliseconds. If the song is full then the method completes without executing.
+     * @brief Adds a pause to the song. The amount of time the song is paused by is determined by a unchangeable variable. If the song is full then the method completes without executing.
      *
-     * @param milliseconds The amount of time to pause for.
      */
-    void add_pause(uint8_t milliseconds);
+    void add_pause();
     /**
      * @brief Remove a note from the end of the song.
      */
     void remove_note();
     /**
      * @brief Plays the current song.
-     *
-     * @param pin The pin to send the frequencies to.
      */
     void play_song();
     /**
@@ -77,5 +87,23 @@ public:
      * @return The frequency of the note.
      */
     uint16_t get_note(uint32_t index);
+    /**
+     * @brief Saves a song object to an avaliable EEPROM space. If no space
+     * is avaliable or an error occurs then the method returns false.
+     * @return If the song could be saved.
+     */
+    bool save_song_to_eepromm();
+    /**
+     * @brief Deletes the current song object from eeprom. Requires that the current song object exists in the EEPROM.
+     *
+     * @return If the song could be deleted.
+     */
+    bool delete_song_from_eepromm();
+    /**
+     * @brief Get a song from eeprom object.
+     *
+     * @return song
+     */
+    static song get_song_from_eeprom();
 };
 #endif

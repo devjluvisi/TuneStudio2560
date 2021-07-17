@@ -59,6 +59,8 @@ volatile bool immediateInterrupt = false;
 volatile unsigned long lastInterruptFire = 0;
 volatile unsigned long lastButtonPress = 0;
 
+
+
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
 ////////////////////////////
@@ -201,6 +203,26 @@ public:
       lcd.print("-END");
       hasDrawn = true;
     }
+    delay(2000);
+    song currentSong(SPEAKER_1, 60, 100, false);
+    currentSong.add_note(300);
+    currentSong.add_note(600);
+    currentSong.add_note(1200);
+    currentSong.add_note(2400);
+    currentSong.add_note(3000);
+    currentSong.add_pause();
+    currentSong.add_note(800);
+    currentSong.add_note(600);
+    currentSong.add_pause();
+    currentSong.add_note(1400);
+    currentSong.add_note(400);
+    currentSong.add_pause();
+    currentSong.add_pause();
+    currentSong.add_note(400);
+    currentSong.add_note(2500);
+
+    currentSong.play_song();
+    delay(2000);
   }
 };
 
