@@ -7,6 +7,9 @@
  *
  * @copyright Copyright (c) 2021
  *
+ * NOTE: Every song object created is exactly 517 bytes in size [for max length 255] regardless of the number of notes and
+ * empty spaces in the song. Increasing the maximum number of notes may increase the size of the objects.
+ *
  * TODO: Optimize functions for song searching to be faster. Instead of iterating through the entire
  * loop each time to find the next avaliable space to add a pause/note, iterate only once and then
  * cache that value in memory. Next time we need to search for the next avaliable space to add/remove note
@@ -23,6 +26,7 @@ song::song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
     Serial.println("Pin: " + String(pin));
     Serial.println("Note Length: " + String(noteLength));
     Serial.println("Note Delay: " + String(noteDelay));
+
     if (init) {
         Serial.println("song.cpp: Initalized pin " + String(pin) + " for output.");
         pinMode(pin, OUTPUT);
@@ -30,6 +34,16 @@ song::song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
     _pin = pin;
     _noteDelay = noteDelay;
     _noteLength = noteLength;
+}
+
+void song::print_info() {
+    Serial.println("------------------------------------");
+    Serial.println("song.cpp: Information on current song.");
+    Serial.println("Pin: " + String(_pin));
+    Serial.println("Note Length: " + String(_noteLength));
+    Serial.println("Note Delay: " + String(_noteDelay));
+    Serial.println("Max Song Size: " + this->_maxLength);
+    Serial.println("------------------------------------");
 }
 
 void song::play_note(uint16_t note) {
@@ -80,7 +94,6 @@ void song::remove_note() {
 void song::play_song() {
     Serial.println("song.cpp: Playing a song.");
     uint32_t songIndex = 0;
-    Serial.println(String(_songData[1]));
     // While the song index is not empty and does not equal the maximum length allowed.
     while (_songData[songIndex] != EMPTY_NOTE && songIndex != this->_maxLength) {
         Serial.println("song.cpp: Playing song note: " + String(_songData[songIndex]));
@@ -109,5 +122,11 @@ void song::clear() {
     }
 }
 
+uint16_t song::get_note(uint32_t index) {
+    return _songData[index];
+}
 
+bool song::is_empty() {
+    return _songData[0] == EMPTY_NOTE;
+}
 

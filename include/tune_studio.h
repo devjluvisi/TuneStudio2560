@@ -13,6 +13,11 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #include <LiquidCrystal_I2C.h>
 #endif
 
+// The size of the EEPROM of the board.
+#ifndef EEPROM_SIZE
+#define EEPROM_SIZE 4096
+#endif
+
 #ifndef RGB_BRIGHTNESS
     /*
     The brightness of the RGB LED which serves as a status indicator.
@@ -334,5 +339,27 @@ uint16_t get_current_freq();
  * @return Returns the frequency of the note.
  */
 uint16_t get_current_note();
+
+// Song-Related Methods
+
+/**
+ * @brief Saves the data from the array of songs to EEPROM.
+ *
+ */
+void save_song_data();
+
+/**
+ * @brief Deletes a song from the array of songs. Does not save to EEPROM.
+ *
+ * @param index The song to delete.
+ *
+ */
+void delete_song(uint32_t index);
+
+/**
+ * @brief Loads the saved songs from EEPROM to a variable in SRAM.
+ *
+ */
+void load_songs_from_eeprom();
 
 #endif

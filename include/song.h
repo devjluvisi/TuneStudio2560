@@ -14,7 +14,6 @@
 
 #include <tune_studio.h>
 #include <Arduino.h>
-#include <EEPROM.h>
 
  // The delay that should be added to the song when the user adds a pause.
 #ifndef PAUSE_DELAY
@@ -29,6 +28,11 @@
 // Represents a part of the song array that has not yet been filled. (Empty)
 #ifndef EMPTY_NOTE
 #define EMPTY_NOTE 0x00
+#endif
+
+// Where in the EEPROM should the songs be saved?
+#ifndef EEPROM_SONG_SAVE_ADDR
+#define EEPROM_SONG_SAVE_ADDR 0x00
 #endif
 
 class song {
@@ -48,6 +52,14 @@ public:
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
     song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
+    /**
+     * @brief Prints some information about the current song to
+     * the Serial monitor.
+     *
+     * Requires serial to be enabled.
+     *
+     */
+    void print_info();
     /**
      * @brief Play a note at a specified pin.
      * @param note The note to play.
@@ -88,22 +100,9 @@ public:
      */
     uint16_t get_note(uint32_t index);
     /**
-     * @brief Saves a song object to an avaliable EEPROM space. If no space
-     * is avaliable or an error occurs then the method returns false.
-     * @return If the song could be saved.
+     * @return If a song is empty as in it has no notes in it.
      */
-    bool save_song_to_eepromm();
-    /**
-     * @brief Deletes the current song object from eeprom. Requires that the current song object exists in the EEPROM.
-     *
-     * @return If the song could be deleted.
-     */
-    bool delete_song_from_eepromm();
-    /**
-     * @brief Get a song from eeprom object.
-     *
-     * @return song
-     */
-    static song get_song_from_eeprom();
+    bool is_empty();
+
 };
 #endif

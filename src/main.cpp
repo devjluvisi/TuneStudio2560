@@ -42,8 +42,6 @@ Check tune_studio.h for variables which are not defined here.
 #include <pitches.h>
 #include <song.h>
 
-//TODO: Implement the adding of songs.
-
 /**
 Indicates whether or not an immediate interrupt should be called.
 Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
@@ -59,7 +57,24 @@ volatile bool immediateInterrupt = false;
 volatile unsigned long lastInterruptFire = 0;
 volatile unsigned long lastButtonPress = 0;
 
+/*
+An array of all saved songs on TuneStudio2560. This is the variable that is
+written to EEPROM when a song is saved.
 
+Songs that are currently being created are saved in this array. There is no different song variable.\
+
+NOTE: Size of this array using songs of 255 max length is 2585 bytes.
+
+NOTE: Songs are never saved as NULL they are just saved as song objects. To determine if a song "exists" the is_empty() method
+is ran to check if the song has any notes in it. The savedSongs variable never actually shrinks in size.
+*/
+song savedSongs[5] = {
+  song(SPEAKER_1, 20, 50, false),
+  song(SPEAKER_1, 20, 50, false),
+  song(SPEAKER_1, 20, 50, false),
+  song(SPEAKER_1, 20, 50, false),
+  song(SPEAKER_1, 20, 50, false)
+};
 
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
@@ -205,6 +220,8 @@ public:
     }
     delay(2000);
     song currentSong(SPEAKER_1, 60, 100, false);
+
+    delay(1500);
     currentSong.add_note(300);
     currentSong.add_note(600);
     currentSong.add_note(1200);
@@ -223,6 +240,7 @@ public:
 
     currentSong.play_song();
     delay(2000);
+
   }
 };
 
@@ -576,3 +594,31 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
   }
   return false;
 }
+
+/////////////////////////////////
+//// EEPROM LOADING & SAVING ////
+////////////////////////////////
+
+void save_song_data() {
+  if (sizeof(savedSongs) > EEPROM_SIZE) {
+    // May give compiler error however the below println works fine.
+    Serial.println("Size of saved songs (" + ((String)sizeof(savedSongs)) + ") is greater then the maximum capable size of the EEPROM (" + String(EEPROM_SIZE) + "). Please reduce the size of the songs or the maximum allowed number of songs to save this data.");
+    return;
+  }
+  EEPROM.put(EEPROM_SONG_SAVE_ADDR, savedSongs);
+  Serial.println("Saved songs to EEPROM.");
+}
+
+void delete_song(uint32_t index) {
+  if (index < 1 || index >(sizeof(savedSongs) / sizeof(savedSongs[0]))) {
+    Serial.println("ERR: Could not delete the song. Index out of bounds.");
+    return;
+  }
+  savedSongs[index].clear();
+}
+
+void load_songs_from_eeprom() {
+  // Load data to global variable.
+  EEPROM.get(EEPROM_SONG_SAVE_ADDR, savedSongs);
+}
+
