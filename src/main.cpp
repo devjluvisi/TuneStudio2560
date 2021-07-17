@@ -377,6 +377,154 @@ void setup()
   lcd.createChar(PLAYING_SONG_SYMBOL, PLAYING_SONG);
   lcd.createChar(PAUSE_SONG_SYMBOL, PAUSE_SONG);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, PROGRESS_BLOCK);
+
+  Serial.println("Playing song #1.");
+  delay(5000);
+
+
+  savedSongs[1].add_note(300);
+  savedSongs[1].add_note(1500);
+  savedSongs[1].add_note(300);
+  savedSongs[1].add_note(1400);
+  savedSongs[1].add_note(500);
+  savedSongs[1].add_note(1200);
+  savedSongs[1].add_pause();
+  savedSongs[1].add_note(900);
+  savedSongs[1].add_note(800);
+  savedSongs[1].add_note(1000);
+  savedSongs[1].add_note(700);
+  savedSongs[1].add_note(1100);
+
+  savedSongs[1].play_song();
+
+  Serial.println("Playing song #2.");
+  delay(3000);
+
+  savedSongs[2].add_note(500);
+  savedSongs[2].add_note(800);
+  savedSongs[2].add_note(1000);
+  savedSongs[2].add_note(1200);
+  savedSongs[2].add_note(1400);
+  savedSongs[2].add_note(1600);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(1600);
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(2500);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(750);
+  savedSongs[2].add_note(2900);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(1700);
+  savedSongs[2].add_note(1600);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(800);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(300);
+  savedSongs[2].add_note(400);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(500);
+  savedSongs[2].add_note(1200);
+  savedSongs[2].add_note(800);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(1200);
+  savedSongs[2].add_note(1200);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(1200);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(600);
+  savedSongs[2].add_note(700);
+  savedSongs[2].add_note(800);
+  savedSongs[2].add_note(2400);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2400);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(1800);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_note(1700);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_note(1600);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_note(1700);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_note(1600);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2100);
+  savedSongs[2].add_note(1900);
+  savedSongs[2].add_pause();
+  savedSongs[2].add_note(2300);
+  savedSongs[2].add_note(2200);
+  savedSongs[2].add_note(2000);
+  savedSongs[2].add_note(1800);
+  for (int i = 1000; i > 200; i -= 20) {
+    savedSongs[2].add_note(i);
+    savedSongs[2].add_note((uint16_t)((i / 4) * ((log(i) * 2) - sin(i) * 2.35F) + 50));
+  }
+  for (int i = 250; i < 2000; i += 65) {
+    savedSongs[2].add_note((uint16_t)abs(sin(i) * (1000 + (log(i) * sqrt(i * 2.1F)))));
+    savedSongs[2].add_note((uint16_t)abs(cos(i) * (1000 + (log(i) * sqrt(i * -1.2F)) + 250)));
+  }
+  savedSongs[2].add_pause();
+  savedSongs[2].play_song();
+
+  delay(6000);
+  savedSongs[1].play_song();
+
+  Serial.println("Done.");
+  delay(2000);
+  Serial.println("Example reads.");
+  Serial.println(String(EEPROM.read(0x0A7)));
+  Serial.println(String(EEPROM.read(0xBF)));
+  Serial.println(String(EEPROM.read(0xF5F)));
+  Serial.println(String(EEPROM.read(0x2CA)));
+  Serial.println(String(EEPROM.read(0x000)));
+  delay(5000);
 }
 
 void loop()

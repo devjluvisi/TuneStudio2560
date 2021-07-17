@@ -15,6 +15,8 @@
  * cache that value in memory. Next time we need to search for the next avaliable space to add/remove note
  * we can just read the cached memory value and add it instead of looping through the song each time.
  *
+ * OR -> Add a variable that tracks how many notes we have added so far.
+ *
  */
 
 #include <Arduino.h>
