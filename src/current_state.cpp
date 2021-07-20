@@ -68,16 +68,14 @@ void CurrentState::load() {
         lcd.setCursor(2, 2);
         lcd.print(F("Jacob LuVisi"));
         delay(2000);
+        //print_large_text("To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github.");
+        char* messages[] = {
+            "Hello I am currently testing the scrolling functionality!",
+            "is it working?"
+        };
+        print_scrolling_text(2, messages);
         // Information message.
-        Text txtA(150, 0, 650);
-        txtA.setLine(0, F("To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github."));
-        txtA.print_large();
-        Text txt2(150, 0, 660);
-        txt2.setLine(0, F(" "));
-        txt2.setLine(1, F("GitHub:"));
-        txt2.setLine(2, F("https://github.com/devjluvisi/TuneStudio2560"));
-        txt2.print();
-        delay(1000);
+        delay(2000);
         lcd.clear(); // Clear the screen incase the method needs to run again.
         delay(1000);
     }

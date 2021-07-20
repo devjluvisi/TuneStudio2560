@@ -27,7 +27,6 @@
 
 #include <tune_studio.h>
 #include <Arduino.h>
-#include <text.h>
 
  /**
   * @brief The different types of states that the user can be in.

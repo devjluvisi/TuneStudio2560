@@ -153,10 +153,20 @@ This header file contains basic definitions that are used in TuneStudio2560.
 // The speed at new characters appear on a scrolling LCD.
 #define TEXT_SCROLL_SPEED 135
 
-
 /**
- * @brief A list of all of the tone pins.
+ * @brief The maximum allowed size (characters) for a string when using functions
+ * to manipulate the LCD.
  */
+#define MAX_LCD_STRING_LENGTH 140
+ /**
+  * @brief The maximum allowed number of strings in an LCD function.
+  */
+#define MAX_LCD_STRING_AMOUNT 8
+
+
+  /**
+   * @brief A list of all of the tone pins.
+   */
 inline uint_fast8_t TONE_PINS[] = {
     BTN_TONE_1, BTN_TONE_2, BTN_TONE_3, BTN_TONE_4, BTN_TONE_5
 };
@@ -282,9 +292,17 @@ void delay(int milliseconds);
  * @brief Print a large body of text onto the LCD. This method uses a custom way of printing it to look nicer
  * by printing each individual character and seperating lines when neccessary.
  *
- * @param message The message to print to the LCD.
+ * @param messages The list of messages to print to the lcd.
  */
-void print_large_text(String message);
+void print_large_text(uint8_t numOfMessages, char* messages[]);
+
+/**
+ * @brief Print a large body of text onto the LCD. This method uses a custom way of printing it to look nicer
+ * by printing each individual character and seperating lines when neccessary.
+ *
+ * @param message A message to print.
+ */
+void print_large_text(char* message);
 
 /**
  * @brief A method ran when the select button is clicked. Is on an interrupt.
@@ -296,24 +314,13 @@ void select_btn_click();
  */
 void cancel_btn_click();
 
-/**
- * @brief Scrolls the bottom text on a screen while leaving the top part the same.
- *
- * @param top The text to be displayed on the first row.
- * @param bottom The text to be displayed on the second row (scrolling).
- * @param forward Direction of the scroll.
- */
-void print_bottom_scrolling_text(String top, String bottom, bool forward = true);
 
 /**
- * @brief Scrolls the bottom text on a screen while leaving the top part the same.
- * Version 2 uses a different sort of scrolling algorithm. Some may find it better
- * then v1.
+ * @brief Prints text to the LCD. When the line that is being printed is too long the display beings to scroll.
  *
- * @param top The text to be displayed on the first row.
- * @param bottom The text to be displayed on the second row (scrolling).
+ * @param text The text to print.
  */
-void print_bottom_scrolling_text_v2(String top, String bottom);
+void print_scrolling_text(uint8_t numOfMessages, char* messages[]);
 
 /**
  * @brief Checks for & updates Debounce rate.

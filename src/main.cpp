@@ -102,7 +102,7 @@ volatile unsigned long lastButtonPress = 0;
 
 bool isInterrupt() {
   segDisplay.refreshDisplay();
-  if (millis() % 2500 == 0) {
+  if (millis() % 500 == 0) {
 
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
   }
@@ -192,6 +192,112 @@ void loop()
 {
   currentState.load();
   aliveMillis = millis();
+
+}
+
+////////////////////////
+//// LCD FUNCTIONS ////
+//////////////////////
+
+void print_large_text(uint8_t numOfMessages, char* messages[]) {
+  lcd.clear();
+  uint8_t row = 0;
+  for (uint8_t i = 0; i < numOfMessages; i++) {
+    for (uint8_t j = 0; j < strlen(messages[i]); j++) {
+      if (messages[i][j] == '\0') {
+        break;
+      }
+
+      delay(135);
+      if (j != 0 && (j) % LCD_COLS == 0) {
+        row++;
+        lcd.setCursor(0, row);
+      }
+
+      if (row == LCD_ROWS) {
+        delay(500);
+        lcd.clear();
+        row = 0;
+        lcd.setCursor(0, row);
+      }
+
+      if (!(j % LCD_COLS == 0 && messages[i][j] == ' ')) {
+        lcd.write(messages[i][j]); // Print the character.
+      }
+
+
+    }
+    if (messages[i][0] == '\0') {
+      break;
+    }
+    row = 0;
+    delay(500);
+    lcd.clear();
+    delay(500);
+  }
+}
+
+void print_large_text(char* message) {
+  lcd.clear();
+  uint8_t row = 0;
+  for (uint8_t j = 0; j < strlen(message); j++) {
+    if (message[j] == '\0') {
+      break;
+    }
+
+    delay(135);
+    if (j != 0 && (j) % LCD_COLS == 0) {
+      row++;
+      lcd.setCursor(0, row);
+    }
+
+    if (row == LCD_ROWS) {
+      delay(500);
+      lcd.clear();
+      row = 0;
+      lcd.setCursor(0, row);
+    }
+
+    if (!(j % LCD_COLS == 0 && message[j] == ' ')) {
+      lcd.write(message[j]); // Print the character.
+    }
+  }
+}
+
+void print_scrolling_text(uint8_t numOfMessages, char* messages[]) {
+  lcd.clear();
+  uint8_t cursor = 0;
+  for (uint8_t i = 0; i < numOfMessages; i++) {
+    for (uint8_t j = 0; j < strlen(messages[i]); j++) {
+      lcd.setCursor(j, cursor);
+      if (j < LCD_COLS) {
+        lcd.write(messages[i][j]);
+        delay(150);
+        continue;
+      }
+      if (j == LCD_COLS) {
+        delay(250); // Delay when the scrolling first starts,
+      }
+      lcd.setCursor(0, cursor);
+      for (uint8_t k = 0; k < LCD_COLS; k++) {
+        lcd.print(F(" "));
+      }
+      lcd.setCursor(0, cursor);
+      for (uint8_t k = 0; k < LCD_COLS; k++) {
+        if (messages[i][k + j - LCD_COLS + 1] == '\0') {
+          break;
+        }
+        lcd.write(messages[i][k + j - LCD_COLS + 1]);
+      }
+      delay(200);
+    }
+    if (messages[i][0] == '\0') {
+      break;
+    }
+    cursor++;
+    delay(500);
+  }
+
 }
 
 ////////////////////////////
