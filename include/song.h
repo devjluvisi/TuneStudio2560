@@ -35,7 +35,7 @@
 #define EEPROM_SONG_SAVE_ADDR 0x00
 #endif
 
-class song {
+class Song {
 private:
     uint8_t _pin; // The pin to send the frequencies to.
     uint8_t _noteDelay; // The delay between playing each note of the song.
@@ -51,7 +51,7 @@ public:
      * @param noteDelay The delay between each note of the song.
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
-    song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
+    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
     /**
      * @brief Prints some information about the current song to
      * the Serial monitor.

@@ -13,9 +13,37 @@ This header file contains basic definitions that are used in TuneStudio2560.
 #include <LiquidCrystal_I2C.h>
 #endif
 
+#ifndef SevSegShift_h
+#include <SevSegShift.h>
+#endif
+
 // The size of the EEPROM of the board.
 #ifndef EEPROM_SIZE
 #define EEPROM_SIZE 4096
+#endif
+
+// Shift pins for the 4-wide 7 segment display.
+
+#ifndef SHIFT_PIN_DS
+#define SHIFT_PIN_DS 5
+#endif
+
+#ifndef SHIFT_PIN_STCP
+#define SHIFT_PIN_STCP 6
+#endif
+
+#ifndef SHIFT_PIN_SHCP
+#define SHIFT_PIN_SHCP 7
+#endif
+
+// The specifications of the LCD.
+
+#ifndef LCD_COLS
+#define LCD_COLS 20
+#endif
+
+#ifndef LCD_ROWS
+#define LCD_ROWS 4
 #endif
 
 #ifndef RGB_BRIGHTNESS
@@ -222,30 +250,19 @@ inline byte PROGRESS_BLOCK[] = {
   0x1F
 };
 
+
 // METHODS FOR TUNESTUDIO2560 MAIN PROGRAM
 
 /**
  * @brief The primary LCD object which controls the main LCD.
  *
  */
-inline LiquidCrystal_I2C lcd(0x27, 20, 4);
-
+inline LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
 /**
- * @brief A enum of all different types of screens the user can be on.
- * The type of screen the user is on depends what is loaded onto the screen.
- *
+ * @brief Represents the 4-wide 7 segment display which is connected to 2x SN74HC595N shift registers.
  */
-enum CurrentAction {
-    HOME_SCREEN,
-    LISTEN_MODE_SONG_SELECT,
-    LISTEN_MODE_SONG_PLAY,
-    LISTEN_MODE_DELETE_SONG,
-    LISTEN_MODE_FLUSH_EEPROM,
-    CREATOR_MODE_HOME,
-    CREATOR_MODE_CREATE_NEW,
-    CREATER_MODE_SAVE_CURRENT,
-    CREATER_MODE_DELETE_SONG
-};
+inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
+
 
 /**
  * @brief Returns if there is currently an interrupt waiting in progress.
@@ -269,12 +286,6 @@ void delay(int milliseconds);
  */
 void print_large_text(String message);
 
-/**
- * @brief Updates the current action. Usually used in interrupts.
- *
- * @param newAction The new action to set.
- */
-void update_action(CurrentAction newAction);
 /**
  * @brief A method ran when the select button is clicked. Is on an interrupt.
  */

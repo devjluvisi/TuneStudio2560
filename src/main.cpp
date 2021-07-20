@@ -1,46 +1,85 @@
-/*
--------------------------------
-TUNE STUDIO 2560
-Open source song creation and playback using the ATMega2560 microchip
-on AVR 8-Bit architecture.
+/**
+ * @file main.cpp
+ * @author Jacob LuVisi
+ * @brief The main class for TuneStudio2560.
+ * @version 0.1
+ * @date 2021-06-27 - ???
+ *
+ * @copyright Copyright (c) 2021
+ *
+ * TuneStudio2560
+ * Open source song playback and creation tool made for the Arduino Mega 2560 and compatible.
+ *
+ * GitHub: https://github.com/devjluvisi/TuneStudio2560
+ *
+ * For library, unit testing, and code explanation please check out the wiki. (https://github.com/devjluvisi/TuneStudio2560/wiki)
+ *
+ * -------------------------------------------
+ * HARDWARE:
+ * A complete list of hardware needed can be found on the GitHub as well as the "For Users" wiki page.
+ * TuneStudio2560 was created and designed for the 8-Bit AVR archetecture. It is possible to run this program
+ * on AVR-compatible boards which can supply enough IO as well as at least 1x I2C bus and 1x SPI bus (optional).
+ * A potential port to other microcontrollers like the Raspberry Pi Pico is under consideration.
+ * -------------------------------------------
+ * PINS: (A list of my pin layouts (for mega) are in tune_studio.h)
+ *
+ * - Note: Digital pins can be replaced with Analog Pins if you run out of Digital Pins or PWM.
+ * These connections do not go over ground/5V pins. Please check each of your devices to figure out
+ * where they go. These connections only describe the direct connections to the Arduino. More info on wiki.
+ *
+ * Connect RGB Led Red, Green, and Blue to any digital pins. (PWM if possible).
+ * Connect Tune Buttons 1-5 on any digital pins.
+ * Connect SELECT/ADD button to a digital pin that provides interrupt.
+ * Connect DELETE/CANCEL button to a digital pin that provides interrupt.
+ * Connect OPTION button to any digital pin.
+ * Connect Potentiometer to any Analog pin.
+ * Connect Speaker to any Analog pin.
+ * Connect I2C LCD to SDA/SCL pins.
+ * Connect 7-Segment display DIGIT pins to any Digital Pins (MEGA Only).
+ * Connect MicroSD MOSI,MISO,SCK, and SS to the respective SPI pins on your board. If you do not have enough pins
+ * then connect them to the ICSP pins (also supports SPI).
+ *
+ * Total Pins Required: 22
+ * - 14 Digital/Analog Pins (4 PWM Reccomended, 1 Required)
+ * - 2 Analog Pins
+ * - (I2C) SDA/SCL Pins [2 Pins]
+ * - (SPI) MOSI, MISO, SCK, SS Pins [4 Pins]
+ * -------------------------------------------
+ *
+ * TuneStudio2560 was developed using PlatformIO on Visual Studio Code and it is highly reccomended to modify
+ * this project using that framework.
+ *
+ * LICENSE - MIT
+ */
 
-CURRENT PROJECT STATUS: NOT FUNCTIONAL
--------------------------------
-Official GitHub Repo:
-  - (TBD)
 
-Hardware Compatability:
-  - TuneStudio2560 was created specifically for 8-bit AVR microarchitecture although
-  it may be possible to run TuneStudio2560 on compatible AVR boards which can supply
-  the neccessarily Analog/Digital & I2C interfaces.
-  - A port to the RP2040 microchip is currently under consideration.
-
-Unit Testing Information:
-  - (TBD)
-
-C++ Library Information:
-  - (TBD)
-
-TuneStudio2560 was created entirely in PlatformIO a visual studio extension
-which allows the fast and complete creation of programs for various microcontrollers.
-For the best compatiblity it is reccomended that this GitHub repo is edited and run
-using PlatformIO.
---------------------------------
-By Jacob LuVisi (2021)
-6/27/2021 - ???
-
-*/
-
-/*
-Check tune_studio.h for variables which are not defined here.
-*/
-
-// Initalize libraries.
+ // Initalize libraries.
 #include <Arduino.h>
 #include <tune_studio.h>
 #include <EEPROM.h>
 #include <pitches.h>
 #include <song.h>
+#include <current_state.h>
+
+// measure memory usage.
+#ifdef __arm__
+// should use uinstd.h to define sbrk but Due causes a conflict
+extern "C" char* sbrk(int incr);
+#else  // __ARM__
+extern char* __brkval;
+#endif  // __arm__
+
+int freeMemory() {
+  char top;
+#ifdef __arm__
+  return &top - reinterpret_cast<char*>(sbrk(0));
+#elif defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
+  return &top - __brkval;
+#else  // __arm__
+  return __brkval ? &top - __brkval : &top - __malloc_heap_start;
+#endif  // __arm__
+}
+
 
 /**
 Indicates whether or not an immediate interrupt should be called.
@@ -57,291 +96,40 @@ volatile bool immediateInterrupt = false;
 volatile unsigned long lastInterruptFire = 0;
 volatile unsigned long lastButtonPress = 0;
 
-/*
-An array of all saved songs on TuneStudio2560. This is the variable that is
-written to EEPROM when a song is saved.
-
-Songs that are currently being created are saved in this array. There is no different song variable.\
-
-NOTE: Size of this array using songs of 255 max length is 2585 bytes.
-
-NOTE: Songs are never saved as NULL they are just saved as song objects. To determine if a song "exists" the is_empty() method
-is ran to check if the song has any notes in it. The savedSongs variable never actually shrinks in size.
-*/
-song savedSongs[5] = {
-  song(SPEAKER_1, 20, 50, false),
-  song(SPEAKER_1, 20, 50, false),
-  song(SPEAKER_1, 20, 50, false),
-  song(SPEAKER_1, 20, 50, false),
-  song(SPEAKER_1, 20, 50, false)
-};
-
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
 ////////////////////////////
 
 bool isInterrupt() {
+  segDisplay.refreshDisplay();
+  if (millis() % 2500 == 0) {
+
+    Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
+  }
   return immediateInterrupt;
 }
 
 void delay(int milliseconds) {
   for (int i = 0; i < milliseconds; i++) {
     if (isInterrupt()) return;
+
     delayMicroseconds(1000);
   }
 }
 
-///////////////////////////
-//// CLASS DEFINITIONS ////
-///////////////////////////
-
-/**
- * @brief A abstract class which manages methods and variables for all
- * of the different types of action screens.
- */
-class ActionScreen {
-
-#define INITAL_DISPLAY_SLEEP 4000
-
-protected:
-  bool hasDrawn;
-public:
-  virtual void load() = 0;
-  /**
-   * @brief Set the Drawn object
-   *
-   * @param val What to set the value of hasDrawn to.
-   */
-  void setDrawn(bool val) {
-    hasDrawn = val;
-  }
-
-};
-
-/**
- * @brief The Home Screen which is first seen when
- * the Arduino starts up.
- */
-class HomeScreen : public ActionScreen {
-private:
-  const String message = "To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github.";
-public:
-  void load() {
-    if (!hasDrawn) {
-      lcd.clear();
-      lcd.home();
-      lcd.setCursor(0, 0);
-      lcd.print("Welcome to...");
-      lcd.setCursor(1, 1);
-      lcd.print("TuneStudio2560");
-      delay(INITAL_DISPLAY_SLEEP);
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      hasDrawn = true;
-    }
-
-    // Print out the message.
-    print_large_text(message);
-    delay(1000);
-
-    // Scroll a link to my github.
-    const String githubLink = "github.com/devjluvisi/TuneStudio2560";
-    delay(500);
-    lcd.print(githubLink);
-    int count = githubLink.length() - 16;
-
-    delay(2500);
-    while (count != 0) {
-      if (isInterrupt()) return;
-      lcd.scrollDisplayLeft();
-      count--;
-      delay(550);
-    }
-    delay(600); // Short delay after message end.
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("<3");
-    delay(600);
-    // GITHUB SCROLL END
-
-    // finally clear the lcd.
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    delay(1000);
-
-    // Go back to the title screen (redraw everything)
-    this->hasDrawn = false;
-
-  }
-
-};
-
-/**
- * @brief A screen that displays what creator mode is about.
- */
-class CreatorModeHome : public ActionScreen {
-public:
-  void load() {
-    if (!hasDrawn) {
-      lcd.clear();
-      lcd.home();
-      lcd.setCursor(0, 0);
-      hasDrawn = true;
-    }
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To start, press the SELECT button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To exit, press the DEL/CANCEL button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Create a song using the 5 tune buttons.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To add a tune, press the tune button and then press SELECT.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To add a delay in the song press SELECT without pressing a tune button before.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "To just listen to a note without adding press a tune button without select.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Adjust the frequency of the tune using the potentiometer.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Delete notes using the DEL/CANCEL button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Save the song by pressing OPTION+SELECT button.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Delete the current song (exit) by pressing OPTION+DEL.");
-    print_bottom_scrolling_text_v2("[Creator Mode]", "Play current track by pressing OPTION twice.");
-  }
-};
-
-class CreatorModeCreateNew : public ActionScreen {
-private:
-  // Tracks the top text of the LCD to see if it has changed.
-  String lcdTopText = "";
-  // Tracks the bottom text of the LCD to see if it has changed.
-  String lcdBottomText = "";
-public:
-  //TODO: NEXT VERSION - IMPLEMENT
-  void load() {
-    if (!hasDrawn) {
-      lcd.clear();
-      lcd.home();
-      lcd.setCursor(0, 0);
-      lcd.print("-END");
-      hasDrawn = true;
-    }
-    delay(2000);
-    song currentSong(SPEAKER_1, 60, 100, false);
-
-    delay(1500);
-    currentSong.add_note(300);
-    currentSong.add_note(600);
-    currentSong.add_note(1200);
-    currentSong.add_note(2400);
-    currentSong.add_note(3000);
-    currentSong.add_pause();
-    currentSong.add_note(800);
-    currentSong.add_note(600);
-    currentSong.add_pause();
-    currentSong.add_note(1400);
-    currentSong.add_note(400);
-    currentSong.add_pause();
-    currentSong.add_pause();
-    currentSong.add_note(400);
-    currentSong.add_note(2500);
-
-    currentSong.play_song();
-    delay(2000);
-
-  }
-};
-
-class ListenModeSongSelect : public ActionScreen {
-private:
-  int selectedSong = -1;
-public:
-  void load() {
-    if (!hasDrawn) {
-      lcd.clear();
-      delay(500);
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("[Listen Mode]");
-      lcd.setCursor(0, 1);
-      lcd.print("> INSTRUCTIONS <");
-      delay(2000);
-      print_bottom_scrolling_text_v2("[Listen Mode]", "Select 1 of the 5 tune buttons to play a song saved in memory.");
-      delay(500);
-      print_bottom_scrolling_text_v2("[Listen Mode]", "Press the \"DEL/CANCEL\" button to go back to main menu.");
-      delay(500);
-      print_bottom_scrolling_text_v2("[Listen Mode]", "Press \"SELECT\" to pause song.");
-      delay(500);
-      print_bottom_scrolling_text_v2("[Listen Mode]", "Press \"OPTION+DEL\" to delete song.");
-      delay(1500);
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("[Listen Mode]");
-      lcd.setCursor(0, 1);
-      lcd.print("Awaiting Input.");
-      hasDrawn = true;
-    }
-    if (selectedSong == -1) {
-      if (is_pressed(BTN_TONE_1)) {
-        Serial.println("PRESSED TONE 1");
-        selectedSong = 1;
-        delay(1000);
-      }
-      if (is_pressed(BTN_TONE_2)) {
-        Serial.println("PRESSED TONE 2");
-        selectedSong = 2;
-        delay(1000);
-      }
-      if (is_pressed(BTN_TONE_3)) {
-        Serial.println("PRESSED TONE 3");
-        selectedSong = 3;
-        delay(1000);
-      }
-      if (is_pressed(BTN_TONE_4)) {
-        Serial.println("PRESSED TONE 4");
-        selectedSong = 4;
-        delay(1000);
-      }
-      if (is_pressed(BTN_TONE_5)) {
-        Serial.println("PRESSED TONE 5");
-        selectedSong = 5;
-        delay(1000);
-      }
-    }
-    else {
-      // Player has selected a song.
-      lcd.clear();
-      lcd.home();
-      lcd.setCursor(0, 0);
-      lcd.write(byte(PLAYING_SONG_SYMBOL));
-      lcd.print(" ");
-      lcd.write(byte(MUSIC_NOTE_SYMBOL));
-      lcd.print(" Song: #" + String(selectedSong));
-      lcd.setCursor(0, 1);
-      lcd.print("PROGRESS: ");
-      for (int i = 0; i < 5; i++) {
-        lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
-      }
-      delay(5000);
-    }
-  }
-};
-
-//////////////////////
-//// ARDUINO CODE ////
-//////////////////////
-
-HomeScreen homeScreen;
-CreatorModeHome creatorModeHome;
-CreatorModeCreateNew createNewSong;
-ListenModeSongSelect selectSongScreen;
-
-
-// The current screen the user is on.
-CurrentAction userAction = HOME_SCREEN;
-
-/*
-For keeping track of the current time the user has been on a specific action.
-Can be updated depending on what the action wants to do.
-*/
-int actionMillis = 0;
 
 /*
 The current time that TuneStudio2560 has been active.
 */
 int aliveMillis = millis();
+
+/*
+Represents the current state of the application.
+View current_state.h for more information on states.
+*/
+PossibleStates stateEnum = MAIN_MENU;
+
+CurrentState currentState(stateEnum);
 
 void setup()
 {
@@ -373,323 +161,45 @@ void setup()
   // Initalize the LCD.
   lcd.init();
   lcd.backlight();
+  /*
   lcd.createChar(MUSIC_NOTE_SYMBOL, MUSIC_NOTE);
   lcd.createChar(PLAYING_SONG_SYMBOL, PLAYING_SONG);
   lcd.createChar(PAUSE_SONG_SYMBOL, PAUSE_SONG);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, PROGRESS_BLOCK);
+*/
+// Setup 4-wide 7 segment display.
+// More information: https://github.com/bridystone/SevSegShift
 
-  Serial.println("Playing song #1.");
-  delay(5000);
+  byte numDigits = 4;
+  byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
+  byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
+  /* configuration without ShiftRegister - Direct arduino connection
+  byte digitPins[] = {2, 3, 4, 5}; // PINs of Arduino
+  byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13}; // PINs of Arduino
+  */
+  bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
+  byte hardwareConfig = COMMON_CATHODE; // See README.md for options
+  bool updateWithDelays = false; // Default 'false' is Recommended
+  bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
+  bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
 
-
-  savedSongs[1].add_note(300);
-  savedSongs[1].add_note(1500);
-  savedSongs[1].add_note(300);
-  savedSongs[1].add_note(1400);
-  savedSongs[1].add_note(500);
-  savedSongs[1].add_note(1200);
-  savedSongs[1].add_pause();
-  savedSongs[1].add_note(900);
-  savedSongs[1].add_note(800);
-  savedSongs[1].add_note(1000);
-  savedSongs[1].add_note(700);
-  savedSongs[1].add_note(1100);
-
-  savedSongs[1].play_song();
-
-  Serial.println("Playing song #2.");
-  delay(3000);
-
-  savedSongs[2].add_note(500);
-  savedSongs[2].add_note(800);
-  savedSongs[2].add_note(1000);
-  savedSongs[2].add_note(1200);
-  savedSongs[2].add_note(1400);
-  savedSongs[2].add_note(1600);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(1600);
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(2500);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(750);
-  savedSongs[2].add_note(2900);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(1700);
-  savedSongs[2].add_note(1600);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(800);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(300);
-  savedSongs[2].add_note(400);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(500);
-  savedSongs[2].add_note(1200);
-  savedSongs[2].add_note(800);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(1200);
-  savedSongs[2].add_note(1200);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(1200);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(600);
-  savedSongs[2].add_note(700);
-  savedSongs[2].add_note(800);
-  savedSongs[2].add_note(2400);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2400);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(1800);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_note(1700);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_note(1600);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_note(1700);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_note(1600);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2100);
-  savedSongs[2].add_note(1900);
-  savedSongs[2].add_pause();
-  savedSongs[2].add_note(2300);
-  savedSongs[2].add_note(2200);
-  savedSongs[2].add_note(2000);
-  savedSongs[2].add_note(1800);
-  for (int i = 1000; i > 200; i -= 20) {
-    savedSongs[2].add_note(i);
-    savedSongs[2].add_note((uint16_t)((i / 4) * ((log(i) * 2) - sin(i) * 2.35F) + 50));
-  }
-  for (int i = 250; i < 2000; i += 65) {
-    savedSongs[2].add_note((uint16_t)abs(sin(i) * (1000 + (log(i) * sqrt(i * 2.1F)))));
-    savedSongs[2].add_note((uint16_t)abs(cos(i) * (1000 + (log(i) * sqrt(i * -1.2F)) + 250)));
-  }
-  savedSongs[2].add_pause();
-  savedSongs[2].play_song();
-
-  delay(6000);
-  savedSongs[1].play_song();
-
-  Serial.println("Done.");
-  delay(2000);
-  Serial.println("Example reads.");
-  Serial.println(String(EEPROM.read(0x0A7)));
-  Serial.println(String(EEPROM.read(0xBF)));
-  Serial.println(String(EEPROM.read(0xF5F)));
-  Serial.println(String(EEPROM.read(0x2CA)));
-  Serial.println(String(EEPROM.read(0x000)));
-  delay(5000);
+  segDisplay.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
+    updateWithDelays, leadingZeros, disableDecPoint);
 }
+
 
 void loop()
 {
-  switch (userAction) {
-  case HOME_SCREEN:
-    homeScreen.load();
-    break;
-  case LISTEN_MODE_SONG_SELECT:
-    selectSongScreen.load();
-    break;
-  case CREATOR_MODE_HOME:
-    creatorModeHome.load();
-    break;
-  case CREATOR_MODE_CREATE_NEW:
-    createNewSong.load();
-  default:
-    Serial.println(F("Unknown Mode."));
-  }
-  immediateInterrupt = false;
+  currentState.load();
   aliveMillis = millis();
-}
-
-////////////////////////
-//// LCD FUNCTIONS ////
-//////////////////////
-
-void print_large_text(String message) {
-  // Go through evert 16 characters.
-  for (uint16_t i = 0; i < message.length(); i += 16) {
-    if (isInterrupt()) return;
-    String sub;
-    // Go through every letter.
-    for (uint16_t j = i; j < (i + 16); j++) {
-      if (isInterrupt()) return;
-      if (j > message.length() - 1) {
-        break;
-      }
-      sub.concat(message[j]);
-    }
-    sub.trim(); // Remove white spaces.
-
-    if (i % 32 == 0) {
-      delay(650);
-      lcd.clear();
-      lcd.home();
-      lcd.setCursor(0, 0);
-      delay(300);
-
-      for (char c : sub) {
-        if (isInterrupt()) return;
-        lcd.print(c);
-        delay(150);
-      }
-    }
-    else {
-      lcd.setCursor(0, 1);
-      for (char c : sub) {
-        if (isInterrupt()) return;
-        lcd.print(c);
-        delay(150);
-      }
-    }
-  }
-  lcd.clear();
-  lcd.home();
-  lcd.setCursor(0, 0);
-}
-
-void print_bottom_scrolling_text(String top, String bottom, bool forward = true) {
-  lcd.clear();
-  lcd.home();
-  lcd.setCursor(0, 0);
-  lcd.print(top);
-  if (forward) {
-    for (uint8_t i = 0; i < bottom.length(); i++) {
-      if (isInterrupt()) return;
-      lcd.setCursor(0, 1);
-      // Create a substring of the primary string that could fit on a row of the display.
-      lcd.print(bottom.substring(i, (i + 16) > bottom.length() ? bottom.length() : i + 16));
-      delay(450);
-      if (i == 0) {
-        delay(800);
-      }
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print(top);
-    }
-  }
-  else {
-
-    for (uint8_t i = bottom.length(); i > 0; i--) {
-      if (isInterrupt()) return;
-      lcd.setCursor(0, 1);
-      lcd.print(bottom.substring(i, (i + 16) > bottom.length() ? bottom.length() : i + 16));
-      delay(450);
-      if (i == 0) {
-        delay(800);
-      }
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print(top);
-    }
-
-  }
-}
-
-
-void print_bottom_scrolling_text_v2(String top, String bottom) {
-  lcd.clear();
-  lcd.home();
-  lcd.setCursor(0, 0);
-  lcd.print(top);
-
-  uint8_t cursor = 0;
-  for (uint8_t i = 0; i < bottom.length(); i++) {
-    if (isInterrupt()) return;
-    if (i % 16 == 0) {
-      cursor = 0;
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print(top);
-    }
-    lcd.setCursor(cursor, 1);
-    // Ignore spaces on new lines
-    if (i % 16 == 0 && bottom[i] == ' ') {
-      continue;
-    }
-    lcd.print(bottom[i]);
-    cursor++;
-    delay(TEXT_SCROLL_SPEED);
-  }
 }
 
 ////////////////////////////
 //// BUTTONS & ACTIONS ////
 //////////////////////////
 
-void update_action(CurrentAction newAction) {
-  if (millis() - lastInterruptFire < DEBOUNCE_RATE) {
-    return;
-  }
-  userAction = newAction;
-  immediateInterrupt = true;
-  lastInterruptFire = millis();
-  Serial.println("Changed current action to: " + String(newAction));
-}
-
 void select_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return;
-  }
-  switch (userAction) {
-  case HOME_SCREEN:
-    update_action(CREATOR_MODE_HOME);
-    break;
-  case LISTEN_MODE_SONG_SELECT: // Used for speeding up the text.
-    immediateInterrupt = true;
-    lastInterruptFire = millis();
-    break;
-  case CREATOR_MODE_HOME:
-    update_action(CREATOR_MODE_CREATE_NEW);
-    break;
-  default:
-    Serial.println(F("No routing from current action."));
     return;
   }
   lastButtonPress = millis();
@@ -697,25 +207,6 @@ void select_btn_click() {
 
 void cancel_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return;
-  }
-  switch (userAction) {
-  case HOME_SCREEN:
-    selectSongScreen.setDrawn(false);
-    update_action(LISTEN_MODE_SONG_SELECT);
-    break;
-  case LISTEN_MODE_SONG_SELECT:
-    // Redraw the home screen.
-    homeScreen.setDrawn(false);
-    update_action(HOME_SCREEN);
-    break;
-  case CREATOR_MODE_HOME:
-    // Redraw the home screen.
-    homeScreen.setDrawn(false);
-    update_action(HOME_SCREEN);
-    break;
-  default:
-    Serial.println(F("No routing from current action."));
     return;
   }
   lastButtonPress = millis();
@@ -747,6 +238,7 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
 //// EEPROM LOADING & SAVING ////
 ////////////////////////////////
 
+/*
 void save_song_data() {
   if (sizeof(savedSongs) > EEPROM_SIZE) {
     // May give compiler error however the below println works fine.
@@ -769,4 +261,5 @@ void load_songs_from_eeprom() {
   // Load data to global variable.
   EEPROM.get(EEPROM_SONG_SAVE_ADDR, savedSongs);
 }
+*/
 
