@@ -279,7 +279,7 @@ inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
  *
  * @return If the interrupt flag is true.
  */
-bool isInterrupt();
+bool is_interrupt();
 
 /**
  * @brief A custom delay function which checks if an immediate interrupt is occuring.
@@ -287,22 +287,6 @@ bool isInterrupt();
  * @param milliseconds The time to delay for.
  */
 void delay(int milliseconds);
-
-/**
- * @brief Print a large body of text onto the LCD. This method uses a custom way of printing it to look nicer
- * by printing each individual character and seperating lines when neccessary.
- *
- * @param messages The list of messages to print to the lcd.
- */
-void print_large_text(uint8_t numOfMessages, char* messages[]);
-
-/**
- * @brief Print a large body of text onto the LCD. This method uses a custom way of printing it to look nicer
- * by printing each individual character and seperating lines when neccessary.
- *
- * @param message A message to print.
- */
-void print_large_text(char* message);
 
 /**
  * @brief A method ran when the select button is clicked. Is on an interrupt.
@@ -314,13 +298,6 @@ void select_btn_click();
  */
 void cancel_btn_click();
 
-
-/**
- * @brief Prints text to the LCD. When the line that is being printed is too long the display beings to scroll.
- *
- * @param text The text to print.
- */
-void print_scrolling_text(uint8_t numOfMessages, char* messages[]);
 
 /**
  * @brief Checks for & updates Debounce rate.
@@ -338,6 +315,25 @@ bool is_pressed(uint8_t buttonPin);
  * @return If both of the buttons are being pressed.
  */
 bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2);
+
+/**
+ * @brief Prints text to the lcd and wraps text automatically.
+ *
+ * @param text The text to print.
+ * @param charDelay The delay before each character.
+ */
+void print_lcd(String text, uint8_t charDelay = 150);
+
+/**
+ * @brief Prints a single line of scrolling text on the lcd.
+ *
+ * Note that this method does not clear the screen before executing.
+ *
+ * @param text The text to print.
+ * @param cursorY Where the cursor should start printing.
+ * @param charDelay Delay between the scroll.
+ */
+void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay = 150);
 
 
 // Audio Methods

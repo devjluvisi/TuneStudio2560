@@ -21,6 +21,7 @@ void CurrentState::set_state(PossibleStates state) {
     Serial.print(F(" from "));
     Serial.println(_currentState);
     _currentState = state;
+    _hasInitalized = false; // Disable any previous initalizations.
 }
 
 PossibleStates CurrentState::get_state() {
@@ -28,6 +29,10 @@ PossibleStates CurrentState::get_state() {
 }
 
 void CurrentState::init() {
+    // If the method has already ran then do not run.
+    if (_hasInitalized) {
+        return;
+    }
     lcd.clear(); // Remove all information from the previous state.
     segDisplay.blank(); // Clear the 7 segment display.
     segDisplay.refreshDisplay(); // Refresh it to clear.
@@ -38,6 +43,21 @@ void CurrentState::init() {
     case CM_MENU:
         break;
     case LM_MENU:
+        Serial.println(F("Entered listening mode."));
+        delay(500);
+        lcd.setCursor(3, 1);
+        lcd.print(F("[Listen Mode]"));
+        lcd.setCursor(1, 2);
+        lcd.print(F(">> INSTRUCTIONS <<"));
+        delay(1250);
+        lcd.clear();
+        print_lcd(F("Press select button to skip instructions."), 50);
+        delay(500);
+        print_lcd(F("Select 1 of the 5 tune buttons to play a song saved in memory."));
+        print_lcd(F("Press the \"DEL/CANCEL\" button to go back to main menu."));
+        print_lcd(F("Press \"SELECT\" to pause song."));
+        print_lcd(F("Press \"OPTION+DEL\" to delete song."));
+        delay(1500);
         break;
     case LM_PLAYING_SONG:
         break;
@@ -46,13 +66,10 @@ void CurrentState::init() {
     default:
         Serial.println(F("STATE ERROR."));
     }
-
+    _hasInitalized = true;
 }
 
 void CurrentState::load() {
-    if (!_hasInitalized) {
-        init();
-    }
 
     switch (_currentState) {
     case MAIN_MENU:
@@ -68,12 +85,12 @@ void CurrentState::load() {
         lcd.setCursor(2, 2);
         lcd.print(F("Jacob LuVisi"));
         delay(2000);
-        //print_large_text("To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github.");
-        char* messages[] = {
-            "Hello I am currently testing the scrolling functionality!",
-            "is it working?"
-        };
-        print_scrolling_text(2, messages);
+        print_lcd(F("To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github."));
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(0, 1);
+        lcd.print(F("GitHub: "));
+        print_scrolling(F("github.com/devjluvisi/TuneStudio2560"), 2, 235);
         // Information message.
         delay(2000);
         lcd.clear(); // Clear the screen incase the method needs to run again.
@@ -81,9 +98,34 @@ void CurrentState::load() {
     }
     break;
     case CM_MENU:
-        break;
+    {
+        delay(500);
+        lcd.setCursor(3, 1);
+        lcd.print(F("[Creator Mode]"));
+        lcd.setCursor(1, 2);
+        lcd.print(F(">> INSTRUCTIONS <<"));
+        delay(1250);
+        print_lcd(F("To start, press the select button."));
+        print_lcd(F("To exit, press the DEL/CANCEL button."));
+        print_lcd(F("Create a song using the 5 tune buttons."));
+        print_lcd(F("To add a tune, press the tune button and then press SELECT."));
+        print_lcd(F("To add a delay in the song press SELECT without pressing a tune button before."));
+        print_lcd(F("To just listen to a note without adding press a tune button without select."));
+        print_lcd(F("Adjust the frequency of the tune using the potentiometer."));
+        print_lcd(F("Delete notes using the DEL/CANCEL button."));
+        print_lcd(F("Save the song by pressing OPTION+SELECT button."));
+        print_lcd(F("Delete the current song (exit) by pressing OPTION+DEL."));
+        print_lcd(F("Play current track by pressing OPTION twice."));
+    }
+    break;
     case LM_MENU:
-        break;
+    {
+        lcd.setCursor(2, 1);
+        lcd.print(F("[Listening Mode]"));
+        lcd.setCursor(0, 2);
+        lcd.print(F(">> AWAITING INPUT <<"));
+    }
+    break;
     case LM_PLAYING_SONG:
         break;
     case CM_CREATE_NEW:

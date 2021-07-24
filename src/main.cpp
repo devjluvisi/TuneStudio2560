@@ -100,10 +100,9 @@ volatile unsigned long lastButtonPress = 0;
 //// INTERRUPTS & DELAYS ////
 ////////////////////////////
 
-bool isInterrupt() {
+bool is_interrupt() {
   segDisplay.refreshDisplay();
-  if (millis() % 500 == 0) {
-
+  if (millis() % 350 == 0) {
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
   }
   return immediateInterrupt;
@@ -111,8 +110,7 @@ bool isInterrupt() {
 
 void delay(int milliseconds) {
   for (int i = 0; i < milliseconds; i++) {
-    if (isInterrupt()) return;
-
+    if (is_interrupt()) return;
     delayMicroseconds(1000);
   }
 }
@@ -127,9 +125,7 @@ int aliveMillis = millis();
 Represents the current state of the application.
 View current_state.h for more information on states.
 */
-PossibleStates stateEnum = MAIN_MENU;
-
-CurrentState currentState(stateEnum);
+CurrentState currentState(MAIN_MENU);
 
 void setup()
 {
@@ -161,14 +157,14 @@ void setup()
   // Initalize the LCD.
   lcd.init();
   lcd.backlight();
-  /*
+
   lcd.createChar(MUSIC_NOTE_SYMBOL, MUSIC_NOTE);
   lcd.createChar(PLAYING_SONG_SYMBOL, PLAYING_SONG);
   lcd.createChar(PAUSE_SONG_SYMBOL, PAUSE_SONG);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, PROGRESS_BLOCK);
-*/
-// Setup 4-wide 7 segment display.
-// More information: https://github.com/bridystone/SevSegShift
+
+  // Setup 4-wide 7 segment display.
+  // More information: https://github.com/bridystone/SevSegShift
 
   byte numDigits = 4;
   byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
@@ -190,8 +186,10 @@ void setup()
 
 void loop()
 {
+  currentState.init();
   currentState.load();
   aliveMillis = millis();
+  immediateInterrupt = false;
 
 }
 
@@ -199,106 +197,56 @@ void loop()
 //// LCD FUNCTIONS ////
 //////////////////////
 
-void print_large_text(uint8_t numOfMessages, char* messages[]) {
+void print_lcd(String text, uint8_t charDelay = 150) {
   lcd.clear();
-  uint8_t row = 0;
-  for (uint8_t i = 0; i < numOfMessages; i++) {
-    for (uint8_t j = 0; j < strlen(messages[i]); j++) {
-      if (messages[i][j] == '\0') {
-        break;
-      }
-
-      delay(135);
-      if (j != 0 && (j) % LCD_COLS == 0) {
-        row++;
-        lcd.setCursor(0, row);
-      }
-
-      if (row == LCD_ROWS) {
-        delay(500);
-        lcd.clear();
-        row = 0;
-        lcd.setCursor(0, row);
-      }
-
-      if (!(j % LCD_COLS == 0 && messages[i][j] == ' ')) {
-        lcd.write(messages[i][j]); // Print the character.
-      }
-
-
+  uint8_t cursorX = 0; // Track cursor on X position.
+  uint8_t cursorY = 0; // Track cursor on Y position.
+  for (uint8_t i = 0; i < text.length(); i++) {
+    if (is_interrupt()) return;
+    lcd.setCursor(cursorX, cursorY);
+    // Check if the beginning character is a space.
+    if (!(cursorX == 0 && text[i] == ' ')) {
+      lcd.print(text[i]); // Print letter to LCD.
+      delay(charDelay);
+      cursorX++; // Go up by one cursor.
     }
-    if (messages[i][0] == '\0') {
-      break;
-    }
-    row = 0;
-    delay(500);
-    lcd.clear();
-    delay(500);
-  }
-}
-
-void print_large_text(char* message) {
-  lcd.clear();
-  uint8_t row = 0;
-  for (uint8_t j = 0; j < strlen(message); j++) {
-    if (message[j] == '\0') {
-      break;
+    // Reached end of the row.
+    if (cursorX != 0 && cursorX % LCD_COLS == 0) {
+      cursorY++;
+      cursorX = 0;
     }
 
-    delay(135);
-    if (j != 0 && (j) % LCD_COLS == 0) {
-      row++;
-      lcd.setCursor(0, row);
-    }
-
-    if (row == LCD_ROWS) {
-      delay(500);
+    // Reached end of the LCD.
+    if (cursorY != 0 && cursorY % LCD_ROWS == 0) {
+      delay(600);
+      cursorX = 0;
+      cursorY = 0;
       lcd.clear();
-      row = 0;
-      lcd.setCursor(0, row);
-    }
-
-    if (!(j % LCD_COLS == 0 && message[j] == ' ')) {
-      lcd.write(message[j]); // Print the character.
     }
   }
 }
 
-void print_scrolling_text(uint8_t numOfMessages, char* messages[]) {
-  lcd.clear();
-  uint8_t cursor = 0;
-  for (uint8_t i = 0; i < numOfMessages; i++) {
-    for (uint8_t j = 0; j < strlen(messages[i]); j++) {
-      lcd.setCursor(j, cursor);
-      if (j < LCD_COLS) {
-        lcd.write(messages[i][j]);
-        delay(150);
-        continue;
+void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay = 150) {
+  lcd.setCursor(0, cursorY);
+  for (uint8_t i = 0; i < text.length(); i++) {
+    if (is_interrupt()) return;
+    lcd.setCursor(0, cursorY);
+    uint8_t subStrIndex = 0;
+    String subStr;
+    subStr.reserve(LCD_COLS);
+    for (uint8_t j = i; j < i + LCD_COLS; j++) {
+      if (is_interrupt()) return;
+      if (j == text.length()) {
+        return;
       }
-      if (j == LCD_COLS) {
-        delay(250); // Delay when the scrolling first starts,
-      }
-      lcd.setCursor(0, cursor);
-      for (uint8_t k = 0; k < LCD_COLS; k++) {
-        lcd.print(F(" "));
-      }
-      lcd.setCursor(0, cursor);
-      for (uint8_t k = 0; k < LCD_COLS; k++) {
-        if (messages[i][k + j - LCD_COLS + 1] == '\0') {
-          break;
-        }
-        lcd.write(messages[i][k + j - LCD_COLS + 1]);
-      }
-      delay(200);
+      subStr.concat(text[j]);
+      subStrIndex++;
     }
-    if (messages[i][0] == '\0') {
-      break;
-    }
-    cursor++;
-    delay(500);
+    lcd.print(subStr);
+    delay(charDelay);
   }
-
 }
+
 
 ////////////////////////////
 //// BUTTONS & ACTIONS ////
@@ -308,12 +256,35 @@ void select_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return;
   }
+  switch (currentState.get_state()) {
+  case MAIN_MENU:
+    immediateInterrupt = true;
+    currentState.set_state(CM_MENU);
+    break;
+  case LM_MENU:
+    immediateInterrupt = true;
+    break;
+  }
   lastButtonPress = millis();
 }
 
 void cancel_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return;
+  }
+  switch (currentState.get_state()) {
+  case MAIN_MENU:
+    immediateInterrupt = true;
+    currentState.set_state(LM_MENU);
+    break;
+  case CM_MENU:
+    immediateInterrupt = true;
+    currentState.set_state(MAIN_MENU);
+    break;
+  case LM_MENU:
+    immediateInterrupt = true;
+    currentState.set_state(MAIN_MENU);
+    break;
   }
   lastButtonPress = millis();
 }
@@ -322,6 +293,7 @@ bool is_pressed(uint8_t buttonPin) {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return false;
   }
+
   if (digitalRead(buttonPin) == LOW) {
     lastButtonPress = millis();
     return true;

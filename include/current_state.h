@@ -44,13 +44,6 @@ class CurrentState {
 private:
     PossibleStates _currentState; // The current state the application is in.
     bool _hasInitalized = false; // If the current state has already been initalized or not.
-    /**
-     * @brief A method which is ran whenever the state is first loaded.
-     * This method can be run multiple times throughout the lifespan of TuneStudio2560 but should
-     * only be run on the first iteration after the state has loaded and not again until the state
-     * is switched to.
-     */
-    void init();
 public:
     /**
      * @brief Construct a new state application object.
@@ -68,6 +61,13 @@ public:
      * @return The current state the application is in.
      */
     PossibleStates get_state();
+    /**
+     * @brief A method which is ran whenever the state is first loaded.
+     * This method can be run multiple times throughout the lifespan of TuneStudio2560 but should
+     * only be run on the first iteration after the state has loaded and not again until the state
+     * is switched to.
+     */
+    void init();
     /**
      * @brief A method to be ran on repeat everytime the main loop() function repeats.
      * Runs all of the logic for that specific state.
