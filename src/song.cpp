@@ -23,10 +23,6 @@
 
 Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
     Serial.println(F("song.cpp: Initalized a new song."));
-    Serial.println("Pin: " + String(pin));
-    Serial.println("Note Length: " + String(noteLength));
-    Serial.println("Note Delay: " + String(noteDelay));
-
     if (init) {
         Serial.println(F("Initalized the song on a pin."));
         pinMode(pin, OUTPUT);
@@ -34,16 +30,8 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
     _pin = pin;
     _noteDelay = noteDelay;
     _noteLength = noteLength;
-}
-
-void Song::print_info() {
-    Serial.println("------------------------------------");
-    Serial.println("song.cpp: Information on current song.");
-    Serial.println("Pin: " + String(_pin));
-    Serial.println("Note Length: " + String(_noteLength));
-    Serial.println("Note Delay: " + String(_noteDelay));
-    Serial.println("Max Song Size: " + String(this->_maxLength));
-    Serial.println("------------------------------------");
+    // Define a new array of a specified length and fill it with zeros.
+    _songData = new uint16_t[MAX_SONG_LENGTH]{ 0 };
 }
 
 void Song::play_note(uint16_t note) {
@@ -120,3 +108,7 @@ bool Song::is_empty() {
     return _songData[0] == EMPTY_NOTE;
 }
 
+void Song::dispose() {
+    Serial.println(F("Removed from the stack."));
+    delete[] _songData;
+}

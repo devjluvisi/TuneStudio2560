@@ -2,9 +2,11 @@
 
  * Public Constants
  * Represent some different tones that can be played.
-
+ * There are 85 total tones with frequencies 31-3951
+ * Each tune button can play a range of 17 of these tones (because 85/5 is 17)
  *************************************************/
 
+ // GREEN TONE (31-78)
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -22,6 +24,8 @@
 #define NOTE_CS2 69
 #define NOTE_D2  73
 #define NOTE_DS2 78
+
+// BLUE TONE (82-208)
 #define NOTE_E2  82
 #define NOTE_F2  87
 #define NOTE_FS2 93
@@ -39,6 +43,8 @@
 #define NOTE_FS3 185
 #define NOTE_G3  196
 #define NOTE_GS3 208
+
+// RED TONE (220-554)
 #define NOTE_A3  220
 #define NOTE_AS3 233
 #define NOTE_B3  247
@@ -56,6 +62,8 @@
 #define NOTE_B4  494
 #define NOTE_C5  523
 #define NOTE_CS5 554
+
+// YELLOW TONE (587-1480)
 #define NOTE_D5  587
 #define NOTE_DS5 622
 #define NOTE_E5  659
@@ -73,6 +81,8 @@
 #define NOTE_E6  1319
 #define NOTE_F6  1397
 #define NOTE_FS6 1480
+
+// WHITE TONE (1568-3951)
 #define NOTE_G6  1568
 #define NOTE_GS6 1661
 #define NOTE_A6  1760
@@ -90,7 +100,3 @@
 #define NOTE_A7  3520
 #define NOTE_AS7 3729
 #define NOTE_B7  3951
-#define NOTE_C8  4186
-#define NOTE_CS8 4435
-#define NOTE_D8  4699
-#define NOTE_DS8 4978

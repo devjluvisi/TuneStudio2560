@@ -41,7 +41,7 @@ private:
     uint8_t _noteDelay; // The delay between playing each note of the song.
     uint8_t _noteLength; // The length that the note should be played for.
     uint32_t _maxLength = MAX_SONG_LENGTH; // Quick access to the size of the array.
-    uint16_t _songData[MAX_SONG_LENGTH] = { 0 }; // A array of all of the different tones.
+    uint16_t* _songData; // A array of all of the different tones.
 public:
     /**
      * @brief Construct a new song object.
@@ -52,14 +52,6 @@ public:
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
     Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
-    /**
-     * @brief Prints some information about the current song to
-     * the Serial monitor.
-     *
-     * Requires serial to be enabled.
-     *
-     */
-    void print_info();
     /**
      * @brief Play a note at a specified pin.
      * @param note The note to play.
@@ -103,6 +95,15 @@ public:
      * @return If a song is empty as in it has no notes in it.
      */
     bool is_empty();
+    /**
+     * @brief Deletes the _songData[] array of values from the heap.
+     * Note that it does not delete the entire object, rather it just deletes the array which consumes
+     * most of the SRAM hogging.
+     *
+     * Not calling this function after using a song will cause SRAM crashes eventually.
+     *
+     */
+    void dispose();
 
 };
 #endif

@@ -56,7 +56,6 @@
  // Initalize libraries.
 #include <Arduino.h>
 #include <tune_studio.h>
-#include <EEPROM.h>
 #include <pitches.h>
 #include <song.h>
 #include <current_state.h>
@@ -93,8 +92,12 @@ volatile bool immediateInterrupt = false;
 /**
  * Indicates the last time that an interrupt was fired.
  */
-volatile unsigned long lastInterruptFire = 0;
 volatile unsigned long lastButtonPress = 0;
+volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
+volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
+bool SDEnabled = true; // If the microSD card is enabled.
+
+
 
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
@@ -102,24 +105,21 @@ volatile unsigned long lastButtonPress = 0;
 
 bool is_interrupt() {
   segDisplay.refreshDisplay();
+
   if (millis() % 350 == 0) {
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
   }
+
   return immediateInterrupt;
 }
 
-void delay(int milliseconds) {
-  for (int i = 0; i < milliseconds; i++) {
-    if (is_interrupt()) return;
-    delayMicroseconds(1000);
+
+void delay(uint16_t& milliseconds) {
+  const unsigned long waitTime = abs(milliseconds) + millis();
+  while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
+    continue;
   }
 }
-
-
-/*
-The current time that TuneStudio2560 has been active.
-*/
-int aliveMillis = millis();
 
 /*
 Represents the current state of the application.
@@ -163,6 +163,8 @@ void setup()
   lcd.createChar(PAUSE_SONG_SYMBOL, PAUSE_SONG);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, PROGRESS_BLOCK);
 
+
+
   // Setup 4-wide 7 segment display.
   // More information: https://github.com/bridystone/SevSegShift
 
@@ -188,9 +190,64 @@ void loop()
 {
   currentState.init();
   currentState.load();
-  aliveMillis = millis();
   immediateInterrupt = false;
+  if (millis() % 350 == 0) {
+    Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
+  }
+}
 
+////////////////////////
+//// AUDIO METHODS ////
+//////////////////////
+
+bool sd_enabled() {
+  return SDEnabled;
+}
+
+void set_selected_page(uint8_t page) {
+  selectedPage = page;
+  Serial.print(F("Changed the page to "));
+  Serial.print(String(page));
+  Serial.println(F("."));
+}
+
+uint8_t get_selected_page() {
+  return selectedPage;
+}
+
+void set_selected_song(uint8_t song) {
+  selectedSong = song;
+  Serial.print(F("Changed the current song to "));
+  Serial.print(String(song));
+  Serial.println(F("."));
+}
+
+uint8_t get_selected_song() {
+  return selectedSong;
+}
+
+note get_current_tone(uint8_t toneButton) {
+  // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
+  // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
+  uint16_t subTone = (get_current_freq() + 1) / 57;
+  switch (toneButton) {
+  case BTN_TONE_1:
+    return toneButtons[0].notes[subTone];
+  case BTN_TONE_2:
+    return toneButtons[1].notes[subTone];
+  case BTN_TONE_3:
+    return toneButtons[2].notes[subTone];
+  case BTN_TONE_4:
+    return toneButtons[3].notes[subTone];
+  case BTN_TONE_5:
+    return toneButtons[4].notes[subTone];
+  default:
+    Serial.println(F("Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
+  }
+}
+
+uint16_t get_current_freq() {
+  return analogRead(TONE_FREQ);
 }
 
 ////////////////////////
@@ -232,17 +289,25 @@ void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay = 150) {
     if (is_interrupt()) return;
     lcd.setCursor(0, cursorY);
     uint8_t subStrIndex = 0;
-    String subStr;
-    subStr.reserve(LCD_COLS);
-    for (uint8_t j = i; j < i + LCD_COLS; j++) {
-      if (is_interrupt()) return;
-      if (j == text.length()) {
-        return;
+    // Scope for the SubString variable.
+    {
+      String subStr;
+      subStr.reserve(LCD_COLS);
+      // Get a substring.
+      for (uint8_t j = i; j < i + LCD_COLS; j++) {
+        if (is_interrupt()) return;
+        if (j == text.length()) {
+          return;
+        }
+        subStr.concat(text[j]);
+        subStrIndex++;
       }
-      subStr.concat(text[j]);
-      subStrIndex++;
+      lcd.print(subStr);
     }
-    lcd.print(subStr);
+
+    if (i == 0) {
+      delay(charDelay * 2); // Delay an extra amount for the inital text..
+    }
     delay(charDelay);
   }
 }
@@ -262,7 +327,19 @@ void select_btn_click() {
     currentState.set_state(CM_MENU);
     break;
   case LM_MENU:
+    // For skipping the instructions.
+    if (!currentState.has_initalized()) {
+      immediateInterrupt = true;
+      break;
+    }
+    // For actually playing the song.
+    currentState.set_state(LM_PLAYING_SONG);
+    break;
+  case LM_PLAYING_SONG:
+    break;
+  case CM_MENU:
     immediateInterrupt = true;
+    currentState.set_state(CM_CREATE_NEW);
     break;
   }
   lastButtonPress = millis();
@@ -282,6 +359,16 @@ void cancel_btn_click() {
     currentState.set_state(MAIN_MENU);
     break;
   case LM_MENU:
+    immediateInterrupt = true;
+    currentState.set_state(MAIN_MENU);
+    // If the user is leaving the listening menu then reset the song and page.
+    set_selected_page(1);
+    set_selected_song(1);
+    break;
+  case LM_PLAYING_SONG:
+    currentState.set_state(LM_MENU);
+    break;
+  case CM_CREATE_NEW:
     immediateInterrupt = true;
     currentState.set_state(MAIN_MENU);
     break;

@@ -27,6 +27,7 @@
 
 #include <tune_studio.h>
 #include <Arduino.h>
+#include <song.h>
 
  /**
   * @brief The different types of states that the user can be in.
@@ -61,6 +62,10 @@ public:
      * @return The current state the application is in.
      */
     PossibleStates get_state();
+    /**
+     * @return If the state has initalized.
+     */
+    bool has_initalized();
     /**
      * @brief A method which is ran whenever the state is first loaded.
      * This method can be run multiple times throughout the lifespan of TuneStudio2560 but should
