@@ -25,9 +25,9 @@
 #ifndef current_state_h
 #define current_state_h
 
-#include <tune_studio.h>
+#include <studio-libs/tune_studio.h>
 #include <Arduino.h>
-#include <song.h>
+#include <studio-libs/song.h>
 
  /**
   * @brief The different types of states that the user can be in.

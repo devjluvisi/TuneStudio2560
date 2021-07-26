@@ -1,1 +1,5 @@
 This directory stores potential future project header files.
+Custom libraries made for TuneStudio2560 hardware are located in the "./hardware" directory.
+Custom libraries made for software interaction are stored in the "./studio-libs" directory.
+Custom libaries & headers made for debugging and testing are stored in the "./debug" directory.
+External header files are not located in any directorys. Ex: "unity.h"

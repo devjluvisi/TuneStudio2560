@@ -19,9 +19,9 @@
  *
  */
 
-#include <song.h>
+#include <studio-libs/song.h>
 
-Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
+Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init) {
     Serial.println(F("song.cpp: Initalized a new song."));
     if (init) {
         Serial.println(F("Initalized the song on a pin."));
@@ -30,8 +30,12 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init) {
     _pin = pin;
     _noteDelay = noteDelay;
     _noteLength = noteLength;
+    _maxLength = maxLength;
+
     // Define a new array of a specified length and fill it with zeros.
-    _songData = new uint16_t[MAX_SONG_LENGTH]{ 0 };
+    // Note that this is a dyanmically allocated array but it still has a fixed size. In order to prevent fragmentation the object
+    // should be cleared from the heap via dispose();
+    _songData = new uint16_t[_maxLength]{ 0 };
 }
 
 void Song::play_note(uint16_t note) {
@@ -111,4 +115,25 @@ bool Song::is_empty() {
 void Song::dispose() {
     Serial.println(F("Removed from the stack."));
     delete[] _songData;
+}
+
+uint32_t Song::get_size() {
+    uint32_t size = 0;
+    while (_songData[size] != EMPTY_NOTE && size != this->_maxLength) {
+        size++;
+    }
+    return size;
+}
+
+String Song::get_notes() {
+    String song;
+    // Reserve a maximum capable string. The song length * 4 because note frequencies can be up to 1000.
+    song.reserve(MAX_SONG_LENGTH * 4);
+    uint32_t songIndex = 0;
+    // While the song index is not empty and does not equal the maximum length allowed.
+    while (_songData[songIndex] != EMPTY_NOTE && songIndex != this->_maxLength) {
+        song.concat(_songData[songIndex]);
+        songIndex++;
+    }
+    return song;
 }

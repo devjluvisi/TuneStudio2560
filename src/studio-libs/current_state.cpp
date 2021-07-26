@@ -9,7 +9,7 @@
  *
  */
 
-#include <current_state.h>
+#include <studio-libs/current_state.h>
 
 CurrentState::CurrentState(PossibleStates currentState) {
     _currentState = currentState;
@@ -144,7 +144,8 @@ void CurrentState::load() {
         print_lcd(F("Delete notes using the DEL/CANCEL button."));
         print_lcd(F("Save the song by pressing OPTION+SELECT button."));
         print_lcd(F("Delete the current song (exit) by pressing OPTION+DEL."));
-        print_lcd(F("Play current track by pressing OPTION twice."));
+        print_lcd(F("Play current track by pressing OPTION+GREEN TUNE."));
+        print_lcd(F("Cycle through the current track by pressing OPTION+BLUE TUNE (Left) and OPTION+RED TUNE (Right)."));
         lcd.clear();
         delay(500);
         lcd.setCursor(3, 1);
@@ -237,33 +238,78 @@ void CurrentState::load() {
     }
     case CM_CREATE_NEW:
     {
-        Song newSong(SPEAKER_1, 20, 40, false);
+        pinMode(SPEAKER_1, INPUT);
+        Song newSong(SPEAKER_1, 20, 40, MAX_SONG_LENGTH, false);
         // SPLIT INTO SEPERATE METHOD.
         //Song newSong(SPEAKER_1, 20, 40, false);
         lcd.setCursor(0, 0);
         lcd.print(F("[SONG]"));
         // Track some variables for adding/removing
-        uint16_t previousTune; // A tune button that was last pressed.
+
+        uint8_t lastButtonPress = 0;
+        // If the user has pressed the option button.
+        bool optionWaiting = false;
+        bool playSound = false;
 
         // Create an infinite loop while creating a song.
+        segDisplay.setBrightness(-100);
+        lcd.setCursor(0, 1);
         while (true) {
+            // Go through all of the tune buttons and check if they are being pressed.
             if (is_pressed(BTN_TONE_1)) {
-                Serial.println(String(get_current_tone(BTN_TONE_1).pitch) + " / " + String(get_current_tone(BTN_TONE_1).frequency));
+                playSound = true;
+                lastButtonPress = BTN_TONE_1;
             }
             else if (is_pressed(BTN_TONE_2)) {
-                Serial.println(String(get_current_tone(BTN_TONE_2).pitch) + " / " + String(get_current_tone(BTN_TONE_2).frequency));
+                playSound = true;
+                lastButtonPress = BTN_TONE_2;
             }
             else if (is_pressed(BTN_TONE_3)) {
-                Serial.println(String(get_current_tone(BTN_TONE_3).pitch) + " / " + String(get_current_tone(BTN_TONE_3).frequency));
+                playSound = true;
+                lastButtonPress = BTN_TONE_3;
             }
             else if (is_pressed(BTN_TONE_4)) {
-                Serial.println(String(get_current_tone(BTN_TONE_4).pitch) + " / " + String(get_current_tone(BTN_TONE_4).frequency));
+                playSound = true;
+                lastButtonPress = BTN_TONE_4;
             }
             else if (is_pressed(BTN_TONE_5)) {
-                Serial.println(String(get_current_tone(BTN_TONE_5).pitch) + " / " + String(get_current_tone(BTN_TONE_5).frequency));
+                playSound = true;
+                lastButtonPress = BTN_TONE_5;
             }
 
-            delay(500);
+            // If the option button has been pressed then light the LED orange.
+            if (is_pressed(BTN_OPTION)) {
+                optionWaiting = !optionWaiting;
+            }
+
+
+            // Create a note from the last tune button which was pressed.
+            const note currentNote = get_current_tone(lastButtonPress);
+
+            // Update the segment display to reflect the current note.
+            segDisplay.refreshDisplay();
+            if (millis() % 100 == 0) {
+                // OPTION BUTTON
+                //noTone(SPEAKER_1); // Fixes bug where the LED sometimes will not light up.
+                analogWrite(RGB_GREEN, optionWaiting * RGB_BRIGHTNESS / 3);
+                analogWrite(RGB_RED, optionWaiting * RGB_BRIGHTNESS);
+                // 7 SEGMENT DISPLAY
+                segDisplay.setChars(currentNote.pitch);
+            }
+            segDisplay.refreshDisplay();
+
+            // Add a tune if the button to add/select is pressed.
+            if (is_pressed(BTN_ADD_SELECT)) {
+                lcd.print(currentNote.pitch);
+            }
+
+            if (playSound) {
+                pinMode(SPEAKER_1, OUTPUT);
+                newSong.play_note(currentNote.frequency);
+                delay(200);
+                playSound = false;
+                pinMode(SPEAKER_1, INPUT);
+            }
         }
         return;
 

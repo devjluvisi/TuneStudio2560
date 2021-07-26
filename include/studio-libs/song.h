@@ -12,12 +12,12 @@
 #ifndef song_h
 #define song_h
 
-#include <tune_studio.h>
+#include <studio-libs/tune_studio.h>
 #include <Arduino.h>
 
  // The delay that should be added to the song when the user adds a pause.
 #ifndef PAUSE_DELAY
-#define PAUSE_DELAY 500
+#define PAUSE_DELAY (uint16_t)500
 #endif
 
  // Defines what number should be used to indicate that the song should wait while pausing.
@@ -40,7 +40,7 @@ private:
     uint8_t _pin; // The pin to send the frequencies to.
     uint8_t _noteDelay; // The delay between playing each note of the song.
     uint8_t _noteLength; // The length that the note should be played for.
-    uint32_t _maxLength = MAX_SONG_LENGTH; // Quick access to the size of the array.
+    uint32_t _maxLength; // Quick access to the size of the array.
     uint16_t* _songData; // A array of all of the different tones.
 public:
     /**
@@ -49,9 +49,10 @@ public:
      * @param pin The pin to use for speaker output.
      * @param noteLength The length that the note should be played.
      * @param noteDelay The delay between each note of the song.
+     * @param maxLength The maximum length of a song (# of notes).
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
-    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, bool init);
+    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init);
     /**
      * @brief Play a note at a specified pin.
      * @param note The note to play.
@@ -104,6 +105,14 @@ public:
      *
      */
     void dispose();
+    /**
+     * @return How many tunes the song has.
+     */
+    uint32_t get_size();
+    /**
+     * @return Get a String of all the notes.
+     */
+    String get_notes();
 
 };
 #endif

@@ -52,50 +52,22 @@
  * LICENSE - MIT
  */
 
+ // Main Header File
+#include <studio-libs/tune_studio.h>
 
- // Initalize libraries.
-#include <Arduino.h>
-#include <tune_studio.h>
-#include <pitches.h>
-#include <song.h>
-#include <current_state.h>
+ /**
+ Indicates whether or not an immediate interrupt should be called.
+ Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
+ If this flag is set to true then the current execution loop halts and attempts to return back
+ to the main loop() function as fast as possible.
 
-// measure memory usage.
-#ifdef __arm__
-// should use uinstd.h to define sbrk but Due causes a conflict
-extern "C" char* sbrk(int incr);
-#else  // __ARM__
-extern char* __brkval;
-#endif  // __arm__
-
-int freeMemory() {
-  char top;
-#ifdef __arm__
-  return &top - reinterpret_cast<char*>(sbrk(0));
-#elif defined(CORE_TEENSY) || (ARDUINO > 103 && ARDUINO != 151)
-  return &top - __brkval;
-#else  // __arm__
-  return __brkval ? &top - __brkval : &top - __malloc_heap_start;
-#endif  // __arm__
-}
-
-
-/**
-Indicates whether or not an immediate interrupt should be called.
-Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
-If this flag is set to true then the current execution loop halts and attempts to return back
-to the loop() function as fast as possible.
-
-The delay(ms) function in this program also makes use of this variable.
-*/
-volatile bool immediateInterrupt = false;
-/**
- * Indicates the last time that an interrupt was fired.
+ The delay(ms) function in this program also makes use of this variable.
  */
-volatile unsigned long lastButtonPress = 0;
+volatile bool immediateInterrupt = false;
+volatile unsigned long lastButtonPress = 0; // The last time a button was pressed in millis().
 volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
 volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
-bool SDEnabled = true; // If the microSD card is enabled.
+volatile bool SDEnabled = true; // If the microSD card is enabled.
 
 
 
@@ -105,20 +77,13 @@ bool SDEnabled = true; // If the microSD card is enabled.
 
 bool is_interrupt() {
   segDisplay.refreshDisplay();
-
-  if (millis() % 350 == 0) {
+  if (millis() % 500 == 0) {
+    Serial.println();
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
+    Serial.println("STACK SIZE: " + String((RAMEND - SP)));
+    Serial.println();
   }
-
   return immediateInterrupt;
-}
-
-
-void delay(uint16_t& milliseconds) {
-  const unsigned long waitTime = abs(milliseconds) + millis();
-  while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
-    continue;
-  }
 }
 
 /*
@@ -154,20 +119,26 @@ void setup()
   // Interrupt to handle when the select button is pressed.
   attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, CHANGE);
   attachInterrupt(digitalPinToInterrupt(BTN_DEL_CANCEL), cancel_btn_click, CHANGE);
+
   // Initalize the LCD.
   lcd.init();
   lcd.backlight();
 
-  lcd.createChar(MUSIC_NOTE_SYMBOL, MUSIC_NOTE);
-  lcd.createChar(PLAYING_SONG_SYMBOL, PLAYING_SONG);
-  lcd.createChar(PAUSE_SONG_SYMBOL, PAUSE_SONG);
-  lcd.createChar(PROGRESS_BLOCK_SYMBOL, PROGRESS_BLOCK);
+  // Add custom characters to the LCD.
+  byte buffer[8];
 
+  memcpy_P(buffer, MUSIC_NOTE, 8);
+  lcd.createChar(MUSIC_NOTE_SYMBOL, buffer);
+  memcpy_P(buffer, PLAYING_SONG, 8);
+  lcd.createChar(PLAYING_SONG_SYMBOL, buffer);
+  memcpy_P(buffer, PAUSE_SONG, 8);
+  lcd.createChar(PAUSE_SONG_SYMBOL, buffer);
+  memcpy_P(buffer, PROGRESS_BLOCK, 8);
+  lcd.createChar(PROGRESS_BLOCK_SYMBOL, buffer);
 
 
   // Setup 4-wide 7 segment display.
   // More information: https://github.com/bridystone/SevSegShift
-
   byte numDigits = 4;
   byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
   byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
@@ -183,6 +154,8 @@ void setup()
 
   segDisplay.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
     updateWithDelays, leadingZeros, disableDecPoint);
+  segDisplay.blank();
+  segDisplay.refreshDisplay();
 }
 
 
@@ -191,9 +164,6 @@ void loop()
   currentState.init();
   currentState.load();
   immediateInterrupt = false;
-  if (millis() % 350 == 0) {
-    Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
-  }
 }
 
 ////////////////////////
@@ -227,10 +197,13 @@ uint8_t get_selected_song() {
 }
 
 note get_current_tone(uint8_t toneButton) {
+
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
-  uint16_t subTone = (get_current_freq() + 1) / 57;
+  uint16_t subTone = (get_current_freq() + 1) / 60;
   switch (toneButton) {
+  case 0:
+    return { "0000", 0 };
   case BTN_TONE_1:
     return toneButtons[0].notes[subTone];
   case BTN_TONE_2:
@@ -243,6 +216,7 @@ note get_current_tone(uint8_t toneButton) {
     return toneButtons[4].notes[subTone];
   default:
     Serial.println(F("Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
+    return toneButtons[0].notes[0];;
   }
 }
 
