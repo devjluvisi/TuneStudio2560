@@ -105,14 +105,12 @@ public:
      *
      */
     void dispose();
-    /**
-     * @return How many tunes the song has.
-     */
+    /*
+TODO: Refractor
     uint32_t get_size();
-    /**
-     * @return Get a String of all the notes.
-     */
-    String get_notes();
+
+    char* get_notes();
+*/
 
 };
 #endif

@@ -116,6 +116,7 @@ void Song::dispose() {
     Serial.println(F("Removed from the stack."));
     delete[] _songData;
 }
+/*
 
 uint32_t Song::get_size() {
     uint32_t size = 0;
@@ -125,15 +126,18 @@ uint32_t Song::get_size() {
     return size;
 }
 
-String Song::get_notes() {
-    String song;
+char Song::get_notes() {
+    char song[_maxLength * 4];
     // Reserve a maximum capable string. The song length * 4 because note frequencies can be up to 1000.
-    song.reserve(MAX_SONG_LENGTH * 4);
     uint32_t songIndex = 0;
     // While the song index is not empty and does not equal the maximum length allowed.
     while (_songData[songIndex] != EMPTY_NOTE && songIndex != this->_maxLength) {
-        song.concat(_songData[songIndex]);
+        char buffer[4];
+        sprintf(buffer, "%d", _songData[songIndex]);
+        strcat(song, buffer);
+        //song.concat(_songData[songIndex]);
         songIndex++;
     }
     return song;
 }
+*/

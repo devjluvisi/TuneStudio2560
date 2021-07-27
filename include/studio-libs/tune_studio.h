@@ -18,8 +18,11 @@
 #include <SevSegShift.h>
 #include <Arduino.h>
 #include <studio-libs/song.h>
-#include <studio-libs/current_state.h>
 #include <debug/debug.h>
+// Different states.
+#include <studio-libs/state.h>
+#include <studio-libs/states/states.h>
+
 
 //////////////////////////////
 //// COMPILER DEFINITIONS ////

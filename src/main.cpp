@@ -55,6 +55,7 @@
  // Main Header File
 #include <studio-libs/tune_studio.h>
 
+
  /**
  Indicates whether or not an immediate interrupt should be called.
  Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
@@ -77,7 +78,7 @@ volatile bool SDEnabled = true; // If the microSD card is enabled.
 
 bool is_interrupt() {
   segDisplay.refreshDisplay();
-  if (millis() % 500 == 0) {
+  if (millis() % 1250 == 0) {
     Serial.println();
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
     Serial.println("STACK SIZE: " + String((RAMEND - SP)));
@@ -90,17 +91,26 @@ bool is_interrupt() {
 Represents the current state of the application.
 View current_state.h for more information on states.
 */
-CurrentState currentState(MAIN_MENU);
+//CurrentState currentState(MAIN_MENU);
+ProgramState* prgmState;
+// 593KB
+// 11102 KB
 
+// 713
+// 12134
+
+// 811
+// 12358
 void setup()
 {
+
   // Create serial monitor.
   Serial.begin(9600);
   while (!Serial);
 
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------\n> TuneStudio2560 has initalized\n> Have fun!\n--------------------------------------"));
-
+  prgmState = new MainMenu();
   // Setup all of the pins.
   pinMode(RGB_BLUE, OUTPUT);
   pinMode(RGB_GREEN, OUTPUT);
@@ -139,18 +149,18 @@ void setup()
 
   // Setup 4-wide 7 segment display.
   // More information: https://github.com/bridystone/SevSegShift
-  byte numDigits = 4;
+  const byte numDigits = 4;
   byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
   byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
   /* configuration without ShiftRegister - Direct arduino connection
   byte digitPins[] = {2, 3, 4, 5}; // PINs of Arduino
   byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13}; // PINs of Arduino
   */
-  bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
-  byte hardwareConfig = COMMON_CATHODE; // See README.md for options
-  bool updateWithDelays = false; // Default 'false' is Recommended
-  bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
-  bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
+  const bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
+  const byte hardwareConfig = COMMON_CATHODE; // See README.md for options
+  const bool updateWithDelays = false; // Default 'false' is Recommended
+  const bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
+  const bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
 
   segDisplay.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
     updateWithDelays, leadingZeros, disableDecPoint);
@@ -158,11 +168,9 @@ void setup()
   segDisplay.refreshDisplay();
 }
 
-
 void loop()
 {
-  currentState.init();
-  currentState.load();
+  prgmState->execute();
   immediateInterrupt = false;
 }
 
@@ -200,7 +208,7 @@ note get_current_tone(uint8_t toneButton) {
 
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
-  uint16_t subTone = (get_current_freq() + 1) / 60;
+  const uint16_t subTone = (get_current_freq() + 1) / 60;
   switch (toneButton) {
   case 0:
     return { "0000", 0 };
@@ -228,7 +236,7 @@ uint16_t get_current_freq() {
 //// LCD FUNCTIONS ////
 //////////////////////
 
-void print_lcd(String text, uint8_t charDelay = 150) {
+void print_lcd(String text, uint8_t charDelay) {
   lcd.clear();
   uint8_t cursorX = 0; // Track cursor on X position.
   uint8_t cursorY = 0; // Track cursor on Y position.
@@ -257,7 +265,7 @@ void print_lcd(String text, uint8_t charDelay = 150) {
   }
 }
 
-void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay = 150) {
+void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay) {
   lcd.setCursor(0, cursorY);
   for (uint8_t i = 0; i < text.length(); i++) {
     if (is_interrupt()) return;
@@ -295,59 +303,84 @@ void select_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return;
   }
-  switch (currentState.get_state()) {
+  lastButtonPress = millis();
+  switch (prgmState->get_state()) {
   case MAIN_MENU:
+  {
     immediateInterrupt = true;
-    currentState.set_state(CM_MENU);
-    break;
+    delete prgmState; // Flush previous prgmState from the heap.
+    prgmState = new CreatorModeMenu();
+    return;
+  }
   case LM_MENU:
+  {
     // For skipping the instructions.
-    if (!currentState.has_initalized()) {
+    if (!prgmState->has_initalized()) {
       immediateInterrupt = true;
-      break;
+      return;
     }
     // For actually playing the song.
-    currentState.set_state(LM_PLAYING_SONG);
-    break;
-  case LM_PLAYING_SONG:
-    break;
-  case CM_MENU:
-    immediateInterrupt = true;
-    currentState.set_state(CM_CREATE_NEW);
-    break;
+    delete prgmState;
+    prgmState = new ListeningModePlayingSong();
+    return;
   }
-  lastButtonPress = millis();
+  case LM_PLAYING_SONG:
+  {
+    return;
+  }
+  case CM_MENU:
+  {
+    immediateInterrupt = true;
+    delete prgmState;
+    prgmState = new CreatorModeCreateNew();
+    return;
+  }
+  default:
+    return;
+  }
 }
 
 void cancel_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return;
   }
-  switch (currentState.get_state()) {
-  case MAIN_MENU:
+  lastButtonPress = millis();
+
+  switch (prgmState->get_state()) {
+  case MAIN_MENU: {
     immediateInterrupt = true;
-    currentState.set_state(LM_MENU);
-    break;
-  case CM_MENU:
+    delete prgmState;
+    prgmState = new ListeningModeMenu();
+    return;
+  }
+  case CM_MENU: {
     immediateInterrupt = true;
-    currentState.set_state(MAIN_MENU);
-    break;
+    delete prgmState;
+    prgmState = new MainMenu();
+    return;
+  }
   case LM_MENU:
+  {
     immediateInterrupt = true;
-    currentState.set_state(MAIN_MENU);
+    delete prgmState;
+    prgmState = new MainMenu();
     // If the user is leaving the listening menu then reset the song and page.
     set_selected_page(1);
     set_selected_song(1);
-    break;
-  case LM_PLAYING_SONG:
-    currentState.set_state(LM_MENU);
-    break;
-  case CM_CREATE_NEW:
-    immediateInterrupt = true;
-    currentState.set_state(MAIN_MENU);
-    break;
+    return;
   }
-  lastButtonPress = millis();
+  case LM_PLAYING_SONG:
+  {
+    delete prgmState;
+    prgmState = new ListeningModeMenu();
+    return;
+  }
+  case CM_CREATE_NEW:
+  {
+
+    return;
+  }
+  }
 }
 
 bool is_pressed(uint8_t buttonPin) {
