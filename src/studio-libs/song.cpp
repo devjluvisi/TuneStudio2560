@@ -22,9 +22,15 @@
 #include <studio-libs/song.h>
 
 Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init) {
+#if DEBUG == true
     Serial.println(F("song.cpp: Initalized a new song."));
+#endif
+
     if (init) {
+#if DEBUG == true
         Serial.println(F("Initalized the song on a pin."));
+#endif
+
         pinMode(pin, OUTPUT);
     }
     _pin = pin;
@@ -36,6 +42,13 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLeng
     // Note that this is a dyanmically allocated array but it still has a fixed size. In order to prevent fragmentation the object
     // should be cleared from the heap via dispose();
     _songData = new uint16_t[_maxLength]{ 0 };
+}
+
+Song::~Song() {
+#if DEBUG == true
+    Serial.println(F("Removed from the stack."));
+#endif
+    delete[] _songData;
 }
 
 void Song::play_note(uint16_t note) {
@@ -112,10 +125,6 @@ bool Song::is_empty() {
     return _songData[0] == EMPTY_NOTE;
 }
 
-void Song::dispose() {
-    Serial.println(F("Removed from the stack."));
-    delete[] _songData;
-}
 /*
 
 uint32_t Song::get_size() {

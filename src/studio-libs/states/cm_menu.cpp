@@ -14,7 +14,8 @@ CreatorModeMenu::CreatorModeMenu() : ProgramState::ProgramState(CM_MENU) {}
 CreatorModeMenu::~CreatorModeMenu() {}
 
 void CreatorModeMenu::loop() {
-    delay(500);
+    const uint16_t delayTime = 500;
+    delay(delayTime);
     lcd.setCursor(3, 1);
     lcd.print(F("[Creator Mode]"));
     lcd.setCursor(1, 2);
@@ -33,7 +34,7 @@ void CreatorModeMenu::loop() {
     print_lcd(F("Play current track by pressing OPTION+GREEN TUNE."));
     print_lcd(F("Cycle through the current track by pressing OPTION+BLUE TUNE (Left) and OPTION+RED TUNE (Right)."));
     lcd.clear();
-    delay(500);
+    delay(delayTime);
     lcd.setCursor(3, 1);
     lcd.print(F("[Creator Mode]"));
     lcd.setCursor(5, 2);
@@ -43,16 +44,16 @@ void CreatorModeMenu::loop() {
     print_lcd(F("Each tune button represents a frequency between 31-3951. A tune button along with the potentiometer create a note."));
     print_lcd(F("The type of note is displayed on the segment display. (Ex. GS6, A4, DS4)"));
     print_lcd(F("The individual tune buttons do not correspond with a letter or tone from the chromatic scale, just a frequency."));
-    delay(500);
+    delay(delayTime);
     lcd.setCursor(0, 0);
     lcd.print(F("The possible"));
     lcd.setCursor(0, 1);
     lcd.print(F("frequency ranges:"));
-    delay(500);
-    print_scrolling(F("GREEN: B0 (31hz) to DS2 (78hz), BLUE: E2 (82hz) to GS3 (208hz), RED: A3 (220hz) to CS5 (554hz), YELLOW: D5 (587hz) to FS6 (1480hz), WHITE: G6 (1568hz) to B7 (3951hz)"), 2);
+    delay(delayTime);
+    print_scrolling(F("GREEN: B0 (31hz) to DS2 (78hz), BLUE: E2 (82hz) to GS3 (208hz), RED: A3 (220hz) to CS5 (554hz), YELLOW: D5 (587hz) to FS6 (1480hz), WHITE: G6 (1568hz) to B7 (3951hz)"), 2, 150);
     delay(1250);
     lcd.clear();
-    delay(500);
+    delay(delayTime);
 
 }
 

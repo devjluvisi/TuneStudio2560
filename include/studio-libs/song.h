@@ -34,7 +34,15 @@
 #ifndef EEPROM_SONG_SAVE_ADDR
 #define EEPROM_SONG_SAVE_ADDR 0x00
 #endif
-
+/*
+#if PRGM_MODE == 0
+using prgm_song_size = uint8_t;
+#elif PRGM_MODE == 2
+using prgm_song_size = uint32_t;
+#else
+using prgm_song_size = uint16_t;
+#endif
+*/
 class Song {
 private:
     uint8_t _pin; // The pin to send the frequencies to.
@@ -53,6 +61,11 @@ public:
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
     Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init);
+    /**
+     * @brief Destroy the Song object and
+     * Eliminates the _songData[] array by flushing it from the heap.
+     */
+    ~Song();
     /**
      * @brief Play a note at a specified pin.
      * @param note The note to play.
@@ -96,15 +109,6 @@ public:
      * @return If a song is empty as in it has no notes in it.
      */
     bool is_empty();
-    /**
-     * @brief Deletes the _songData[] array of values from the heap.
-     * Note that it does not delete the entire object, rather it just deletes the array which consumes
-     * most of the SRAM hogging.
-     *
-     * Not calling this function after using a song will cause SRAM crashes eventually.
-     *
-     */
-    void dispose();
     /*
 TODO: Refractor
     uint32_t get_size();

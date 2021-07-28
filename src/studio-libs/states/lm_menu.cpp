@@ -25,7 +25,7 @@ void ListeningModeMenu::loop() {
     }
     lcd.setCursor(0, 2);
     lcd.print(F(">> Song #"));
-    lcd.print(String(get_selected_song()));
+    lcd.print(get_selected_song());
     lcd.print(F("  ")); // Add two extra spaces in order to prevent overlapping.
     lcd.setCursor(0, 3);
     lcd.print(F("Press SELECT to play"));
@@ -77,7 +77,9 @@ void ListeningModeMenu::loop() {
 }
 
 void ListeningModeMenu::init() {
+#if DEBUG == true
     Serial.println(F("Entered listening mode."));
+#endif
     delay(500);
     lcd.setCursor(2, 1);
     lcd.print(F("[Listening Mode]"));

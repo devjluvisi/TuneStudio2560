@@ -11,8 +11,7 @@
 
 #ifndef states_h
 #define states_h
-#include <studio-libs/state.h>
-#include <Arduino.h>
+
 #include <studio-libs/tune_studio.h>
 
 class MainMenu : public ProgramState {
@@ -52,12 +51,21 @@ public:
 };
 
 class CreatorModeCreateNew : public ProgramState {
+
 private:
     void init() override;
     void loop() override;
+    unsigned long previousUpdate;
+    uint8_t lastButtonPress;
+    bool optionWaiting;
+    bool playSound;
+    Song* newSong;
+
 public:
     CreatorModeCreateNew();
     ~CreatorModeCreateNew();
+
 };
 
 #endif
+

@@ -40,7 +40,7 @@ private:
     virtual void init() = 0;
     virtual void loop() = 0;
 public:
-    ProgramState(StateID stateId);
+    explicit ProgramState(const StateID stateId);
 
     void execute();
 

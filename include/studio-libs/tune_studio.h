@@ -21,9 +21,17 @@
 #include <debug/debug.h>
 // Different states.
 #include <studio-libs/state.h>
-#include <studio-libs/states/states.h>
 
 
+// Debug Variables (True for Serial prints)
+#define DEBUG false
+
+// Program Mode Selection
+// Change the performance, SRAM, and flash usage by adjusting.
+// 0 = Performance Favor (Reduced Variables & Song Sizes, Cutdown code)
+// 1 = Standard (How T2560 was intended.)
+// 2 = Feature (Increased song sizes, extra features)
+#define PRGM_MODE 1
 //////////////////////////////
 //// COMPILER DEFINITIONS ////
 //////////////////////////////
@@ -236,7 +244,7 @@ typedef struct {
  * @brief An array of all possible tones which can be played.
  * 85 total tones, 17 per button, 5 buttons.
  */
-const buttonFrequencies toneButtons[]{
+const buttonFrequencies toneButtons[] PROGMEM{
     {BTN_TONE_1, {{"B0", 31}, {"C1", 33}, {"CS1", 35}, {"D1", 37}, {"DS1", 39}, {"E1", 41}, {"F1", 44}, {"FS1", 46}, {"G1", 49}, {"GS1", 52}, {"A1", 55}, {"AS1", 58}, {"B1", 62}, {"C2", 65}, {"CS2", 69}, {"D2", 73}, {"DS2", 78}}},
     {BTN_TONE_2, {{"E2", 82}, {"F2", 87}, {"FS2", 93}, {"G2", 98}, {"GS2", 104}, {"A2", 110}, {"AS2", 117}, {"B2", 123}, {"C3", 131}, {"CS3", 139}, {"D3", 147}, {"DS3", 156}, {"E3", 165}, {"F3", 175}, {"FS3", 185}, {"G3", 196}, {"GS3", 208}}},
     {BTN_TONE_3, {{"A3", 220}, {"AS3", 233}, {"B3", 247}, {"C4", 262}, {"CS4", 277}, {"D4", 294}, {"DS4", 311}, {"E4", 330}, {"F4", 349}, {"FS4", 370}, {"G4", 392}, {"GS4", 415}, {"A4", 440}, {"AS4", 466}, {"B4", 494}, {"C5", 523}, {"CS5", 554}}},
@@ -323,7 +331,7 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2);
  * @param text The text to print.
  * @param charDelay The delay before each character.
  */
-void print_lcd(String text, uint8_t charDelay = 150);
+void print_lcd(const __FlashStringHelper* text, uint8_t charDelay = 150);
 
 /**
  * @brief Prints a single line of scrolling text on the lcd.
@@ -334,7 +342,7 @@ void print_lcd(String text, uint8_t charDelay = 150);
  * @param cursorY Where the cursor should start printing.
  * @param charDelay Delay between the scroll.
  */
-void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay = 150);
+void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay);
 
 
 // Audio Methods
@@ -380,10 +388,10 @@ uint8_t get_selected_song();
 uint16_t get_current_freq();
 
 /**
- * @brief Gets the current tone that is in queue. Takes into account BOTH the tune button and the
- * potentiometer in order to generate a note. This method is the final method used to add notes to
- * a song.
- * @return Returns the frequency of the note.
+ * @param toneButton The button which was pressed.
+ * @return A note struct from the toneButton that was pressed. Finds the note by copying information from PROGMEM.
  */
 note get_current_tone(uint8_t toneButton);
+
+unsigned int FSHlength(const __FlashStringHelper* FSHinput);
 #endif

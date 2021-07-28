@@ -20,7 +20,7 @@ void ListeningModePlayingSong::loop() {
 
 void ListeningModePlayingSong::init() {
     lcd.print(F(">> Song #"));
-    lcd.print(String(get_selected_song()));
+    lcd.print(get_selected_song());
     lcd.setCursor(0, 1);
     lcd.write(byte(PLAYING_SONG_SYMBOL));
     lcd.print(F(" NOW PLAYING "));

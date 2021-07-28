@@ -54,7 +54,7 @@
 
  // Main Header File
 #include <studio-libs/tune_studio.h>
-
+#include <studio-libs/states/states.h>
 
  /**
  Indicates whether or not an immediate interrupt should be called.
@@ -78,39 +78,30 @@ volatile bool SDEnabled = true; // If the microSD card is enabled.
 
 bool is_interrupt() {
   segDisplay.refreshDisplay();
+#if DEBUG == true
   if (millis() % 1250 == 0) {
     Serial.println();
     Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
     Serial.println("STACK SIZE: " + String((RAMEND - SP)));
     Serial.println();
   }
+#endif
+
   return immediateInterrupt;
 }
 
-/*
-Represents the current state of the application.
-View current_state.h for more information on states.
-*/
-//CurrentState currentState(MAIN_MENU);
 ProgramState* prgmState;
-// 593KB
-// 11102 KB
 
-// 713
-// 12134
-
-// 811
-// 12358
 void setup()
 {
-
+#if DEBUG == true
   // Create serial monitor.
   Serial.begin(9600);
   while (!Serial);
 
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------\n> TuneStudio2560 has initalized\n> Have fun!\n--------------------------------------"));
-  prgmState = new MainMenu();
+#endif
   // Setup all of the pins.
   pinMode(RGB_BLUE, OUTPUT);
   pinMode(RGB_GREEN, OUTPUT);
@@ -136,7 +127,6 @@ void setup()
 
   // Add custom characters to the LCD.
   byte buffer[8];
-
   memcpy_P(buffer, MUSIC_NOTE, 8);
   lcd.createChar(MUSIC_NOTE_SYMBOL, buffer);
   memcpy_P(buffer, PLAYING_SONG, 8);
@@ -146,9 +136,9 @@ void setup()
   memcpy_P(buffer, PROGRESS_BLOCK, 8);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, buffer);
 
-
   // Setup 4-wide 7 segment display.
   // More information: https://github.com/bridystone/SevSegShift
+
   const byte numDigits = 4;
   byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
   byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
@@ -160,12 +150,14 @@ void setup()
   const byte hardwareConfig = COMMON_CATHODE; // See README.md for options
   const bool updateWithDelays = false; // Default 'false' is Recommended
   const bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
-  const bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
+  bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
 
   segDisplay.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
     updateWithDelays, leadingZeros, disableDecPoint);
   segDisplay.blank();
   segDisplay.refreshDisplay();
+
+  prgmState = new MainMenu();
 }
 
 void loop()
@@ -184,9 +176,11 @@ bool sd_enabled() {
 
 void set_selected_page(uint8_t page) {
   selectedPage = page;
+#if DEBUG == true
   Serial.print(F("Changed the page to "));
   Serial.print(String(page));
   Serial.println(F("."));
+#endif
 }
 
 uint8_t get_selected_page() {
@@ -195,37 +189,59 @@ uint8_t get_selected_page() {
 
 void set_selected_song(uint8_t song) {
   selectedSong = song;
+#if DEBUG == true
   Serial.print(F("Changed the current song to "));
   Serial.print(String(song));
   Serial.println(F("."));
+#endif
+
 }
 
 uint8_t get_selected_song() {
   return selectedSong;
 }
 
+
 note get_current_tone(uint8_t toneButton) {
 
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
-  const uint16_t subTone = (get_current_freq() + 1) / 60;
+  const uint16_t subTone = (uint16_t)(get_current_freq() + 1) / (uint8_t)61;
+
+  char* pitch;
+  uint16_t frequency;
+
   switch (toneButton) {
   case 0:
     return { "0000", 0 };
   case BTN_TONE_1:
-    return toneButtons[0].notes[subTone];
+    memcpy_P(&pitch, &toneButtons[0].notes[subTone], sizeof(pitch));
+    memcpy_P(&frequency, &toneButtons[0].notes[subTone], sizeof(frequency));
+    return note{ pitch, frequency };
   case BTN_TONE_2:
-    return toneButtons[1].notes[subTone];
+    memcpy_P(&pitch, &toneButtons[1].notes[subTone], sizeof(pitch));
+    memcpy_P(&frequency, &toneButtons[1].notes[subTone], sizeof(frequency));
+    return note{ pitch, frequency };
   case BTN_TONE_3:
-    return toneButtons[2].notes[subTone];
+    memcpy_P(&pitch, &toneButtons[2].notes[subTone], sizeof(pitch));
+    memcpy_P(&frequency, &toneButtons[2].notes[subTone], sizeof(frequency));
+    return note{ pitch, frequency };
   case BTN_TONE_4:
-    return toneButtons[3].notes[subTone];
+    memcpy_P(&pitch, &toneButtons[3].notes[subTone], sizeof(pitch));
+    memcpy_P(&frequency, &toneButtons[3].notes[subTone], sizeof(frequency));
+    return note{ pitch, frequency };
   case BTN_TONE_5:
-    return toneButtons[4].notes[subTone];
+    memcpy_P(&pitch, &toneButtons[4].notes[subTone], sizeof(pitch));
+    memcpy_P(&frequency, &toneButtons[4].notes[subTone], sizeof(frequency));
+    return note{ pitch, frequency };
   default:
+#if DEBUG == true
     Serial.println(F("Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
-    return toneButtons[0].notes[0];;
+#endif
+    //memcpy_P(&nt, &toneButtons[0].notes[0], sizeof(note));
+    return note{ "0000", 0 };
   }
+
 }
 
 uint16_t get_current_freq() {
@@ -236,16 +252,30 @@ uint16_t get_current_freq() {
 //// LCD FUNCTIONS ////
 //////////////////////
 
-void print_lcd(String text, uint8_t charDelay) {
+unsigned int FSHlength(const __FlashStringHelper* FSHinput) {
+  PGM_P FSHinputPointer = reinterpret_cast<PGM_P>(FSHinput);
+  unsigned int stringLength = 0;
+  while (pgm_read_byte(FSHinputPointer++)) {
+    stringLength++;
+  }
+  return stringLength;
+}
+
+void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
   lcd.clear();
   uint8_t cursorX = 0; // Track cursor on X position.
   uint8_t cursorY = 0; // Track cursor on Y position.
-  for (uint8_t i = 0; i < text.length(); i++) {
+
+  const uint8_t length = FSHlength(text);
+  char buffer[length + 1];
+  memcpy_P(buffer, text, length + 1);
+
+  for (uint8_t i = 0; i < length; i++) {
     if (is_interrupt()) return;
     lcd.setCursor(cursorX, cursorY);
     // Check if the beginning character is a space.
-    if (!(cursorX == 0 && text[i] == ' ')) {
-      lcd.print(text[i]); // Print letter to LCD.
+    if (!(cursorX == 0 && buffer[i] == ' ')) {
+      lcd.print(buffer[i]); // Print letter to LCD.
       delay(charDelay);
       cursorX++; // Go up by one cursor.
     }
@@ -265,34 +295,33 @@ void print_lcd(String text, uint8_t charDelay) {
   }
 }
 
-void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay) {
-  lcd.setCursor(0, cursorY);
-  for (uint8_t i = 0; i < text.length(); i++) {
+void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay) {
+
+  const uint16_t initalCharDelay = charDelay * 2;
+  const uint8_t length = FSHlength(text);
+  char buffer[length + 1];
+  memcpy_P(buffer, text, length + 1);
+
+  for (uint8_t i = 0; i < length - LCD_COLS + 1; i++) {
     if (is_interrupt()) return;
     lcd.setCursor(0, cursorY);
-    uint8_t subStrIndex = 0;
-    // Scope for the SubString variable.
     {
-      String subStr;
-      subStr.reserve(LCD_COLS);
-      // Get a substring.
-      for (uint8_t j = i; j < i + LCD_COLS; j++) {
-        if (is_interrupt()) return;
-        if (j == text.length()) {
-          return;
-        }
-        subStr.concat(text[j]);
-        subStrIndex++;
+      char subStr[LCD_COLS];
+      memcpy(subStr, buffer + i, LCD_COLS);
+
+      for (uint8_t j = 0; j < LCD_COLS; j++) {
+        lcd.write(subStr[j]);
       }
-      lcd.print(subStr);
     }
 
     if (i == 0) {
-      delay(charDelay * 2); // Delay an extra amount for the inital text..
+      delay(initalCharDelay); // Delay an extra amount for the inital text..
     }
     delay(charDelay);
   }
 }
+
+
 
 
 ////////////////////////////
@@ -300,10 +329,13 @@ void print_scrolling(String text, uint8_t cursorY, uint8_t charDelay) {
 //////////////////////////
 
 void select_btn_click() {
+
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
     return;
   }
+
   lastButtonPress = millis();
+
   switch (prgmState->get_state()) {
   case MAIN_MENU:
   {

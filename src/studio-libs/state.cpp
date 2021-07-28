@@ -37,8 +37,6 @@ void ProgramState::execute() {
         segDisplay.blank(); // Clear the 7 segment display.
         segDisplay.refreshDisplay(); // Update the 7 segment display.
 
-        ///
-
         this->init();
         this->_hasInitalized = true;
     }
