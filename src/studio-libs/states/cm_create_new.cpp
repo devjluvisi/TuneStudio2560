@@ -14,6 +14,7 @@
 CreatorModeCreateNew::CreatorModeCreateNew() : ProgramState::ProgramState(CM_CREATE_NEW) {}
 CreatorModeCreateNew::~CreatorModeCreateNew() {}
 void CreatorModeCreateNew::loop() {
+
     // Go through all of the tune buttons and check if they are being pressed.
     if (is_pressed(BTN_TONE_1)) {
         // Play the song back.
@@ -136,15 +137,26 @@ void CreatorModeCreateNew::init() {
 }
 
 void CreatorModeCreateNew::print_song_lcd() {
+    const song_size_t songSize = newSong->get_size();
+
     lcd.clear();
-    //lcd.print(F("[SONG]"));
-    lcd.print("[SONG] ([" + String(scrolledLines + 1) + "] " + String(newSong->get_size()) + "/" + String(MAX_SONG_LENGTH) + ")");
+    char buffer[3 + sizeof(char)];
+    lcd.print(F("[SONG] (["));
+    itoa(scrolledLines + 1, buffer, 10);
+    lcd.print(buffer);
+    lcd.print(F("] "));
+    itoa(songSize, buffer, 10);
+    lcd.print(buffer);
+    lcd.print(F("/"));
+    itoa(MAX_SONG_LENGTH, buffer, 10);
+    lcd.print(buffer);
+    lcd.print(F(")"));
 
     uint8_t lcdCursor = 1;
     uint8_t columnCount = 0;
 
     uint8_t scrolledLineCounter = scrolledLines;
-    for (uint32_t i = 0; i < newSong->get_size(); i++) {
+    for (song_size_t i = 0; i < songSize; i++) {
 
         const char* pitch = get_note_from_freq(newSong->get_note(i)).pitch;
 
@@ -176,7 +188,7 @@ void CreatorModeCreateNew::print_song_lcd() {
 uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
     uint8_t columnCount = 0;
     uint8_t rowCounter = 0;
-    for (uint32_t i = 0; i < newSong->get_size(); i++) {
+    for (song_size_t i = 0; i < newSong->get_size(); i++) {
         const char* pitch = get_note_from_freq(newSong->get_note(i)).pitch;
 
         if (columnCount + strlen(pitch) > LCD_COLS) {

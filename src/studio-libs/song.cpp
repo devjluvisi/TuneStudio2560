@@ -21,7 +21,7 @@
 
 #include <studio-libs/song.h>
 
-Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init) {
+Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxLength, bool init) {
 #if DEBUG == true
     Serial.println(F("song.cpp: Initalized a new song."));
 #endif
@@ -63,7 +63,7 @@ bool Song::is_song_full() {
 
 void Song::add_note(uint16_t note) {
     if (Song::is_song_full()) return;
-    for (uint32_t i = 0; i < this->_maxLength; i++) {
+    for (song_size_t i = 0; i < this->_maxLength; i++) {
         if (_songData[i] == EMPTY_FREQ) {
             _songData[i] = note;
             return;
@@ -73,7 +73,7 @@ void Song::add_note(uint16_t note) {
 
 void Song::add_pause() {
     if (Song::is_song_full()) return;
-    for (uint32_t i = 0; i < this->_maxLength; i++) {
+    for (song_size_t i = 0; i < this->_maxLength; i++) {
         if (_songData[i] == EMPTY_FREQ) {
             _songData[i] = PAUSE_FREQ;
             return;
@@ -86,7 +86,7 @@ void Song::remove_note() {
 }
 
 void Song::play_song() {
-    uint32_t songIndex = 0;
+    song_size_t songIndex = 0;
     // While the song index is not empty and does not equal the maximum length allowed.
     while (_songData[songIndex] != EMPTY_FREQ && songIndex != this->_maxLength) {
         if (_songData[songIndex] == PAUSE_FREQ) {
@@ -103,14 +103,14 @@ void Song::play_song() {
 }
 
 void Song::clear() {
-    for (uint32_t i = this->_maxLength; i > 0; i--) {
+    for (song_size_t i = this->_maxLength; i > 0; i--) {
         if (_songData[i] != EMPTY_FREQ) {
             _songData[i] = EMPTY_FREQ;
         }
     }
 }
 
-uint16_t Song::get_note(uint32_t index) {
+uint16_t Song::get_note(song_size_t index) {
     return _songData[index];
 }
 
@@ -120,26 +120,10 @@ bool Song::is_empty() {
 
 
 
-uint32_t Song::get_size() {
-    uint32_t size = 0;
+song_size_t Song::get_size() {
+    song_size_t size = 0;
     while (_songData[size] != EMPTY_FREQ && size != this->_maxLength) {
         size++;
     }
     return size;
 }
-/*
-char Song::get_notes() {
-    char song[_maxLength * 4];
-    // Reserve a maximum capable string. The song length * 4 because note frequencies can be up to 1000.
-    uint32_t songIndex = 0;
-    // While the song index is not empty and does not equal the maximum length allowed.
-    while (_songData[songIndex] != EMPTY_NOTE && songIndex != this->_maxLength) {
-        char buffer[4];
-        sprintf(buffer, "%d", _songData[songIndex]);
-        strcat(song, buffer);
-        //song.concat(_songData[songIndex]);
-        songIndex++;
-    }
-    return song;
-}
-*/

@@ -15,7 +15,16 @@
 #include <studio-libs/tune_studio.h>
 #include <Arduino.h>
 
- // The delay that should be added to the song when the user adds a pause.
+
+#if PRGM_MODE == 0
+typedef uint8_t song_size_t;
+#elif PRGM_MODE == 2
+typedef uint32_t song_size_t;
+#else
+typedef uint8_t song_size_t;
+#endif
+
+// The delay that should be added to the song when the user adds a pause.
 #ifndef PAUSE_DELAY
 #define PAUSE_DELAY (uint16_t)500
 #endif
@@ -48,7 +57,7 @@ private:
     uint8_t _pin; // The pin to send the frequencies to.
     uint8_t _noteDelay; // The delay between playing each note of the song.
     uint8_t _noteLength; // The length that the note should be played for.
-    uint32_t _maxLength; // Quick access to the size of the array.
+    song_size_t _maxLength; // Quick access to the size of the array.
     uint16_t* _songData; // A array of all of the different tones.
 public:
     /**
@@ -60,7 +69,7 @@ public:
      * @param maxLength The maximum length of a song (# of notes).
      * @param init If the constructor should initalize the pin as an output via pinMode.
      */
-    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, uint32_t maxLength, bool init);
+    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxLength, bool init);
     /**
      * @brief Destroy the Song object and
      * Eliminates the _songData[] array by flushing it from the heap.
@@ -104,13 +113,13 @@ public:
      * @param index The index of the note to retrieve.
      * @return The frequency of the note.
      */
-    uint16_t get_note(uint32_t index);
+    uint16_t get_note(song_size_t index);
     /**
      * @return If a song is empty as in it has no notes in it.
      */
     bool is_empty();
 
-    uint32_t get_size();
+    song_size_t get_size();
     /*
         char* get_notes();
     */

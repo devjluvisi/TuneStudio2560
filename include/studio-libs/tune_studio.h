@@ -146,7 +146,7 @@
 
 // Audio
 
-/* The maximum length of a song */
+/* The maximum length of a song. Increasing this variable may require a change of PRGM_MODE. */
 #ifndef MAX_SONG_LENGTH
 #define MAX_SONG_LENGTH (uint8_t)255
 #endif
@@ -306,12 +306,15 @@ void delay(unsigned long milliseconds) {
 }
 
 /**
- * @brief A method ran when the select button is clicked. Is on an interrupt.
+ * @brief An ISR to handle whenever the select button is pressed throughout the program.
+ * Reroutes the state to the respective new state for the button press.
+ *
  */
 void select_btn_click();
 
 /**
- * @brief A method ran when the cancel/delete button is clicked. Is on an interrupt.
+ * @brief An ISR to handle whenever the delete/cancel button is pressed throughout the program.
+ * Reroutes the state to the respective new state for the button press.
  *
  */
 void cancel_btn_click();
@@ -408,7 +411,13 @@ uint16_t get_current_freq();
  */
 note get_current_tone(uint8_t toneButton);
 
-unsigned int FSHlength(const __FlashStringHelper* FSHinput);
+/**
+ * @brief Get the length of a string stored in flash storage.
+ *
+ * @param FSHinput The string to check the length of.
+ * @return unsigned int
+ */
+uint16_t FSHlength(const __FlashStringHelper* FSHinput);
 
 /**
  * @brief Retrieve a note object that matches a specified frequency.

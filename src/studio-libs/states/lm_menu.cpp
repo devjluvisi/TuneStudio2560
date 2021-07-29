@@ -38,42 +38,47 @@ void ListeningModeMenu::loop() {
         // etc.
         return;
     }
-    if (is_pressed(BTN_TONE_2)) {
-        set_selected_song(((get_selected_page() - 1) * 5) + 2);
-        // Page 1 = (1-1)*5+2 = 0*5+2= Song #2
-        // Page 2 = (2-1)*5+2 = 1*5+2= Song #7
-        // Page 3 = (3-1)*5+2 = 2*5+2= Song #12
-        // etc.
-        return;
-    }
-    if (is_pressed(BTN_TONE_3)) {
-        set_selected_song(((get_selected_page() - 1) * 5) + 3);
-        // Page 1 = (1-1)*5+3 = 0*5+3= Song #3
-        // Page 2 = (2-1)*5+3 = 1*5+3= Song #8
-        // Page 3 = (3-1)*5+3 = 2*5+3= Song #13
-        // etc.
-        return;
-    }
-    if (is_pressed(BTN_TONE_4)) {
-        set_selected_song(((get_selected_page() - 1) * 5) + 4);
-        // Page 1 = (1-1)*5+4 = 0*5+4= Song #4
-        // Page 2 = (2-1)*5+4 = 1*5+4= Song #9
-        // Page 3 = (3-1)*5+4 = 2*5+4= Song #14
-        // etc.
-        return;
-    }
-    if (is_pressed(BTN_TONE_5)) {
-        set_selected_song(((get_selected_page() - 1) * 5) + 5);
-        // Page 1 = (1-1)*5+5 = 0*5+5= Song #5
-        // Page 2 = (2-1)*5+5 = 1*5+5= Song #10
-        // Page 3 = (3-1)*5+5 = 2*5+5= Song #15
-        // etc.
-        return;
-    }
-    if (is_pressed(BTN_OPTION)) {
-        set_selected_page(get_selected_page() + 1 > (MAX_SONG_AMOUNT / 5) ? 0 : get_selected_page() + 1);
-        return;
-    }
+    else
+        if (is_pressed(BTN_TONE_2)) {
+            set_selected_song(((get_selected_page() - 1) * 5) + 2);
+            // Page 1 = (1-1)*5+2 = 0*5+2= Song #2
+            // Page 2 = (2-1)*5+2 = 1*5+2= Song #7
+            // Page 3 = (3-1)*5+2 = 2*5+2= Song #12
+            // etc.
+            return;
+        }
+        else
+            if (is_pressed(BTN_TONE_3)) {
+                set_selected_song(((get_selected_page() - 1) * 5) + 3);
+                // Page 1 = (1-1)*5+3 = 0*5+3= Song #3
+                // Page 2 = (2-1)*5+3 = 1*5+3= Song #8
+                // Page 3 = (3-1)*5+3 = 2*5+3= Song #13
+                // etc.
+                return;
+            }
+            else
+                if (is_pressed(BTN_TONE_4)) {
+                    set_selected_song(((get_selected_page() - 1) * 5) + 4);
+                    // Page 1 = (1-1)*5+4 = 0*5+4= Song #4
+                    // Page 2 = (2-1)*5+4 = 1*5+4= Song #9
+                    // Page 3 = (3-1)*5+4 = 2*5+4= Song #14
+                    // etc.
+                    return;
+                }
+                else
+                    if (is_pressed(BTN_TONE_5)) {
+                        set_selected_song(((get_selected_page() - 1) * 5) + 5);
+                        // Page 1 = (1-1)*5+5 = 0*5+5= Song #5
+                        // Page 2 = (2-1)*5+5 = 1*5+5= Song #10
+                        // Page 3 = (3-1)*5+5 = 2*5+5= Song #15
+                        // etc.
+                        return;
+                    }
+                    else
+                        if (is_pressed(BTN_OPTION)) {
+                            set_selected_page(get_selected_page() + 1 > (MAX_SONG_AMOUNT / 5) ? 0 : get_selected_page() + 1);
+                            return;
+                        }
 }
 
 void ListeningModeMenu::init() {

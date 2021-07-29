@@ -276,9 +276,9 @@ uint16_t get_current_freq() {
 //// LCD FUNCTIONS ////
 //////////////////////
 
-unsigned int FSHlength(const __FlashStringHelper* FSHinput) {
+uint16_t FSHlength(const __FlashStringHelper* FSHinput) {
   PGM_P FSHinputPointer = reinterpret_cast<PGM_P>(FSHinput);
-  unsigned int stringLength = 0;
+  uint16_t stringLength = 0;
   while (pgm_read_byte(FSHinputPointer++)) {
     stringLength++;
   }
@@ -353,54 +353,6 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
 //// BUTTONS & ACTIONS ////
 //////////////////////////
 
-void select_btn_click() {
-
-  if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return;
-  }
-  // Ignore this interrupt if the option button is also down.
-  if (digitalRead(BTN_OPTION) == LOW) {
-    return;
-  }
-
-  lastButtonPress = millis();
-
-  switch (prgmState->get_state()) {
-  case MAIN_MENU:
-  {
-    immediateInterrupt = true;
-    delete prgmState; // Flush previous prgmState from the heap.
-    prgmState = new CreatorModeMenu();
-    return;
-  }
-  case LM_MENU:
-  {
-    // For skipping the instructions.
-    if (!prgmState->has_initalized()) {
-      immediateInterrupt = true;
-      return;
-    }
-    // For actually playing the song.
-    delete prgmState;
-    prgmState = new ListeningModePlayingSong();
-    return;
-  }
-  case LM_PLAYING_SONG:
-  {
-    return;
-  }
-  case CM_MENU:
-  {
-    immediateInterrupt = true;
-    delete prgmState;
-    prgmState = new CreatorModeCreateNew();
-    return;
-  }
-  default:
-    return;
-  }
-}
-
 void update_state(StateID state) {
   if (state == prgmState->get_state()) {
     return;
@@ -427,34 +379,70 @@ void update_state(StateID state) {
   }
 }
 
-void cancel_btn_click() {
-  if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return;
-  }
-  // Ignore this interrupt if the option button is also down.
-  if (digitalRead(BTN_OPTION) == LOW) {
+void select_btn_click() {
+
+  // Ignore interrupt if not enough time has passed or the option button is being pressed.
+  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalRead(BTN_OPTION) == LOW) {
     return;
   }
   lastButtonPress = millis();
 
   switch (prgmState->get_state()) {
+  case MAIN_MENU:
+  {
+    immediateInterrupt = true;
+    update_state(CM_MENU);
+    return;
+  }
+  case LM_MENU:
+  {
+    // For skipping the instructions.
+    if (!prgmState->has_initalized()) {
+      immediateInterrupt = true;
+      return;
+    }
+    // For actually playing the song.
+    update_state(LM_PLAYING_SONG);
+    return;
+  }
+  case LM_PLAYING_SONG:
+  {
+    return;
+  }
+  case CM_MENU:
+  {
+    immediateInterrupt = true;
+    update_state(CM_CREATE_NEW);
+    return;
+  }
+  default:
+    return;
+  }
+}
+
+void cancel_btn_click() {
+  // Ignore interrupt if not enough time has passed or the option button is being pressed.
+  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalRead(BTN_OPTION) == LOW) {
+    return;
+  }
+
+  lastButtonPress = millis();
+
+  switch (prgmState->get_state()) {
   case MAIN_MENU: {
     immediateInterrupt = true;
-    delete prgmState;
-    prgmState = new ListeningModeMenu();
+    update_state(LM_MENU);
     return;
   }
   case CM_MENU: {
     immediateInterrupt = true;
-    delete prgmState;
-    prgmState = new MainMenu();
+    update_state(MAIN_MENU);
     return;
   }
   case LM_MENU:
   {
     immediateInterrupt = true;
-    delete prgmState;
-    prgmState = new MainMenu();
+    update_state(MAIN_MENU);
     // If the user is leaving the listening menu then reset the song and page.
     set_selected_page(1);
     set_selected_song(1);
@@ -462,8 +450,7 @@ void cancel_btn_click() {
   }
   case LM_PLAYING_SONG:
   {
-    delete prgmState;
-    prgmState = new ListeningModeMenu();
+    update_state(LM_PLAYING_SONG);
     return;
   }
   case CM_CREATE_NEW:
@@ -474,11 +461,7 @@ void cancel_btn_click() {
 }
 
 bool is_pressed(uint8_t buttonPin) {
-  if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return false;
-  }
-
-  if (digitalRead(buttonPin) == LOW) {
+  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalRead(buttonPin) == LOW) {
     lastButtonPress = millis();
     return true;
   }
@@ -486,42 +469,9 @@ bool is_pressed(uint8_t buttonPin) {
 }
 
 bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
-  if (millis() - lastButtonPress < DEBOUNCE_RATE) {
-    return false;
-  }
-  if (digitalRead(buttonPin1) == LOW && digitalRead(buttonPin2) == LOW) {
+  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalRead(buttonPin1) == LOW && digitalRead(buttonPin2) == LOW) {
     lastButtonPress = millis();
     return true;
   }
   return false;
 }
-
-/////////////////////////////////
-//// EEPROM LOADING & SAVING ////
-////////////////////////////////
-
-/*
-void save_song_data() {
-  if (sizeof(savedSongs) > EEPROM_SIZE) {
-    // May give compiler error however the below println works fine.
-    Serial.println("Size of saved songs (" + ((String)sizeof(savedSongs)) + ") is greater then the maximum capable size of the EEPROM (" + String(EEPROM_SIZE) + "). Please reduce the size of the songs or the maximum allowed number of songs to save this data.");
-    return;
-  }
-  EEPROM.put(EEPROM_SONG_SAVE_ADDR, savedSongs);
-  Serial.println("Saved songs to EEPROM.");
-}
-
-void delete_song(uint32_t index) {
-  if (index < 1 || index >(sizeof(savedSongs) / sizeof(savedSongs[0]))) {
-    Serial.println("ERR: Could not delete the song. Index out of bounds.");
-    return;
-  }
-  savedSongs[index].clear();
-}
-
-void load_songs_from_eeprom() {
-  // Load data to global variable.
-  EEPROM.get(EEPROM_SONG_SAVE_ADDR, savedSongs);
-}
-*/
-
