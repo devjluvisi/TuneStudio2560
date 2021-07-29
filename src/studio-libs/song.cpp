@@ -58,13 +58,13 @@ void Song::play_note(uint16_t note) {
 bool Song::is_song_full() {
     // Check if the final value in the array is zero. If so we know it is not full since 0's represent empty values in
     // an integer array.
-    return _songData[_maxLength - 1] != EMPTY_NOTE;
+    return _songData[_maxLength - 1] != EMPTY_FREQ;
 }
 
 void Song::add_note(uint16_t note) {
     if (Song::is_song_full()) return;
     for (uint32_t i = 0; i < this->_maxLength; i++) {
-        if (_songData[i] == EMPTY_NOTE) {
+        if (_songData[i] == EMPTY_FREQ) {
             _songData[i] = note;
             return;
         }
@@ -74,33 +74,26 @@ void Song::add_note(uint16_t note) {
 void Song::add_pause() {
     if (Song::is_song_full()) return;
     for (uint32_t i = 0; i < this->_maxLength; i++) {
-        if (_songData[i] == EMPTY_NOTE) {
-            _songData[i] = PAUSE_NOTE;
+        if (_songData[i] == EMPTY_FREQ) {
+            _songData[i] = PAUSE_FREQ;
             return;
         }
     }
 }
 
 void Song::remove_note() {
-    // Loop through song and find first non-empty number.
-    for (uint32_t i = this->_maxLength; i > 0; i--) {
-        if (_songData[i] != EMPTY_NOTE) {
-            _songData[i] = EMPTY_NOTE;
-            return;
-        }
-    }
+    _songData[get_size() - 1] = EMPTY_FREQ;
 }
 
 void Song::play_song() {
     uint32_t songIndex = 0;
     // While the song index is not empty and does not equal the maximum length allowed.
-    while (_songData[songIndex] != EMPTY_NOTE && songIndex != this->_maxLength) {
-        if (_songData[songIndex] == PAUSE_NOTE) {
+    while (_songData[songIndex] != EMPTY_FREQ && songIndex != this->_maxLength) {
+        if (_songData[songIndex] == PAUSE_FREQ) {
             delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
             songIndex++; // Go to the next index of the song.
             continue; // Go to the next iteration of the loop.
         }
-
         play_note(_songData[songIndex]);
         delay(_noteLength);
         noTone(_pin);
@@ -111,8 +104,8 @@ void Song::play_song() {
 
 void Song::clear() {
     for (uint32_t i = this->_maxLength; i > 0; i--) {
-        if (_songData[i] != EMPTY_NOTE) {
-            _songData[i] = EMPTY_NOTE;
+        if (_songData[i] != EMPTY_FREQ) {
+            _songData[i] = EMPTY_FREQ;
         }
     }
 }
@@ -122,19 +115,19 @@ uint16_t Song::get_note(uint32_t index) {
 }
 
 bool Song::is_empty() {
-    return _songData[0] == EMPTY_NOTE;
+    return _songData[0] == EMPTY_FREQ;
 }
 
-/*
+
 
 uint32_t Song::get_size() {
     uint32_t size = 0;
-    while (_songData[size] != EMPTY_NOTE && size != this->_maxLength) {
+    while (_songData[size] != EMPTY_FREQ && size != this->_maxLength) {
         size++;
     }
     return size;
 }
-
+/*
 char Song::get_notes() {
     char song[_maxLength * 4];
     // Reserve a maximum capable string. The song length * 4 because note frequencies can be up to 1000.

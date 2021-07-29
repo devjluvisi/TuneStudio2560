@@ -21,13 +21,13 @@
 #endif
 
  // Defines what number should be used to indicate that the song should wait while pausing.
-#ifndef PAUSE_NOTE
-#define PAUSE_NOTE 0x01
+#ifndef PAUSE_FREQ
+#define PAUSE_FREQ 0x01
 #endif
 
 // Represents a part of the song array that has not yet been filled. (Empty)
-#ifndef EMPTY_NOTE
-#define EMPTY_NOTE 0x00
+#ifndef EMPTY_FREQ
+#define EMPTY_FREQ 0x00
 #endif
 
 // Where in the EEPROM should the songs be saved?
@@ -109,12 +109,11 @@ public:
      * @return If a song is empty as in it has no notes in it.
      */
     bool is_empty();
-    /*
-TODO: Refractor
-    uint32_t get_size();
 
-    char* get_notes();
-*/
+    uint32_t get_size();
+    /*
+        char* get_notes();
+    */
 
 };
 #endif

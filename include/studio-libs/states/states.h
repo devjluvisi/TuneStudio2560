@@ -60,6 +60,18 @@ private:
     bool optionWaiting;
     bool playSound;
     Song* newSong;
+    // LCD Management
+    uint8_t scrolledLines; // The amount of lines scrolled on the lcd.
+    /**
+     * @brief Prints the current song to the LCD and accounts for scrolling.
+     */
+    void print_song_lcd();
+    /**
+     * @brief Get the amount of pages that the song should habe.
+     *
+     * @return uint8_t
+     */
+    uint8_t get_lcd_required_rows();
 
 public:
     CreatorModeCreateNew();

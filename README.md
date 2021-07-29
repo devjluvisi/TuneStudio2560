@@ -16,6 +16,9 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 - Edit saved music tune files on a computer with a MicroSD card adapter.
 - Text feed back on an LCD.
 - RGB Led status indicator.
+- Custom file format with microSD expansion.
+- Edit songs on your own PC using a text editor.
+- 4 Digit 7 Segment display tells which tune is currently being selected.
 
 **Song Storage & Editing w/ MicroSD & EEPROM**  
 TuneStudio2560 adds an optional microSD card module which can be added to the breadboard to allow seamless saving of songs and data. Although not required, the MicroSD card is heavily recommended in comparison to EEPROM due to larger storage spaces especially for any potential future Arduino Uno ports.
@@ -115,7 +118,11 @@ Since I personally have a Raspberry Pi Pico on hand, a potential port to the RP2
 
 ## Contributing & Suggestions
 Extending TuneStudio2560 to other microcontrollers is still in consideration.  
-For any software requests then feel free to request a pull. For any hardware requests you can either fork your own or message me but further expansion of hardware is unlikely.
+For any software requests then feel free to request a pull. For any hardware requests you can either fork your own or message me but further expansion of hardware is unlikely.  
+*Possible future additions:*  
+- Integrate potentiometer with pause button to allow varying lengths of pause time instead of a hard coded one.
+- Allow users to edit the tone delays for their own songs.
+- Port TuneStudio2560 to other microcontrollers.
 ## Other Notes
 Check out [Arduino](https://www.arduino.cc/) to build your own fun prototyping projects.  
 Check out [PlatformIO](https://platformio.org/) which provides a convenient way to create new Arduino projects with VS Code.  

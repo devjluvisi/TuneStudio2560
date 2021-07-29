@@ -81,8 +81,9 @@ bool is_interrupt() {
 #if DEBUG == true
   if (millis() % 1250 == 0) {
     Serial.println();
-    Serial.println("FREE MEMORY: " + String(freeMemory()) + "/8192");
-    Serial.println("STACK SIZE: " + String((RAMEND - SP)));
+    Serial.println("FREE MEMORY: " + String(freeMemory()) + +"KB/8192KB");
+    Serial.println("STACK SIZE: " + String((RAMEND - SP)) + "KB");
+    Serial.println("HEAP FRAG: " + String(getFragmentation()) + "%");
     Serial.println();
   }
 #endif
@@ -201,6 +202,42 @@ uint8_t get_selected_song() {
   return selectedSong;
 }
 
+note get_note_from_freq(const uint16_t frequency) {
+  if (frequency == PAUSE_NOTE.frequency) {
+    return PAUSE_NOTE;
+  }
+  //TODO: Make searching algorithm more efficient
+  // 5 tune buttons, 17 pitches each
+  for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
+    for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
+      if (pgm_read_word(&toneButtons[i].notes[j].frequency) == frequency) {
+        char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
+        //uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
+        return note{ pitch, frequency }; // Dont need to find the frequency because the parameter already passed it.
+      }
+    }
+  }
+  return note{ "0000", 0 };
+}
+
+note get_note_from_pitch(const char* pitch) {
+  if (pitch == PAUSE_NOTE.pitch) {
+    return PAUSE_NOTE;
+  }
+  //TODO: Make searching algorithm more efficient
+  // 5 tune buttons, 17 pitches each
+  for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
+    for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
+      if (((char*)pgm_read_word(&toneButtons[i].notes[j].pitch)) == pitch) {
+        //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
+        uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
+        Serial.println(pitch);
+        return note{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
+      }
+    }
+  }
+  return note{ "0000", 0 };
+}
 
 note get_current_tone(uint8_t toneButton) {
 
@@ -208,32 +245,19 @@ note get_current_tone(uint8_t toneButton) {
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
   const uint16_t subTone = (uint16_t)(get_current_freq() + 1) / (uint8_t)61;
 
-  char* pitch;
-  uint16_t frequency;
-
   switch (toneButton) {
   case 0:
     return { "0000", 0 };
   case BTN_TONE_1:
-    memcpy_P(&pitch, &toneButtons[0].notes[subTone], sizeof(pitch));
-    memcpy_P(&frequency, &toneButtons[0].notes[subTone], sizeof(frequency));
-    return note{ pitch, frequency };
+    return note{ ((char*)pgm_read_word(&toneButtons[0].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[0].notes[subTone].frequency)) };
   case BTN_TONE_2:
-    memcpy_P(&pitch, &toneButtons[1].notes[subTone], sizeof(pitch));
-    memcpy_P(&frequency, &toneButtons[1].notes[subTone], sizeof(frequency));
-    return note{ pitch, frequency };
+    return note{ ((char*)pgm_read_word(&toneButtons[1].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[1].notes[subTone].frequency)) };
   case BTN_TONE_3:
-    memcpy_P(&pitch, &toneButtons[2].notes[subTone], sizeof(pitch));
-    memcpy_P(&frequency, &toneButtons[2].notes[subTone], sizeof(frequency));
-    return note{ pitch, frequency };
+    return note{ ((char*)pgm_read_word(&toneButtons[2].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[2].notes[subTone].frequency)) };
   case BTN_TONE_4:
-    memcpy_P(&pitch, &toneButtons[3].notes[subTone], sizeof(pitch));
-    memcpy_P(&frequency, &toneButtons[3].notes[subTone], sizeof(frequency));
-    return note{ pitch, frequency };
+    return note{ ((char*)pgm_read_word(&toneButtons[3].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[3].notes[subTone].frequency)) };
   case BTN_TONE_5:
-    memcpy_P(&pitch, &toneButtons[4].notes[subTone], sizeof(pitch));
-    memcpy_P(&frequency, &toneButtons[4].notes[subTone], sizeof(frequency));
-    return note{ pitch, frequency };
+    return note{ ((char*)pgm_read_word(&toneButtons[4].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[4].notes[subTone].frequency)) };
   default:
 #if DEBUG == true
     Serial.println(F("Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
@@ -298,6 +322,7 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
 void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay) {
 
   const uint16_t initalCharDelay = charDelay * 2;
+  // Copy the string from PROGMEM to the stack.
   const uint8_t length = FSHlength(text);
   char buffer[length + 1];
   memcpy_P(buffer, text, length + 1);
@@ -331,6 +356,10 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
 void select_btn_click() {
 
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
+    return;
+  }
+  // Ignore this interrupt if the option button is also down.
+  if (digitalRead(BTN_OPTION) == LOW) {
     return;
   }
 
@@ -372,8 +401,38 @@ void select_btn_click() {
   }
 }
 
+void update_state(StateID state) {
+  if (state == prgmState->get_state()) {
+    return;
+  }
+  delete prgmState;
+  switch (state) {
+  case MAIN_MENU:
+    prgmState = new MainMenu();
+    return;
+  case CM_MENU:
+    prgmState = new CreatorModeMenu();
+    return;
+  case LM_PLAYING_SONG:
+    prgmState = new ListeningModePlayingSong();
+    return;
+  case CM_CREATE_NEW:
+    prgmState = new CreatorModeCreateNew();
+    return;
+  default:
+#if DEBUG == true
+    Serial.println(F("Unknown State Requested."));
+#endif
+    return;
+  }
+}
+
 void cancel_btn_click() {
   if (millis() - lastButtonPress < DEBOUNCE_RATE) {
+    return;
+  }
+  // Ignore this interrupt if the option button is also down.
+  if (digitalRead(BTN_OPTION) == LOW) {
     return;
   }
   lastButtonPress = millis();
@@ -409,7 +468,6 @@ void cancel_btn_click() {
   }
   case CM_CREATE_NEW:
   {
-
     return;
   }
   }

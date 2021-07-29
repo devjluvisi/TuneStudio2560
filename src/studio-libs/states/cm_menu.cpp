@@ -25,14 +25,14 @@ void CreatorModeMenu::loop() {
     print_lcd(F("To exit, press the DEL/CANCEL button."));
     print_lcd(F("Create a song using the 5 tune buttons."));
     print_lcd(F("To add a tune, press the tune button and then press SELECT."));
-    print_lcd(F("To add a delay in the song press SELECT without pressing a tune button before."));
+    print_lcd(F("To add a delay in the song press OPTION+BLUE TUNE."));
     print_lcd(F("To just listen to a note without adding press a tune button without select."));
     print_lcd(F("Adjust the frequency of the tune using the potentiometer."));
     print_lcd(F("Delete notes using the DEL/CANCEL button."));
     print_lcd(F("Save the song by pressing OPTION+SELECT button."));
     print_lcd(F("Delete the current song (exit) by pressing OPTION+DEL."));
     print_lcd(F("Play current track by pressing OPTION+GREEN TUNE."));
-    print_lcd(F("Cycle through the current track by pressing OPTION+BLUE TUNE (Left) and OPTION+RED TUNE (Right)."));
+    print_lcd(F("Scroll through the track by pressing OPTION twice."));
     lcd.clear();
     delay(delayTime);
     lcd.setCursor(3, 1);
