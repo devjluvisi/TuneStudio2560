@@ -21,7 +21,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 - 4 Digit 7 Segment display tells which tune is currently being selected.
 
 **Song Storage & Editing w/ MicroSD & EEPROM**  
-TuneStudio2560 adds an optional microSD card module which can be added to the breadboard to allow seamless saving of songs and data. Although not required, the MicroSD card is heavily recommended in comparison to EEPROM due to larger storage spaces especially for any potential future Arduino Uno ports.
+TuneStudio2560 adds an optional microSD card module which can be added to the breadboard to allow seamless saving of songs and data. Although not required, the MicroSD card is heavily recommended in comparison to EEPROM due to larger storage spaces and added functionallity such as song names and being able to edit songs on a computer.
 
 *A microSD card module is also required for any potential port to the RP2040 microcontroller due to its lack of EEPROM.*
 
@@ -123,6 +123,8 @@ For any software requests then feel free to request a pull. For any hardware req
 - Integrate potentiometer with pause button to allow varying lengths of pause time instead of a hard coded one.
 - Allow users to edit the tone delays for their own songs.
 - Port TuneStudio2560 to other microcontrollers.
+- Attempt to fit the SD card library on the Arduino Uno's limited SRAM and Flash. Currently, the SD library takes up far too much space
+to port the SD functionallity of TuneStudio2560.
 ## Other Notes
 Check out [Arduino](https://www.arduino.cc/) to build your own fun prototyping projects.  
 Check out [PlatformIO](https://platformio.org/) which provides a convenient way to create new Arduino projects with VS Code.  

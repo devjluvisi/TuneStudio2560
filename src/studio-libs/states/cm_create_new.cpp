@@ -71,7 +71,7 @@ void CreatorModeCreateNew::loop() {
         segDisplay.setChars(currentNote.pitch);
         segDisplay.refreshDisplay();
         if (optionWaiting) {
-            analogWrite(RGB_BLUE, 35);
+            analogWrite(RGB_BLUE, RGB_BRIGHTNESS);
         }
         else {
             analogWrite(RGB_BLUE, 0);
@@ -81,6 +81,56 @@ void CreatorModeCreateNew::loop() {
     if (is_pressed(BTN_ADD_SELECT)) {
         if (currentNote.frequency == PAUSE_NOTE.frequency) {
             optionWaiting = false;
+        }
+        if (optionWaiting) {
+            // SAVE SONG.
+            if (newSong->get_size() < 3) {
+                optionWaiting = false;
+                lcd.clear();
+                lcd.setCursor(0, 1);
+                lcd.print(F("[ERROR]"));
+                print_scrolling(F("Please make your song at least three or more characters to save."), 2, 150);
+                delay(500);
+                print_song_lcd();
+                return;
+            }
+            // Initalize an SD card module.
+            SDModule sdCard(SD_CS_PIN);
+            optionWaiting = false;
+
+            // Update the fileName variable.
+            set_save_name();
+            //char buffer[13];
+            //strncat(buffer, ".txt", 4);
+
+            Serial.print(F("Saving Song file: "));
+            Serial.println(fileName);
+
+            // Exit the program.
+            if (fileName[0] == '\0') {
+                optionWaiting = false;
+                print_song_lcd();
+                return;
+            }
+            // The file extension that the program uses.
+            const char* fileExtension = ".txt";
+            // Create a buffer to store both the file name as well as the new file extension.
+            char buffer[strlen(fileName) + strlen(fileExtension)];
+            // Copy the file name to the buffer.
+            strncpy(buffer, fileName, strlen(fileName));
+            // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
+            strncpy(buffer + strlen(fileName), fileExtension, strlen(fileExtension) + 1);
+            // Save the song.
+            sdCard.save_song(buffer, newSong);
+            lcd.clear();
+            lcd.setCursor(0, 1);
+            lcd.print(F("Song Saved."));
+            lcd.setCursor(0, 2);
+            lcd.print(F("Returning to Song."));
+            delay(1500);
+            optionWaiting = false;
+            print_song_lcd();
+            return;
         }
         newSong->add_note(currentNote.frequency);
         this->print_song_lcd();
@@ -96,8 +146,13 @@ void CreatorModeCreateNew::loop() {
             update_state(MAIN_MENU);
             return;
         }
-        newSong->remove_note();
-        this->print_song_lcd();
+        // If the song still has notes remaining.
+        if (newSong->get_size() != 0)
+        {
+            newSong->remove_note();
+            this->print_song_lcd();
+        }
+
 #if DEBUG == true
         newSong->play_song();
 #endif
@@ -201,3 +256,146 @@ uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
 }
 
 
+// NOTE: Methods like the ones below would not be included on ports to the UNO because the UNO does not
+// support microSD. Therefore we can be more liberal about how we use our SRAM.
+
+void CreatorModeCreateNew::set_save_name() {
+
+    // Keep track of the index to add to name.
+    uint8_t index = 0;
+    // The name the user is choosing.
+    char name[9];
+
+    lcd.clear();
+    lcd.print(F("[Saving Song] (1/3)"));
+    lcd.setCursor(1, 1);
+    lcd.print(F("~ Name The Song"));
+    // The display shows some information on the bottom row.
+    // This variable tracks which piece of text to show.
+    uint8_t slideInfo = 0;
+    unsigned long lastUpdate = 0;
+    const uint16_t updateInterval = 5000; // 5 seconds.
+    segDisplay.blank();
+
+
+    char analogChar = get_character_from_analog();
+    while (true) {
+        // Update every 32 milliseconds.
+        if (millis() % 32 == 0) {
+            analogChar = get_character_from_analog();
+        }
+        segDisplay.refreshDisplay();
+        lcd.setCursor(0, 2);
+        lcd.print(F("Name > "));
+        // Go through the current name array and print it out.
+        for (int i = 0; i < index; i++) {
+            lcd.print(name[i]);
+        }
+        // If the user string is not at its maximum characters
+        if (index != 8) {
+            lcd.print(analogChar);
+        }
+
+        lcd.print(F(".txt "));
+
+        if (is_pressed(BTN_OPTION)) {
+            optionWaiting = !optionWaiting;
+        }
+
+        if (optionWaiting) {
+            analogWrite(RGB_BLUE, RGB_BRIGHTNESS);
+        }
+        else {
+            analogWrite(RGB_BLUE, 0);
+        }
+
+        if (is_pressed(BTN_ADD_SELECT)) {
+            // Return an array of each character.
+            if (optionWaiting) {
+                if (index == 0) {
+                    lcd.setCursor(0, 2);
+                    for (uint8_t i = 0; i < LCD_COLS; i++) {
+                        lcd.print(F(" "));
+                    }
+                    delay(500);
+                    lcd.setCursor(0, 2);
+                    lcd.print(F("PLEASE SET A NAME."));
+                    delay(2500);
+                    lcd.setCursor(0, 2);
+                    for (uint8_t i = 0; i < LCD_COLS; i++) {
+                        lcd.print(F(" "));
+                    }
+                    delay(500);
+
+                    continue;
+                }
+
+                // Terminate the array and copy it to the fileName global var.
+                name[index] = '\0';
+                strcpy(fileName, name);
+                return;
+            }
+            if (index == 8) {
+                continue;
+            }
+            name[index] = analogChar;
+            index++;
+            // const char c = get_character_from_analog();
+            // strncat(name, &c, 1);
+        }
+
+        if (is_pressed(BTN_DEL_CANCEL)) {
+            if (optionWaiting) {
+                // "-1" is a return value which tells the program that there was no name given and the user wishes to exit.
+                strcpy(fileName, "\0");
+                return;
+            }
+            if (index == 0) {
+                continue;
+            }
+            name[index] = ' ';
+            index--;
+        }
+
+
+        // Show information text on bottom row.
+        if (millis() - lastUpdate > updateInterval) {
+            lcd.setCursor(0, 3);
+            switch (slideInfo) {
+            case 0:
+                lcd.print(F("SELECT: Add Symbol."));
+                break;
+            case 1:
+                lcd.print(F("DEL: Remove Symbol."));
+                break;
+            case 2:
+                lcd.print(F("OPTION+SEL: Save.  "));
+                break;
+            case 3:
+                lcd.print(F("OPTION+DEL: Exit.  "));
+                break;
+            case 4:
+                lcd.print(F("8 Characters Limit "));
+                break;
+            }
+            lastUpdate = millis();
+            if (slideInfo == 4) {
+                slideInfo = 0;
+            }
+            else {
+                slideInfo++;
+            }
+        }
+
+    }
+}
+
+const char CreatorModeCreateNew::get_character_from_analog() {
+    // An array of every possible character that can be included in the name.
+    // Note that because Arduino SD uses file format 8.3 every character will be a capital letter (no lowercase)
+    // Characters are A-Z, 0-9, and underscores.
+    const char optionalCharacters[37] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
+    // 26 letters + 10 numbers
+    const uint8_t analogToValue = (get_current_freq() + 1) / (uint8_t)28;
+    return optionalCharacters[analogToValue];
+}

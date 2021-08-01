@@ -19,12 +19,13 @@
 #include <Arduino.h>
 #include <studio-libs/song.h>
 #include <debug/debug.h>
+#include <hardware/sd_card.h>
 // Different states.
 #include <studio-libs/state.h>
 
 
 // Debug Variables (True for Serial prints)
-#define DEBUG false
+#define DEBUG true
 
 // Program Mode Selection
 // Change the performance, SRAM, and flash usage by adjusting.
@@ -48,6 +49,11 @@
 
 #ifndef SHIFT_PIN_SHCP
 #define SHIFT_PIN_SHCP (uint8_t)7
+#endif
+
+// Pin for the "CS" pin on the SD card module.
+#ifndef SD_CS_PIN
+#define SD_CS_PIN 53
 #endif
 
 // The specifications of the I2C LCD.
@@ -276,6 +282,8 @@ inline LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
  * @brief Represents the 4-wide 7 segment display which is connected to 2x SN74HC595N shift registers.
  */
 inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
+
+
 
 
 /**

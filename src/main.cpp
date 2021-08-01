@@ -95,14 +95,18 @@ ProgramState* prgmState;
 
 void setup()
 {
+
 #if DEBUG == true
   // Create serial monitor.
   Serial.begin(9600);
-  while (!Serial);
+  while (!Serial) {
+    ;
+  }
 
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------\n> TuneStudio2560 has initalized\n> Have fun!\n--------------------------------------"));
 #endif
+
   // Setup all of the pins.
   pinMode(RGB_BLUE, OUTPUT);
   pinMode(RGB_GREEN, OUTPUT);
@@ -159,12 +163,15 @@ void setup()
   segDisplay.refreshDisplay();
 
   prgmState = new MainMenu();
+
 }
 
 void loop()
 {
+
   prgmState->execute();
   immediateInterrupt = false;
+
 }
 
 ////////////////////////
@@ -358,12 +365,16 @@ void update_state(StateID state) {
     return;
   }
   delete prgmState;
+
   switch (state) {
   case MAIN_MENU:
     prgmState = new MainMenu();
     return;
   case CM_MENU:
     prgmState = new CreatorModeMenu();
+    return;
+  case LM_MENU:
+    prgmState = new ListeningModeMenu();
     return;
   case LM_PLAYING_SONG:
     prgmState = new ListeningModePlayingSong();
@@ -421,6 +432,7 @@ void select_btn_click() {
 }
 
 void cancel_btn_click() {
+
   // Ignore interrupt if not enough time has passed or the option button is being pressed.
   if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalRead(BTN_OPTION) == LOW) {
     return;
@@ -450,7 +462,7 @@ void cancel_btn_click() {
   }
   case LM_PLAYING_SONG:
   {
-    update_state(LM_PLAYING_SONG);
+    update_state(LM_MENU);
     return;
   }
   case CM_CREATE_NEW:
