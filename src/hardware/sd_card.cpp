@@ -103,6 +103,7 @@ void SDModule::print_info() {
 
 void SDModule::save_song(const char* fileName, Song* song) {
     if (!SD.begin(SD_CS_PIN)) {
+#if DEBUG == true
         Serial.println(F("[CRITICAL] SD module cannot be initalized due to one or more problems."));
         Serial.println(F("* Is the card properly inserted?"));
         Serial.println(F("* Is the card correctly wired to the board?"));
@@ -110,6 +111,7 @@ void SDModule::save_song(const char* fileName, Song* song) {
         Serial.println(F("* Have you verified the card is working on a PC?"));
         Serial.println(F("* Is the format for the microSD either FAT16 or FAT32?"));
         Serial.println(F("View https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers for more information."));
+#endif
         while (true) {
             analogWrite(RGB_BLUE, 0);
             analogWrite(RGB_GREEN, 0);
@@ -121,28 +123,38 @@ void SDModule::save_song(const char* fileName, Song* song) {
     }
     File songFile;
     if (SD.exists(fileName)) {
+#if DEBUG == true
         Serial.print(fileName);
         Serial.println(F(" already exists. Overwriting..."));
+#endif
         // Delete the old file.
         SD.remove(fileName);
     }
     else {
+#if DEBUG == true
         Serial.print(F("Creating "));
         Serial.println(fileName);
+#endif
     }
     songFile = SD.open(fileName, FILE_WRITE);
+
     songFile.println(F("# Welcome to a song file!"));
     songFile.println(F("# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
     songFile.println(F(""));
     songFile.println(F("Data:"));
+
     for (song_size_t i = 0; i < song->get_size(); i++) {
 
         const char* pitch = get_note_from_freq(song->get_note(i)).pitch;
+
         songFile.print(F("  - "));
         songFile.println(pitch);
+
     }
     songFile.println(F(""));
     songFile.println(F("# END"));
     songFile.close();
+#if DEBUG == true
     Serial.println(F("Finished writing with SD Card."));
+#endif
 }

@@ -25,7 +25,7 @@
 
 
 // Debug Variables (True for Serial prints)
-#define DEBUG true
+#define DEBUG false
 
 // Program Mode Selection
 // Change the performance, SRAM, and flash usage by adjusting.
@@ -38,139 +38,83 @@
 //////////////////////////////
 // Below are various different constant definitions for the compiler to use.
 
+/*
+************************
+*** Application Pins ***
+************************
+*/
+
 // Shift pins for the 4-wide 7 segment display.
-#ifndef SHIFT_PIN_DS
-#define SHIFT_PIN_DS (uint8_t)5
-#endif
-
-#ifndef SHIFT_PIN_STCP
-#define SHIFT_PIN_STCP (uint8_t)6
-#endif
-
-#ifndef SHIFT_PIN_SHCP
-#define SHIFT_PIN_SHCP (uint8_t)7
-#endif
+constexpr uint8_t SHIFT_PIN_DS = 5;
+constexpr uint8_t SHIFT_PIN_STCP = 6;
+constexpr uint8_t SHIFT_PIN_SHCP = 7;
 
 // Pin for the "CS" pin on the SD card module.
-#ifndef SD_CS_PIN
-#define SD_CS_PIN 53
-#endif
-
-// The specifications of the I2C LCD.
-#ifndef LCD_COLS
-#define LCD_COLS (uint8_t)20
-#endif
-
-#ifndef LCD_ROWS
-#define LCD_ROWS (uint8_t)4
-#endif
-
-#ifndef RGB_BRIGHTNESS
-    /*
-    The brightness of the RGB LED which serves as a status indicator.
-    Numbers should be between 0-255
-    */
-#define RGB_BRIGHTNESS (uint8_t)200
-#endif
-
-#ifndef RGB_RED
-    /*The pin of the RED led inside of the RGB status led.*/
-#define RGB_RED (uint8_t)9
-#endif
-
-#ifndef RGB_GREEN
-    /*The pin of the GREEN led inside of the RGB status led.*/
-#define RGB_GREEN (uint8_t)10
-#endif
-
-#ifndef RGB_BLUE
-    /*The pin of the BLUE led inside of the RGB status led.*/
-#define RGB_BLUE (uint8_t)11
-#endif
-
-// Buttons
-// REMEMBER: TuneButtons go from lowest pitch (Green) to highest pitch (White)
-
-#ifndef BTN_TONE_1
-    /* Represents the pin of the button with the green led. */
-#define BTN_TONE_1 (uint8_t)27
-#endif
-
-#ifndef BTN_TONE_2
-    /* Represents the pin of the button with the blue led.*/
-#define BTN_TONE_2 (uint8_t)25 
-#endif
-
-#ifndef BTN_TONE_3
-    /*Represents the pin of the button with the red led.*/
-#define BTN_TONE_3 (uint8_t)28 
-#endif
-
-#ifndef BTN_TONE_4
-    /*Represents the pin of the button with the yellow led.*/
-#define BTN_TONE_4 (uint8_t)26
-#endif
-
-#ifndef BTN_TONE_5
-    /*Represents the pin of the button with the white led.*/
-#define BTN_TONE_5 (uint8_t)24 
-#endif
-
-#ifndef BTN_ADD_SELECT
-    /*The pin of the select/confirm button which is also used to add tones.*/
-#define BTN_ADD_SELECT (uint8_t)2
-#endif
-
-#ifndef BTN_DEL_CANCEL
-    /*The pin of the delete button which can be used to delete tones.*/
-#define BTN_DEL_CANCEL (uint8_t)3
-#endif
-
-#ifndef BTN_OPTION
-    /*The pin of the reset button which can be used to delete songs and flush EEPROM.*/
-#define BTN_OPTION (uint8_t)4
-#endif
-
-#ifndef DEBOUNCE_RATE
-/*The rate at which additional button presses should be ignored.*/
-#define DEBOUNCE_RATE (uint16_t)1000
-#endif
-
-// Potentiometer (Frequency Changer)
-
-#ifndef TONE_FREQ
-/* The pin of the potentiometer which is used for frequency adjusting. */
-#define TONE_FREQ A7
-#endif
-
-// Speakers
-
-#ifndef SPEAKER_1
-/* The pin of the passive speaker connected to the Arduino. */
-#define SPEAKER_1 (uint8_t)34
-#endif
-
-// Audio
-
-/* The maximum length of a song. Increasing this variable may require a change of PRGM_MODE. */
-#ifndef MAX_SONG_LENGTH
-#define MAX_SONG_LENGTH (uint8_t)255
-#endif
+constexpr uint8_t SD_CS_PIN = 53;
 
 /*
-The maximum allowed number of songs that can be saved. (microSD only, EEPROM is limited to 5)
-NOTE: Changing this value above 255 may cause the program to break due to a limitation using the uint8_t datatype.
-Expanding will require the change of this datatype.
+The brightness of the RGB LED which serves as a status indicator.
+Numbers should be between 0-255
 */
-#ifndef MAX_SONG_AMOUNT
-#define MAX_SONG_AMOUNT (uint8_t)255
-#endif
+constexpr uint8_t RGB_BRIGHTNESS = 200;
 
+// Pin of the "RED" led on the RGB status led.
+constexpr uint8_t RGB_RED = 9;
+// Pin of the "GREEN" led on the RGB status led.
+constexpr uint8_t RGB_GREEN = 10;
+// Pin of the "BLUE" led on the RGB status led.
+constexpr uint8_t RGB_BLUE = 11;
 
-// CUSTOM LCD SYMBOLS use lcd.write(hex num) to write the characters.
+/*
+Tone Buttons
+Tone Buttons go from deepest pitch (green) to highest pitch (white).
+ */
+
+ // Green LED
+constexpr uint8_t BTN_TONE_1 = 27;
+// Blue LED
+constexpr uint8_t BTN_TONE_2 = 25;
+// Red LED
+constexpr uint8_t BTN_TONE_3 = 28;
+// Yellow LED
+constexpr uint8_t BTN_TONE_4 = 26;
+// White LED
+constexpr uint8_t BTN_TONE_5 = 24;
+
+// Interaction Buttons
+
+constexpr uint8_t BTN_ADD_SELECT = 2;
+constexpr uint8_t BTN_DEL_CANCEL = 3;
+constexpr uint8_t BTN_OPTION = 4;
+
+// Potentiometer
+constexpr uint8_t TONE_FREQ = PIN_A7;
+// Speaker
+constexpr uint8_t SPEAKER_1 = 34;
+
+/* General Definitions */
+
+// How many columns the LCD has.
+constexpr uint8_t LCD_COLS = 20;
+// How many rows the LCD has.
+constexpr uint8_t LCD_ROWS = 4;
+
+// The delay between reading each button press.
+constexpr uint16_t DEBOUNCE_RATE = 1000;
+
+// Maximum length of songs.
+constexpr uint8_t MAX_SONG_LENGTH = 255;
+// Maximum allowed number of songs.
+constexpr uint8_t MAX_SONG_AMOUNT = 255;
+
+/*
+*************************
+*** Custom Characters ***
+*************************
+*/
 
 /*Custom Char symbol for music note.*/
-#define MUSIC_NOTE_SYMBOL 0x00
+constexpr uint8_t MUSIC_NOTE_SYMBOL = 0x00;
 const byte MUSIC_NOTE[8] PROGMEM = {
   0x04,
   0x06,
@@ -183,7 +127,7 @@ const byte MUSIC_NOTE[8] PROGMEM = {
 };
 
 /*Custom Char symbol for a playing song symbol.*/
-#define PLAYING_SONG_SYMBOL 0x01
+constexpr uint8_t PLAYING_SONG_SYMBOL = 0x01;
 const byte PLAYING_SONG[8] PROGMEM = {
   0x10,
   0x18,
@@ -196,7 +140,7 @@ const byte PLAYING_SONG[8] PROGMEM = {
 };
 
 /*Custom Char symbol for a paused song symbol.*/
-#define PAUSE_SONG_SYMBOL 0x02
+constexpr uint8_t PAUSE_SONG_SYMBOL = 0x02;
 const byte PAUSE_SONG[8] PROGMEM = {
   0x00,
   0x1B,
@@ -207,8 +151,9 @@ const byte PAUSE_SONG[8] PROGMEM = {
   0x1B,
   0x00
 };
+
 /*Custom Char symbol for a progress block.*/
-#define PROGRESS_BLOCK_SYMBOL 0x03
+constexpr uint8_t PROGRESS_BLOCK_SYMBOL = 0x03;
 const byte PROGRESS_BLOCK[8] PROGMEM = {
   0x1F,
   0x1F,
@@ -220,14 +165,18 @@ const byte PROGRESS_BLOCK[8] PROGMEM = {
   0x1F
 };
 
-///////////////////////////////////////
-//// TONES, PITCHES, AND FREQUENCY ////
-///////////////////////////////////////
+/*
+*************************************
+*** Tones, Pitches, and Frequency ***
+*************************************
+*/
+
 // There are 85 different frequencies which can be used for making songs in TuneStudio2560.
 // Each of these is called a "note" which contains the frequency to play the buzzer and a human readable "pitch".
 // The pitch is as defined on the musical chromatic scale.
-#define TONE_BUTTON_AMOUNT 5
-#define TONES_PER_BUTTON 17
+
+constexpr uint8_t TONE_BUTTON_AMOUNT = 5;
+constexpr uint8_t TONES_PER_BUTTON = 17;
 
 /**
  * @brief Represents an individual "note" in TuneStudio which contains
@@ -235,8 +184,8 @@ const byte PROGRESS_BLOCK[8] PROGMEM = {
  * by the buzzer.
  */
 typedef struct note {
-    const char* pitch;
-    const uint16_t frequency;
+  const char* pitch;
+  const uint16_t frequency;
 } note;
 
 /**
@@ -244,8 +193,8 @@ typedef struct note {
  * Each tune button can play 17 different notes in their respective range.
  */
 typedef struct buttonFrequencies {
-    const uint8_t pin;
-    const note notes[TONES_PER_BUTTON];
+  const uint8_t pin;
+  const note notes[TONES_PER_BUTTON];
 } buttonFrequencies;
 
 
@@ -264,27 +213,24 @@ const buttonFrequencies toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
  * @brief A note which defines a pause.
  *
  */
-#define PAUSE_NOTE note { (const char*)"PS", (const uint16_t)1 }
+constexpr note PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
 
- ///////////////////////////////
- //// MAIN PROGRAM METHODS ////
- /////////////////////////////
- // The different methods which are used in the main class.
- //TODO: Make LCD an "extern" function once the lcd class is made. Make a getter for segDisplay?
+/*
+*********************************
+*** Program Methods & Globals ***
+*********************************
+*/
 
- /**
-  * @brief The primary LCD object which controls the main LCD.
-  *
-  */
+/**
+ * @brief The primary LCD object which controls the main LCD.
+ *
+ */
 inline LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
 
 /**
  * @brief Represents the 4-wide 7 segment display which is connected to 2x SN74HC595N shift registers.
  */
 inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
-
-
-
 
 /**
  * @return If the microSD card is enabled.
@@ -305,12 +251,12 @@ bool is_interrupt();
  *
  * @param milliseconds The time to delay for.
  */
-inline void delay(unsigned long milliseconds) __attribute__((always_inline));
-void delay(unsigned long milliseconds) {
-    const unsigned long waitTime = milliseconds + millis();
-    while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
-        continue;
-    }
+inline void delay(const unsigned long milliseconds) __attribute__((always_inline));
+void delay(const unsigned long milliseconds) {
+  const unsigned long waitTime = milliseconds + millis();
+  while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
+    continue;
+  }
 }
 
 /**

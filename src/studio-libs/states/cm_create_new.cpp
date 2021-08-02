@@ -100,12 +100,11 @@ void CreatorModeCreateNew::loop() {
 
             // Update the fileName variable.
             set_save_name();
-            //char buffer[13];
-            //strncat(buffer, ".txt", 4);
 
+#if DEBUG == true
             Serial.print(F("Saving Song file: "));
             Serial.println(fileName);
-
+#endif
             // Exit the program.
             if (fileName[0] == '\0') {
                 optionWaiting = false;
@@ -281,12 +280,14 @@ void CreatorModeCreateNew::set_save_name() {
     char analogChar = get_character_from_analog();
     while (true) {
         // Update every 32 milliseconds.
-        if (millis() % 32 == 0) {
+        if (millis() & ((2 ^ 5) - 1)) {
             analogChar = get_character_from_analog();
+            segDisplay.refreshDisplay();
+            lcd.setCursor(0, 2);
+            lcd.print(F("Name > "));
         }
-        segDisplay.refreshDisplay();
-        lcd.setCursor(0, 2);
-        lcd.print(F("Name > "));
+
+
         // Go through the current name array and print it out.
         for (int i = 0; i < index; i++) {
             lcd.print(name[i]);

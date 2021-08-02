@@ -238,7 +238,6 @@ note get_note_from_pitch(const char* pitch) {
       if (((char*)pgm_read_word(&toneButtons[i].notes[j].pitch)) == pitch) {
         //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
         uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
-        Serial.println(pitch);
         return note{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
       }
     }

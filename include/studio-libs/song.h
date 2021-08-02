@@ -15,7 +15,6 @@
 #include <studio-libs/tune_studio.h>
 #include <Arduino.h>
 
-
 #if PRGM_MODE == 0
 typedef uint8_t song_size_t;
 #elif PRGM_MODE == 2
@@ -24,34 +23,12 @@ typedef uint32_t song_size_t;
 typedef uint8_t song_size_t;
 #endif
 
-// The delay that should be added to the song when the user adds a pause.
-#ifndef PAUSE_DELAY
-#define PAUSE_DELAY (uint16_t)500
-#endif
+// The time to delay the song when the user adds a pause.
+constexpr uint16_t PAUSE_DELAY = 500;
 
- // Defines what number should be used to indicate that the song should wait while pausing.
-#ifndef PAUSE_FREQ
-#define PAUSE_FREQ 0x01
-#endif
+constexpr uint8_t PAUSE_FREQ = 0x01;
+constexpr uint8_t EMPTY_FREQ = 0x00;
 
-// Represents a part of the song array that has not yet been filled. (Empty)
-#ifndef EMPTY_FREQ
-#define EMPTY_FREQ 0x00
-#endif
-
-// Where in the EEPROM should the songs be saved?
-#ifndef EEPROM_SONG_SAVE_ADDR
-#define EEPROM_SONG_SAVE_ADDR 0x00
-#endif
-/*
-#if PRGM_MODE == 0
-using prgm_song_size = uint8_t;
-#elif PRGM_MODE == 2
-using prgm_song_size = uint32_t;
-#else
-using prgm_song_size = uint16_t;
-#endif
-*/
 class Song {
 private:
     uint8_t _pin; // The pin to send the frequencies to.
