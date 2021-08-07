@@ -25,7 +25,7 @@
 
 
 // Debug Variables (True for Serial prints)
-#define DEBUG false
+#define DEBUG true
 
 // Program Mode Selection
 // Change the performance, SRAM, and flash usage by adjusting.

@@ -63,22 +63,12 @@ bool Song::is_song_full() {
 
 void Song::add_note(uint16_t note) {
     if (Song::is_song_full()) return;
-    for (song_size_t i = 0; i < this->_maxLength; i++) {
-        if (_songData[i] == EMPTY_FREQ) {
-            _songData[i] = note;
-            return;
-        }
-    }
+    _songData[get_size()] = note;
 }
 
 void Song::add_pause() {
     if (Song::is_song_full()) return;
-    for (song_size_t i = 0; i < this->_maxLength; i++) {
-        if (_songData[i] == EMPTY_FREQ) {
-            _songData[i] = PAUSE_FREQ;
-            return;
-        }
-    }
+    _songData[get_size()] = PAUSE_NOTE.frequency;
 }
 
 void Song::remove_note() {
@@ -87,9 +77,10 @@ void Song::remove_note() {
 
 void Song::play_song() {
     song_size_t songIndex = 0;
+    const uint8_t size = get_size();
     // While the song index is not empty and does not equal the maximum length allowed.
-    while (_songData[songIndex] != EMPTY_FREQ && songIndex != this->_maxLength) {
-        if (_songData[songIndex] == PAUSE_FREQ) {
+    while (songIndex != size) {
+        if (_songData[songIndex] == PAUSE_NOTE.frequency) {
             delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
             songIndex++; // Go to the next index of the song.
             continue; // Go to the next iteration of the loop.

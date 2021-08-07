@@ -57,7 +57,7 @@ SDModule::SDModule(uint8_t csPin) {
 #if DEBUG == true
     Serial.println(F("SD Module has been initalized."));
 #endif
-    print_info();
+    //print_info();
 }
 
 void SDModule::print_info() {
@@ -157,4 +157,32 @@ void SDModule::save_song(const char* fileName, Song* song) {
 #if DEBUG == true
     Serial.println(F("Finished writing with SD Card."));
 #endif
+}
+
+const char* SDModule::get_file(uint8_t index) {
+    File baseDir = SD.open("/");
+    uint8_t count = 0;
+    while (true) {
+        File entry = baseDir.openNextFile();
+        //SD.root();
+        if (!entry) {
+            baseDir.rewindDirectory();
+            entry.close();
+            Serial.println("Entry Terminated, not found. Count: " + String(count));
+            return "";
+        }
+        // Ignore directories
+        if (entry.isDirectory()) {
+            Serial.println(F("Encountered Directory."));
+            continue;
+        }
+        if (count == index) {
+            entry.close();
+            return entry.name();
+        }
+        count++;
+    }
+    Serial.println(F("End of method reached. Entry terminated."));
+    //entry.close();
+    return "";
 }

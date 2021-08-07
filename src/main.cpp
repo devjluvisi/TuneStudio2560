@@ -121,6 +121,7 @@ void setup()
   pinMode(BTN_OPTION, INPUT_PULLUP);
   pinMode(TONE_FREQ, INPUT);
   pinMode(SPEAKER_1, OUTPUT);
+  pinMode(SD_CS_PIN, OUTPUT);
 
   // Interrupt to handle when the select button is pressed.
   attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, CHANGE);

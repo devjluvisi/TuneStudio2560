@@ -27,18 +27,23 @@ class ListeningModePlayingSong : public ProgramState {
 private:
     void init() override;
     void loop() override;
+    SDModule sdCard;
 public:
     ListeningModePlayingSong();
     ~ListeningModePlayingSong();
+
 };
 
 class ListeningModeMenu : public ProgramState {
 private:
     void init() override;
     void loop() override;
+    SDModule sdCard;
+
 public:
     ListeningModeMenu();
     ~ListeningModeMenu();
+
 };
 
 class CreatorModeMenu : public ProgramState {

@@ -11,18 +11,30 @@
 
 #include <studio-libs/states/states.h>
 
-ListeningModeMenu::ListeningModeMenu() : ProgramState::ProgramState(LM_MENU) {}
+ListeningModeMenu::ListeningModeMenu() : ProgramState::ProgramState(LM_MENU), sdCard(SD_CS_PIN) {}
 ListeningModeMenu::~ListeningModeMenu() {}
 
 void ListeningModeMenu::loop() {
+    SDModule mod(SD_CS_PIN);//not working LOL
+    if (millis() % 64 == 0) {
+        File test = SD.open("HI_LOL.TXT");
+        if (test) {
+            Serial.print("WORKING");
+        }
+        for (int i = 0; i < 5; i++) {
+            Serial.println("FILE " + String(i) + ": " + String(mod.get_file(i)));
+        }
+    }
+
+
     lcd.setCursor(2, 0);
     lcd.print(F("[Listening Mode]"));
     // If the SD card is enabled then also print the name of the song.
-    if (sd_enabled()) {
-        lcd.setCursor(0, 1);
-        lcd.print(F(">> Name: "));
-        lcd.print(F("NULL    "));
-    }
+    lcd.setCursor(0, 1);
+    lcd.print(F(">> Name: "));
+    lcd.print(F("NULL    "));
+
+
     lcd.setCursor(0, 2);
     lcd.print(F(">> Song #"));
     lcd.print(get_selected_song());
@@ -99,5 +111,6 @@ void ListeningModeMenu::init() {
     print_lcd(F("Press the \"DEL/CANCEL\" button to go back to main menu."));
     print_lcd(F("While listening, press \"SELECT\" to pause song."));
     print_lcd(F("While listening, press \"OPTION+DEL\" to delete song."));
+    //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
     delay(1500);
 }

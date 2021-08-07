@@ -96,6 +96,7 @@ void CreatorModeCreateNew::loop() {
             }
             // Initalize an SD card module.
             SDModule sdCard(SD_CS_PIN);
+
             optionWaiting = false;
 
             // Update the fileName variable.
@@ -279,13 +280,21 @@ void CreatorModeCreateNew::set_save_name() {
 
     char analogChar = get_character_from_analog();
     while (true) {
+
         // Update every 32 milliseconds.
         if (millis() & ((2 ^ 5) - 1)) {
             analogChar = get_character_from_analog();
             segDisplay.refreshDisplay();
-            lcd.setCursor(0, 2);
-            lcd.print(F("Name > "));
+            if (optionWaiting) {
+                analogWrite(RGB_BLUE, RGB_BRIGHTNESS);
+            }
+            else {
+                analogWrite(RGB_BLUE, 0);
+            }
         }
+
+        lcd.setCursor(0, 2);
+        lcd.print(F("Name > "));
 
 
         // Go through the current name array and print it out.
@@ -303,12 +312,7 @@ void CreatorModeCreateNew::set_save_name() {
             optionWaiting = !optionWaiting;
         }
 
-        if (optionWaiting) {
-            analogWrite(RGB_BLUE, RGB_BRIGHTNESS);
-        }
-        else {
-            analogWrite(RGB_BLUE, 0);
-        }
+
 
         if (is_pressed(BTN_ADD_SELECT)) {
             // Return an array of each character.

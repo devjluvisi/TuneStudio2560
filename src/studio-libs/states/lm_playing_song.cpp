@@ -11,7 +11,7 @@
 
 #include <studio-libs/states/states.h>
 
-ListeningModePlayingSong::ListeningModePlayingSong() : ProgramState::ProgramState(LM_PLAYING_SONG) {}
+ListeningModePlayingSong::ListeningModePlayingSong() : ProgramState::ProgramState(LM_PLAYING_SONG), sdCard(SD_CS_PIN) {}
 ListeningModePlayingSong::~ListeningModePlayingSong() {}
 
 void ListeningModePlayingSong::loop() {
@@ -20,6 +20,7 @@ void ListeningModePlayingSong::loop() {
 
 void ListeningModePlayingSong::init() {
     lcd.print(F(">> Song #"));
+    sdCard.print_info();
     lcd.print(get_selected_song());
     lcd.setCursor(0, 1);
     lcd.write(byte(PLAYING_SONG_SYMBOL));
@@ -30,5 +31,5 @@ void ListeningModePlayingSong::init() {
     for (uint8_t i = 0; i < 5; i++) {
         lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
     }
-    delay(5000);
+    delay(500);
 }

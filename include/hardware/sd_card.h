@@ -62,5 +62,13 @@ public:
      */
     Song get_song(const char* fileName);
 
+    /**
+     * @brief Get the nth file in the sd card.
+     *
+     * @param index The number to search for.
+     * @return The name of the file at the specified index.
+     */
+    const char* get_file(uint8_t index);
+
 };
 #endif

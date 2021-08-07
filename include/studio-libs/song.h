@@ -25,8 +25,6 @@ typedef uint8_t song_size_t;
 
 // The time to delay the song when the user adds a pause.
 constexpr uint16_t PAUSE_DELAY = 500;
-
-constexpr uint8_t PAUSE_FREQ = 0x01;
 constexpr uint8_t EMPTY_FREQ = 0x00;
 
 class Song {
