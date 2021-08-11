@@ -68,8 +68,6 @@ volatile bool immediateInterrupt = false;
 volatile unsigned long lastButtonPress = 0; // The last time a button was pressed in millis().
 volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
 volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
-volatile bool SDEnabled = true; // If the microSD card is enabled.
-
 
 
 //////////////////////////////
@@ -91,6 +89,15 @@ bool is_interrupt() {
   return immediateInterrupt;
 }
 
+
+////////////////////////////////
+//// SETUP & LOOP FUNCTIONS ////
+////////////////////////////////
+
+/**
+ * @brief Keeps track of the current state of the program.
+ * Read more about program states in the state.h class.
+ */
 ProgramState* prgmState;
 
 void setup()
@@ -141,7 +148,8 @@ void setup()
   lcd.createChar(PAUSE_SONG_SYMBOL, buffer);
   memcpy_P(buffer, PROGRESS_BLOCK, 8);
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, buffer);
-
+  memcpy_P(buffer, FINISHED_SONG, 8);
+  lcd.createChar(FINISHED_SONG_SYMBOL, buffer);
   // Setup 4-wide 7 segment display.
   // More information: https://github.com/bridystone/SevSegShift
 
@@ -163,25 +171,42 @@ void setup()
   segDisplay.blank();
   segDisplay.refreshDisplay();
 
+  // Setup SD Card
+  if (!SD.begin(SD_CS_PIN)) {
+    lcd.setCursor(0, 1);
+    lcd.print(F("SD CARD ERROR."));
+    lcd.setCursor(0, 2);
+    lcd.print(F("CHECK SERIAL."));
+#if DEBUG == true
+    Serial.println(F("[CRITICAL] SD module cannot be initalized due to one or more problems."));
+    Serial.println(F("* Is the card properly inserted?"));
+    Serial.println(F("* Is the card correctly wired to the board?"));
+    Serial.println(F("* Did you change the CS pin to match your board?"));
+    Serial.println(F("* Have you verified the card is working on a PC?"));
+    Serial.println(F("* Is the format for the microSD either FAT16 or FAT32?"));
+    Serial.println(F("View https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers for more information."));
+#endif
+    while (true) {
+      analogWrite(RGB_RED, RGB_BRIGHTNESS);
+      delay(500);
+      analogWrite(RGB_RED, 0);
+      delay(500);
+    }
+  }
+
   prgmState = new MainMenu();
 
 }
 
 void loop()
 {
-
   prgmState->execute();
   immediateInterrupt = false;
-
 }
 
 ////////////////////////
 //// AUDIO METHODS ////
 //////////////////////
-
-bool sd_enabled() {
-  return SDEnabled;
-}
 
 void set_selected_page(uint8_t page) {
   selectedPage = page;
@@ -236,13 +261,14 @@ note get_note_from_pitch(const char* pitch) {
   // 5 tune buttons, 17 pitches each
   for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
     for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
-      if (((char*)pgm_read_word(&toneButtons[i].notes[j].pitch)) == pitch) {
+      if (strcmp((char*)pgm_read_word(&toneButtons[i].notes[j].pitch), pitch) == 0) {
         //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
         uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
         return note{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
       }
     }
   }
+  Serial.println(F("Unknown Tone"));
   return note{ "0000", 0 };
 }
 
@@ -359,7 +385,6 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
 ////////////////////////////
 //// BUTTONS & ACTIONS ////
 //////////////////////////
-
 void update_state(StateID state) {
   if (state == prgmState->get_state()) {
     return;
@@ -412,6 +437,9 @@ void select_btn_click() {
       immediateInterrupt = true;
       return;
     }
+    if (strcmp(sd_get_file(selectedSong - 1), "") == 0) {
+      return;
+    }
     // For actually playing the song.
     update_state(LM_PLAYING_SONG);
     return;
@@ -462,7 +490,6 @@ void cancel_btn_click() {
   }
   case LM_PLAYING_SONG:
   {
-    update_state(LM_MENU);
     return;
   }
   case CM_CREATE_NEW:
@@ -486,4 +513,142 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
     return true;
   }
   return false;
+}
+
+////////////////////////////
+//// SD CARD FUNCTIONS ////
+//////////////////////////
+void sd_save_song(char* fileName, Song* song) {
+  File songFile;
+  if (SD.exists(fileName)) {
+#if DEBUG == true
+    Serial.print(fileName);
+    Serial.println(F(" already exists. Overwriting..."));
+#endif
+    // Delete the old file.
+    SD.remove(fileName);
+  }
+  else {
+#if DEBUG == true
+    Serial.print(F("Creating "));
+    Serial.println(fileName);
+#endif
+  }
+  songFile = SD.open(fileName, FILE_WRITE);
+
+  songFile.println(F("# Welcome to a song file!"));
+  songFile.println(F("# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
+  songFile.println(F(""));
+  songFile.println(F("Data:"));
+
+  for (song_size_t i = 0; i < song->get_size(); i++) {
+
+    const char* pitch = get_note_from_freq(song->get_note(i)).pitch;
+
+    songFile.print(F("  - "));
+    songFile.println(pitch);
+
+  }
+  songFile.println(F(""));
+  songFile.println(F("# END"));
+  songFile.close();
+#if DEBUG == true
+  Serial.println(F("Finished writing with SD Card."));
+#endif
+}
+
+void sd_rem(const char* fileName) {
+  char* name = (char*)fileName;
+  if (SD.exists(name)) {
+#if DEBUG == true
+    Serial.print(fileName);
+    Serial.println(F(" HAS BEEN DELETED FROM SD CARD."));
+#endif
+    // Delete the old file.
+    SD.remove(name);
+  }
+}
+
+
+File entry;
+
+const char* sd_get_file(uint8_t index) {
+  File baseDir = SD.open("/");
+  baseDir.rewindDirectory();
+  uint8_t count = 0;
+  while (true) {
+    entry = baseDir.openNextFile();
+    //SD.root();
+    if (!entry) {
+      baseDir.close();
+      entry.close();
+      return "";
+    }
+    // Ignore directories
+    if (entry.isDirectory()) {
+      entry.close();
+      continue;
+    }
+    if (count == index) {
+      baseDir.close();
+      entry.close();
+      return entry.name();
+    }
+    entry.close();
+    count++;
+  }
+
+  baseDir.close();
+  entry.close();
+
+  //entry.close();
+  return "";
+}
+
+void sd_songcpy(Song* song, const char* fileName) {
+
+  File entry = SD.open(fileName);
+
+  // If the file does not exist.
+  if (!entry) {
+    entry.close();
+    return;
+  }
+
+  // As long as their are avaliable characters in the file.
+  while (entry.available()) {
+    // Store the current character.
+    char letter = entry.read();
+
+    // Ignore the lines with hashtags.
+    if (letter == '#') {
+      while (letter != '\n') {
+        letter = entry.read();
+      }
+    }
+
+    // Find the lines with a '-' which indicates that they are notes.
+    if (letter == '-') {
+      char buffer[4];
+      uint8_t index = 0;
+      // Note: we are on a line with a '-'
+      // Go through each character of the line until we find a line break.
+      while (entry.peek() != '\n') {
+        letter = entry.read();
+        // Ignore the spaces.
+        if (letter == ' ') {
+          continue;
+        }
+        // Add the character to the buffer.
+        buffer[index] = letter;
+        index++;
+      }
+      // Set a terminating character.
+      buffer[index - 1] = '\0';
+      // Add the note.
+      song->add_note(get_note_from_pitch(buffer).frequency);
+    }
+  }
+  // Close the file
+  entry.close();
 }

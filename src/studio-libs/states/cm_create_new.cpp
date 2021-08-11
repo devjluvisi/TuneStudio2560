@@ -95,8 +95,6 @@ void CreatorModeCreateNew::loop() {
                 return;
             }
             // Initalize an SD card module.
-            SDModule sdCard(SD_CS_PIN);
-
             optionWaiting = false;
 
             // Update the fileName variable.
@@ -121,7 +119,8 @@ void CreatorModeCreateNew::loop() {
             // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
             strncpy(buffer + strlen(fileName), fileExtension, strlen(fileExtension) + 1);
             // Save the song.
-            sdCard.save_song(buffer, newSong);
+            sd_save_song(buffer, newSong);
+
             lcd.clear();
             lcd.setCursor(0, 1);
             lcd.print(F("Song Saved."));

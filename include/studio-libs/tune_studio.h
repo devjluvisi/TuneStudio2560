@@ -19,13 +19,13 @@
 #include <Arduino.h>
 #include <studio-libs/song.h>
 #include <debug/debug.h>
-#include <hardware/sd_card.h>
+#include <SD.h>
+#include <SPI.h>
 // Different states.
 #include <studio-libs/state.h>
 
-
 // Debug Variables (True for Serial prints)
-#define DEBUG true
+#define DEBUG false
 
 // Program Mode Selection
 // Change the performance, SRAM, and flash usage by adjusting.
@@ -37,6 +37,10 @@
 //// COMPILER DEFINITIONS ////
 //////////////////////////////
 // Below are various different constant definitions for the compiler to use.
+
+
+class Song;
+
 
 /*
 ************************
@@ -100,7 +104,7 @@ constexpr uint8_t LCD_COLS = 20;
 constexpr uint8_t LCD_ROWS = 4;
 
 // The delay between reading each button press.
-constexpr uint16_t DEBOUNCE_RATE = 1000;
+constexpr uint16_t DEBOUNCE_RATE = 500;
 
 // Maximum length of songs.
 constexpr uint8_t MAX_SONG_LENGTH = 255;
@@ -164,7 +168,18 @@ const byte PROGRESS_BLOCK[8] PROGMEM = {
   0x1F,
   0x1F
 };
-
+/*Custom char symbol for when a song is finished*/
+constexpr uint8_t FINISHED_SONG_SYMBOL = 0x04;
+const byte FINISHED_SONG[8] PROGMEM = {
+  0x1F,
+  0x1F,
+  0x1F,
+  0x10,
+  0x10,
+  0x10,
+  0x10,
+  0x10
+};
 /*
 *************************************
 *** Tones, Pitches, and Frequency ***
@@ -231,11 +246,6 @@ inline LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
  * @brief Represents the 4-wide 7 segment display which is connected to 2x SN74HC595N shift registers.
  */
 inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
-
-/**
- * @return If the microSD card is enabled.
- */
-bool sd_enabled();
 
 /**
  * @return If the interrupt flag is true.
@@ -388,4 +398,43 @@ note get_note_from_freq(const uint16_t frequency);
  * @return note The note which matches the frequency.
  */
 note get_note_from_pitch(const char* pitch);
+
+/*
+SD CARD FUNCTIONS
+*/
+
+
+/**
+ * @brief Saves a song class to the SD card by using the SD.h library and writing all of
+ * the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot
+ * be longer then 8 characters and should include a .TXT extension.
+ *
+ * @param fileName The name to save the song as.
+ * @param song The song to save.
+ */
+void sd_save_song(char* fileName, Song* song);
+
+/**
+ * @brief Gets a file from the SD card in descending order. For example index "0" would be the file at the top of the SD card.
+ *
+ * @param index The index of the file to get.
+ * @return The name of the file (includes the file extension)
+ */
+const char* sd_get_file(uint8_t index);
+
+/**
+ * @brief Copies song data from a .txt file onto a song pointer. Note that this only reads the file and copies its frequencies.
+ * The file must be in the correct format to work properly.
+ *
+ * @param song The song to copy to.
+ * @param fileName The path in the SD card.
+ */
+void sd_songcpy(Song* song, const char* fileName);
+
+/**
+ * @brief Delete a file from the microSD.
+ *
+ * @param fileName The file to delete.
+ */
+void sd_rem(const char* fileName);
 #endif

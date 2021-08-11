@@ -11,28 +11,52 @@
 
 #include <studio-libs/states/states.h>
 
-ListeningModeMenu::ListeningModeMenu() : ProgramState::ProgramState(LM_MENU), sdCard(SD_CS_PIN) {}
+ListeningModeMenu::ListeningModeMenu() : ProgramState::ProgramState(LM_MENU) {}
 ListeningModeMenu::~ListeningModeMenu() {}
 
 void ListeningModeMenu::loop() {
-    SDModule mod(SD_CS_PIN);//not working LOL
-    if (millis() % 64 == 0) {
-        File test = SD.open("HI_LOL.TXT");
-        if (test) {
-            Serial.print("WORKING");
-        }
-        for (int i = 0; i < 5; i++) {
-            Serial.println("FILE " + String(i) + ": " + String(mod.get_file(i)));
-        }
+
+    /*
+    if (millis() % 48 == 0) {
+        Song* s = new Song(SPEAKER_1, 20, 40, 255, false);
+        s->add_note(200);
+        s->add_pause();
+        s->add_note(200);
+        sdCard.save_song("GX1", s);
+        delete s;
     }
+*/
+
+//TODO:
 
 
     lcd.setCursor(2, 0);
     lcd.print(F("[Listening Mode]"));
     // If the SD card is enabled then also print the name of the song.
     lcd.setCursor(0, 1);
-    lcd.print(F(">> Name: "));
-    lcd.print(F("NULL    "));
+
+    const char* name = sd_get_file(get_selected_song() - 1);
+    if (previousSong != get_selected_song()) {
+        lcd.print(F(">> Name: "));
+        //const char* name = "LOL";
+        if (strlen(name) != 0) {
+            lcd.print(F("         "));
+            lcd.setCursor(8, 1);
+            lcd.print(name);
+
+        }
+        else {
+            lcd.print(F("         "));
+            lcd.setCursor(8, 1);
+            lcd.print(F("NONE"));
+        }
+        previousSong = get_selected_song();
+    }
+
+
+
+
+    //lcd.print(F("NULL    "));
 
 
     lcd.setCursor(0, 2);
@@ -97,6 +121,7 @@ void ListeningModeMenu::init() {
 #if DEBUG == true
     Serial.println(F("Entered listening mode."));
 #endif
+    previousSong = 0;
     delay(500);
     lcd.setCursor(2, 1);
     lcd.print(F("[Listening Mode]"));
@@ -110,6 +135,7 @@ void ListeningModeMenu::init() {
     print_lcd(F("When using microSD, press the \"OPTION\" button to cycle to the next page of songs. Each page is 5 different songs."));
     print_lcd(F("Press the \"DEL/CANCEL\" button to go back to main menu."));
     print_lcd(F("While listening, press \"SELECT\" to pause song."));
+    print_lcd(F("While paused, press Green Tone to go back, Blue Tone to go forward, and Red Tone to restart."));
     print_lcd(F("While listening, press \"OPTION+DEL\" to delete song."));
     //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
     delay(1500);

@@ -46,12 +46,16 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxL
 
 Song::~Song() {
 #if DEBUG == true
-    Serial.println(F("Removed from the stack."));
+    Serial.println(F("Song has been removed from the stack."));
 #endif
     delete[] _songData;
 }
 
 void Song::play_note(uint16_t note) {
+#if DEBUG == true
+    Serial.print(F("Playing note: "));
+    Serial.println(note);
+#endif
     tone(_pin, note);
 }
 
@@ -77,7 +81,7 @@ void Song::remove_note() {
 
 void Song::play_song() {
     song_size_t songIndex = 0;
-    const uint8_t size = get_size();
+    const song_size_t size = get_size();
     // While the song index is not empty and does not equal the maximum length allowed.
     while (songIndex != size) {
         if (_songData[songIndex] == PAUSE_NOTE.frequency) {
