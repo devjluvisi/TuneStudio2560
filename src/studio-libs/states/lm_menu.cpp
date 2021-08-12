@@ -117,7 +117,7 @@ void ListeningModeMenu::init() {
     print_lcd(F("When using microSD, press the \"OPTION\" button to cycle to the next page of songs. Each page is 5 different songs."));
     print_lcd(F("Press the \"DEL/CANCEL\" button to go back to main menu."));
     print_lcd(F("While listening, press \"SELECT\" to pause song."));
-    print_lcd(F("While paused, press Green Tone to go back, Blue Tone to go forward, and Red Tone to restart."));
+    print_lcd(F("While paused, press Green Tone to go back, Blue Tone to go forward, and SELECT to restart after a song is finished."));
     print_lcd(F("While listening, press \"OPTION+DEL\" to delete song."));
     //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
     delay(1500);

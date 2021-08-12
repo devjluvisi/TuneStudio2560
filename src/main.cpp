@@ -691,7 +691,7 @@ const char* sd_get_file(uint8_t index) {
     }
 
     // Skip if directory, README file, or if the file does not have a .txt extension.
-    if (entry.isDirectory() || !strstr(entry.name(), ".TXT") || strcmp(entry.name(), "README.TXT") == 0) {
+    if (entry.isDirectory() || !strcasestr(entry.name(), FILE_TXT_EXTENSION) || strcmp(entry.name(), "README.TXT") == 0) {
       entry.close();
       continue;
     }
@@ -752,9 +752,10 @@ bool sd_songcpy(Song* song, const char* fileName) {
       }
       // Set a terminating character.
       buffer[index - 1] = '\0';
-      noteDelay = atoi(buffer);
+
       if (isToneDelay) {
         isToneDelay = false;
+        noteDelay = atoi(buffer);
 #if DEBUG == true
         Serial.print(get_active_time());
         Serial.print(F(" Read a TONE DELAY of: "));

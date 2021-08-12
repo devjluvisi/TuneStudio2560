@@ -190,7 +190,7 @@ void CreatorModeCreateNew::init() {
     segDisplay.setBrightness(-100);
     lcd.setCursor(0, 1);
 
-    newSong = new Song(SPEAKER_1, 50, 80, MAX_SONG_LENGTH, false);
+    newSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY, MAX_SONG_LENGTH, false);
 
     previousUpdate = 0;
     lastButtonPress = 0;

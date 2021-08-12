@@ -37,29 +37,32 @@ void ListeningModePlayingSong::loop() {
     // Timed on an interval.
     if (millis() - lastTextUpdate > bottomTextDelayInterval) {
         lcd_clear_row(3);
+
         switch (bottomTextMode) {
         case 0:
-            lcd.print(F("DEL/CANCEL: Exit"));
+            lcd.print(F("Song Size: "));
+            lcd.print(currentSongSize);
             break;
         case 1:
-            lcd.print(F("SELECT: Pause Song"));
+            lcd.print(F("Note Delay: "));
+            lcd.print(currentSong->get_note_delay());
             break;
         case 2:
-            lcd.print(F("PAUSE+GREEN: Rewind"));
+            lcd.print(F("Note Length: "));
+            lcd.print(currentSong->get_note_length());
             break;
         case 3:
-            lcd.print(F("PAUSE+BLUE: Forward"));
+            lcd.print(F("Song #: "));
+            lcd.print(get_selected_song());
             break;
         case 4:
-            lcd.print(F("HOLD OP+DEL: Delete"));
-            break;
-        case 5:
-            lcd.print(F("SELECT: Replay"));
+            lcd.print(F("Page #: "));
+            lcd.print(get_selected_page());
             break;
         }
         // Move to the next text mode.
         bottomTextMode++;
-        if (bottomTextMode == 6) {
+        if (bottomTextMode == 5) {
             bottomTextMode = 0;
         }
         lastTextUpdate = millis();
@@ -174,7 +177,7 @@ void ListeningModePlayingSong::loop() {
     // Return to main menu.
     else if (digitalRead(BTN_DEL_CANCEL) == LOW) {
         delay(1000);
-        update_state(MAIN_MENU);
+        update_state(LM_MENU);
         return;
     }
     // End
@@ -245,7 +248,7 @@ void ListeningModePlayingSong::init() {
     lastTonePlay = 0;
     confirmDelete = false;
     const char* name = sd_get_file(get_selected_song() - 1);
-    currentSong = new Song(SPEAKER_1, 50, 80, MAX_SONG_LENGTH, false);
+    currentSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY, MAX_SONG_LENGTH, false);
 
     if (strcmp(name, "") == 0) {
         lcd.clear();
@@ -272,6 +275,7 @@ void ListeningModePlayingSong::init() {
 
     lcd.setCursor(0, 2);
     lcd.print(F("PROGRESS: "));
+    // Put unfilled progress blocks.
     for (uint8_t i = 0; i < 8; i++) {
         lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
     }
