@@ -191,6 +191,19 @@ const byte FINISHED_SONG[8] PROGMEM = {
   0x10,
   0x10
 };
+
+/* Custom char symbol for an unfilled progress block */
+constexpr uint8_t PROGRESS_BLOCK_UNFILLED_SYMBOL = 0x05;
+const byte PROGRESS_BLOCK_UNFILLED[8] PROGMEM = {
+  0x1F,
+  0x11,
+  0x11,
+  0x11,
+  0x11,
+  0x11,
+  0x11,
+  0x1F
+};
 /*
 *************************************
 *** Tones, Pitches, and Frequency ***
@@ -352,7 +365,6 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
  */
 void lcd_clear_row(uint8_t row);
 
-
 // Audio Methods
 /**
  * @brief Set the selected page for selecting a song.
@@ -453,8 +465,10 @@ const char* sd_get_file(uint8_t index);
  *
  * @param song The song to copy to.
  * @param fileName The path in the SD card.
+ *
+ * @return If the song was able to be successfully copied.
  */
-void sd_songcpy(Song* song, const char* fileName);
+bool sd_songcpy(Song* song, const char* fileName);
 
 /**
  * @brief Delete a file from the microSD.

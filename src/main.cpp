@@ -175,6 +175,8 @@ void setup()
   lcd.createChar(PROGRESS_BLOCK_SYMBOL, buffer);
   memcpy_P(buffer, FINISHED_SONG, 8);
   lcd.createChar(FINISHED_SONG_SYMBOL, buffer);
+  memcpy_P(buffer, PROGRESS_BLOCK_UNFILLED, 8);
+  lcd.createChar(PROGRESS_BLOCK_UNFILLED_SYMBOL, buffer);
 #if DEBUG == true
   Serial.print(get_active_time());
   Serial.println(F(" lcd has been initalized."));
@@ -206,10 +208,6 @@ void setup()
 
   // Setup SD Card
   if (!SD.begin(SD_CS_PIN)) {
-    lcd.setCursor(0, 1);
-    lcd.print(F("SD CARD ERROR."));
-    lcd.setCursor(0, 2);
-    lcd.print(F("CHECK SERIAL."));
 #if DEBUG == true
     Serial.println(F("[CRITICAL] SD module cannot be initalized due to one or more problems."));
     Serial.println(F("* Is the card properly inserted?"));
@@ -219,12 +217,13 @@ void setup()
     Serial.println(F("* Is the format for the microSD either FAT16 or FAT32?"));
     Serial.println(F("View https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers for more information."));
 #endif
-    while (true) {
-      analogWrite(RGB_RED, RGB_BRIGHTNESS);
-      delay(500);
-      analogWrite(RGB_RED, 0);
-      delay(500);
-    }
+    lcd.clear();
+    lcd.setCursor(0, 1);
+    lcd.print(F("SD Card Error"));
+    lcd.setCursor(0, 2);
+    lcd.print(F("Check Serial."));
+    analogWrite(RGB_RED, RGB_BRIGHTNESS);
+    while (true) { ; }
   }
 #if DEBUG == true
   Serial.print(get_active_time());
@@ -447,7 +446,6 @@ void lcd_clear_row(uint8_t row) {
 }
 
 
-
 ////////////////////////////
 //// BUTTONS & ACTIONS ////
 //////////////////////////
@@ -508,9 +506,6 @@ void select_btn_click() {
     // For skipping the instructions.
     if (!prgmState->has_initalized()) {
       immediateInterrupt = true;
-      return;
-    }
-    if (strcmp(sd_get_file(selectedSong - 1), "") == 0 || strcmp(sd_get_file(selectedSong - 1), "README.TXT") == 0) {
       return;
     }
     // For actually playing the song.
@@ -591,6 +586,30 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
 ////////////////////////////
 //// SD CARD FUNCTIONS ////
 //////////////////////////
+
+void sd_throw_err(const __FlashStringHelper* reason, int line = -1) {
+#if DEBUG == true
+  Serial.print(get_active_time());
+  Serial.println(F(" SD Error has been thrown."));
+#endif
+  analogWrite(RGB_RED, RGB_BRIGHTNESS);
+  lcd.clear();
+  lcd.print(F("[SD CARD ERROR]"));
+  lcd.setCursor(0, 1);
+  lcd.print(reason);
+  if (line != -1) {
+    lcd.setCursor(0, 2);
+    lcd.print(F("Line: "));
+    lcd.print(line);
+  }
+  lcd.setCursor(0, 3);
+  lcd.print(F("Returning in 5s..."));
+  delay(5000);
+  analogWrite(RGB_RED, 0);
+  lcd.clear();
+  update_state(MAIN_MENU);
+}
+
 void sd_save_song(char* fileName, Song* song) {
   File songFile;
   if (SD.exists(fileName)) {
@@ -672,7 +691,7 @@ const char* sd_get_file(uint8_t index) {
     }
 
     // Skip if directory, README file, or if the file does not have a .txt extension.
-    if (entry.isDirectory() || strcmp(entry.name(), "README.TXT") == 0 || !strstr(entry.name(), ".TXT")) {
+    if (entry.isDirectory() || !strstr(entry.name(), ".TXT") || strcmp(entry.name(), "README.TXT") == 0) {
       entry.close();
       continue;
     }
@@ -686,15 +705,10 @@ const char* sd_get_file(uint8_t index) {
     entry.close();
     count++;
   }
-
-  baseDir.close();
-  entry.close();
-
-  //entry.close();
   return "";
 }
 
-void sd_songcpy(Song* song, const char* fileName) {
+bool sd_songcpy(Song* song, const char* fileName) {
 
   File entry = SD.open(fileName);
   bool isToneDelay = true;
@@ -702,7 +716,7 @@ void sd_songcpy(Song* song, const char* fileName) {
   // If the file does not exist.
   if (!entry) {
     entry.close();
-    return;
+    return false;
   }
 
   // Store these variables to update later if the user has input custom delays.
@@ -748,9 +762,9 @@ void sd_songcpy(Song* song, const char* fileName) {
 #endif
       }
       else {
-#if DEBUG == true
 
         noteLength = atoi(buffer);
+#if DEBUG == true
         Serial.print(get_active_time());
         Serial.print(F(" Read a TONE LENGTH of: "));
         Serial.println(buffer);
@@ -766,18 +780,8 @@ void sd_songcpy(Song* song, const char* fileName) {
       // Go through each character of the line until we find a line break.
       while (entry.peek() != '\n') {
         if (index == 4) {
-          lcd.clear();
-          lcd.setCursor(0, 1);
-          lcd.print(F("SD Parsing Error"));
-          lcd.setCursor(0, 2);
-          lcd.print(F("Line "));
-          lcd.print(songSize);
-          while (true) {
-            analogWrite(RGB_RED, RGB_BRIGHTNESS);
-            delay(500);
-            analogWrite(RGB_RED, 0);
-            delay(500);
-          }
+          entry.close();
+          return false;
         }
         letter = entry.read();
         // Ignore the spaces.
@@ -793,39 +797,21 @@ void sd_songcpy(Song* song, const char* fileName) {
       // Add the note.
       note foundNote = get_note_from_pitch(buffer);
       if (foundNote.frequency == EMPTY_NOTE.frequency) {
-        lcd.clear();
-        lcd.setCursor(0, 1);
-        lcd.print(F("SD Parsing Error"));
-        lcd.setCursor(0, 2);
-        lcd.print(F("Line "));
-        lcd.print(songSize);
-        while (true) {
-          analogWrite(RGB_RED, RGB_BRIGHTNESS);
-          delay(500);
-          analogWrite(RGB_RED, 0);
-          delay(500);
-        }
+        entry.close();
+        return false;
       }
       song->add_note(foundNote.frequency);
       songSize++;
     }
   }
   if (songSize < 8 || songSize > 255) {
-    lcd.clear();
-    lcd.setCursor(0, 1);
-    lcd.print(F("SD Parsing Error"));
-    lcd.setCursor(0, 2);
-    lcd.print(F("Bad Song Length."));
-    while (true) {
-      analogWrite(RGB_RED, RGB_BRIGHTNESS);
-      delay(500);
-      analogWrite(RGB_RED, 0);
-      delay(500);
-    }
+    entry.close();
+    return false;
   }
   song->set_attributes(noteLength, noteDelay);
   // Close the file
   entry.close();
+  return true;
 #if DEBUG == true
   Serial.print(get_active_time());
   Serial.print(F(" Copied a song ("));
@@ -858,12 +844,12 @@ const char* get_active_time() {
   strcat(buffer, "]");
   return buffer;
 }
-
+#endif
 void sd_make_readme() {
 
   File readMe;
 
-  if (SD.exists("README.TXT")) {
+  if (SD.exists((char*)"README.TXT")) {
     readMe.close();
     return;
   }
@@ -892,4 +878,3 @@ void sd_make_readme() {
   readMe.close();
 
 }
-#endif

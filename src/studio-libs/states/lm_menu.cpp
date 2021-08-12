@@ -37,6 +37,9 @@ void ListeningModeMenu::loop() {
         lcd_clear_row(2);
         lcd.print(F(">> Song #"));
         lcd.print(get_selected_song());
+        lcd.print(F("/("));
+        lcd.print(get_selected_page());
+        lcd.print(F(")"));
 
         previousSong = get_selected_song();
     }
@@ -87,7 +90,10 @@ void ListeningModeMenu::loop() {
                     }
                     else
                         if (is_pressed(BTN_OPTION)) {
+                            // Go to the next page and set the song to the first led.
                             set_selected_page(get_selected_page() + 1 > (MAX_SONG_AMOUNT / 5) ? 0 : get_selected_page() + 1);
+                            set_selected_song(((get_selected_page() - 1) * 5) + 1);
+                            previousSong = -1;
                             return;
                         }
 }

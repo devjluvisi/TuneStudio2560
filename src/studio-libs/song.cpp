@@ -137,3 +137,11 @@ void Song::set_attributes(uint8_t noteLength, uint16_t noteDelay) {
     Serial.println(F(" Updated attributes noteLength and noteDelay for a song class."));
 #endif
 }
+
+uint8_t Song::get_note_length() {
+    return _noteLength;
+}
+
+uint16_t Song::get_note_delay() {
+    return _noteDelay;
+}

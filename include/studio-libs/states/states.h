@@ -2,6 +2,7 @@
  * @file states.h
  * @author Jacob LuVisi
  * @brief Represents every different type of state in TuneStudio2560. Read more about states in the state.h class.
+ * Note that created variables in each of the states are global to that state only and are deleted upon changing states.
  * @version 0.1
  * @date 2021-07-26
  *
@@ -13,8 +14,6 @@
 #define states_h
 
 #include <studio-libs/tune_studio.h>
-
- //static SDModule sdCard(SD_CS_PIN);
 
 class MainMenu : public ProgramState {
 private:
@@ -33,9 +32,11 @@ private:
     uint8_t bottomTextMode; // Tracks what to display on the bottom line of the LCD.
     const uint16_t bottomTextDelayInterval = 5000;
     Song* currentSong;
+    bool invalidSong; // Track if the song is invalid and does not work.
     bool isPaused;
     bool confirmDelete;
     // For tracking the song.
+    unsigned long lastTonePlay;
     song_size_t currentSongNote; // Track the current note of the song we are playing.
     song_size_t currentSongSize; // The size of the current song.
     uint8_t blockRequirement; // Tracks how many notes are needed for each individual "block" in the "PROGRESS" label.
@@ -50,7 +51,6 @@ class ListeningModeMenu : public ProgramState {
 private:
     void init() override;
     void loop() override;
-    //SDModule sdCard;
     uint8_t previousSong;
 
 public:

@@ -126,5 +126,8 @@ public:
     song_size_t get_size();
 
     void set_attributes(uint8_t noteLength, uint16_t noteDelay);
+
+    uint8_t get_note_length();
+    uint16_t get_note_delay();
 };
 #endif

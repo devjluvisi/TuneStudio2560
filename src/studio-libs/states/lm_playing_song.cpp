@@ -22,6 +22,11 @@ ListeningModePlayingSong::~ListeningModePlayingSong() {
 }
 
 void ListeningModePlayingSong::loop() {
+    if (invalidSong) {
+        delay(1000);
+        update_state(LM_MENU);
+        return;
+    }
 
 #if PERF_METRICS == true
     // FOR DEBUG USE ONLY
@@ -108,10 +113,8 @@ void ListeningModePlayingSong::loop() {
             }
             currentSongNote -= 1;
             delay(100);
-            // Reset the PROGRESS block. (+2 because space)
             // NOTE: The progress bar needs to be reset because the instructions to update the progress bar usually do not 
             // account for a reduction in the block size. Therefore we need to regenerate the block size from zero.
-            lcd_clear_row(2);
             lcd.setCursor(strlen(PROGRESS_LABEL) + 1, 2);
             blockSize = blockRequirement;
             for (uint8_t i = 0; i < 8; i++) {
@@ -119,7 +122,10 @@ void ListeningModePlayingSong::loop() {
                     // Set the new requirement.
                     blockSize += blockRequirement;
                     // Add a block to the progress.
-                    lcd.write(byte(PROGRESS_BLOCK_SYMBOL)); 
+                    lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
+                }
+                else {
+                    lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
                 }
             }
         }
@@ -184,19 +190,19 @@ void ListeningModePlayingSong::loop() {
 
     Using DEBUG and PERF_METRIC modes can cause the notes to be delayed for a longer period of time.
     */
-    if (!isPaused && currentSongNote < currentSongSize) {
-        if (currentSong->get_note(currentSongNote) == PAUSE_NOTE.frequency) {
-            delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
-            currentSongNote++; // Go to the next index of the song.
-        }
-        else {
+    if (!isPaused && currentSongNote < currentSongSize && millis() - lastTonePlay > currentSong->get_note_delay()) {
+        if (currentSong->get_note(currentSongNote) != PAUSE_NOTE.frequency) {
             currentSong->play_note(currentSong->get_note(currentSongNote));
-            delay(50);
+            delay(currentSong->get_note_length());
             noTone(SPEAKER_1);
-            delay(80);
+            lastTonePlay = millis();
             currentSongNote++;
         }
-
+        else {
+            delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
+            lastTonePlay = millis();
+            currentSongNote++; // Go to the next index of the song.
+        }
     }
     else if (currentSongNote >= currentSongSize) {
         lcd.setCursor(1, 1);
@@ -227,14 +233,29 @@ void ListeningModePlayingSong::loop() {
 }
 
 void ListeningModePlayingSong::init() {
+#if DEBUG == true
+    Serial.print(get_active_time());
+    Serial.println(F(" Initalizing song player"));
+#endif
     currentSongNote = 0;
     bottomTextMode = 0;
     lastTextUpdate = 0;
     isPaused = false;
+    invalidSong = false;
+    lastTonePlay = 0;
     confirmDelete = false;
     const char* name = sd_get_file(get_selected_song() - 1);
     currentSong = new Song(SPEAKER_1, 50, 80, MAX_SONG_LENGTH, false);
 
+    if (strcmp(name, "") == 0) {
+        lcd.clear();
+        lcd.print(F("Invalid Song"));
+        analogWrite(RGB_RED, RGB_BRIGHTNESS);
+        delay(1000);
+        analogWrite(RGB_RED, 0);
+        invalidSong = true;
+        return;
+    }
     lcd.print(F("[#"));
     lcd.print(get_selected_song());
     lcd.print(F("] "));
@@ -251,7 +272,18 @@ void ListeningModePlayingSong::init() {
 
     lcd.setCursor(0, 2);
     lcd.print(F("PROGRESS: "));
-    sd_songcpy(currentSong, name);
+    for (uint8_t i = 0; i < 8; i++) {
+        lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
+    }
+
+    if (sd_songcpy(currentSong, name) == false) {
+        lcd.clear();
+        lcd.print(F("Invalid Song"));
+        analogWrite(RGB_RED, RGB_BRIGHTNESS);
+        delay(1000);
+        analogWrite(RGB_RED, 0);
+        invalidSong = true;
+    }
 
     currentSongSize = currentSong->get_size();
     // Seperate the progress bar into 8 different blocks.
@@ -260,8 +292,11 @@ void ListeningModePlayingSong::init() {
 
     delay(750);
 
-    lcd.setCursor(1, 1);
-    lcd.write(byte(PLAYING_SONG_SYMBOL));
-    lcd.print(F(" NOW PLAYING "));
-    lcd.write(byte(MUSIC_NOTE_SYMBOL));
+    if (!invalidSong) {
+        lcd.setCursor(1, 1);
+        lcd.write(byte(PLAYING_SONG_SYMBOL));
+        lcd.print(F(" NOW PLAYING "));
+        lcd.write(byte(MUSIC_NOTE_SYMBOL));
+    }
+
 }
