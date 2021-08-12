@@ -1,7 +1,8 @@
 /**
  * @file cm_create_new.cpp
  * @author Jacob LuVisi
- * @brief The class for creating a new song.
+ * @brief The class for creating a new song. All controls on how this state is used are found on the GitHub as well as described
+ * in the program instructions.
  * @version 0.1
  * @date 2021-07-26
  *
@@ -10,6 +11,9 @@
  */
 
 #include <studio-libs/states/states.h>
+#if PERF_METRICS == true
+#include <debug/debug.h>
+#endif
 
 CreatorModeCreateNew::CreatorModeCreateNew() : ProgramState::ProgramState(CM_CREATE_NEW) {}
 CreatorModeCreateNew::~CreatorModeCreateNew() {}
@@ -84,12 +88,12 @@ void CreatorModeCreateNew::loop() {
         }
         if (optionWaiting) {
             // SAVE SONG.
-            if (newSong->get_size() < 3) {
+            if (newSong->get_size() < 8) {
                 optionWaiting = false;
                 lcd.clear();
                 lcd.setCursor(0, 1);
                 lcd.print(F("[ERROR]"));
-                print_scrolling(F("Please make your song at least three or more characters to save."), 2, 150);
+                print_scrolling(F("Please make your song at least eight or more notes to save."), 2, 150);
                 delay(500);
                 print_song_lcd();
                 return;
@@ -101,7 +105,8 @@ void CreatorModeCreateNew::loop() {
             set_save_name();
 
 #if DEBUG == true
-            Serial.print(F("Saving Song file: "));
+            Serial.print(get_active_time());
+            Serial.print(F(" Saving Song file: "));
             Serial.println(fileName);
 #endif
             // Exit the program.
@@ -110,17 +115,19 @@ void CreatorModeCreateNew::loop() {
                 print_song_lcd();
                 return;
             }
-            // The file extension that the program uses.
-            const char* fileExtension = ".txt";
+
             // Create a buffer to store both the file name as well as the new file extension.
-            char buffer[strlen(fileName) + strlen(fileExtension)];
+            char buffer[strlen(fileName) + strlen(FILE_TXT_EXTENSION)];
             // Copy the file name to the buffer.
             strncpy(buffer, fileName, strlen(fileName));
             // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
-            strncpy(buffer + strlen(fileName), fileExtension, strlen(fileExtension) + 1);
+            strncpy(buffer + strlen(fileName), FILE_TXT_EXTENSION, strlen(FILE_TXT_EXTENSION) + 1);
             // Save the song.
             sd_save_song(buffer, newSong);
-
+#if DEBUG == true
+            Serial.print(get_active_time());
+            Serial.println(F(" Saved song from creator mode."));
+#endif
             lcd.clear();
             lcd.setCursor(0, 1);
             lcd.print(F("Song Saved."));
@@ -153,18 +160,21 @@ void CreatorModeCreateNew::loop() {
         }
 
 #if DEBUG == true
+        Serial.print(get_active_time());
+        Serial.println(F(" Playing Song."));
         newSong->play_song();
 #endif
 
     }
 
     if (playSound) {
-        pinMode(SPEAKER_1, OUTPUT);
         newSong->play_note(currentNote.frequency);
         delay(200);
+        noTone(SPEAKER_1);
         playSound = false;
-        pinMode(SPEAKER_1, INPUT);
-#if DEBUG == true
+#if PERF_METRICS == true
+        Serial.print(get_active_time());
+        Serial.print(F(" Free Memory: "));
         Serial.println(freeMemory());
 #endif
 
@@ -190,9 +200,14 @@ void CreatorModeCreateNew::init() {
     return;
 }
 
+/**
+ * @brief Prints the current song data onto the LCD display.
+ *
+ */
 void CreatorModeCreateNew::print_song_lcd() {
     const song_size_t songSize = newSong->get_size();
 
+    // Setup the top row of the display.
     lcd.clear();
     char buffer[3 + sizeof(char)];
     lcd.print(F("[SONG] (["));
@@ -214,6 +229,7 @@ void CreatorModeCreateNew::print_song_lcd() {
 
         const char* pitch = get_note_from_freq(newSong->get_note(i)).pitch;
 
+        // Get if adding the pitch to the current column would overflow. If so then reset the column.
         if (columnCount + strlen(pitch) > LCD_COLS) {
             columnCount = 0;
             if (scrolledLineCounter != 0) {
@@ -230,6 +246,7 @@ void CreatorModeCreateNew::print_song_lcd() {
             return;
         }
 
+
         if (scrolledLineCounter == 0) {
             lcd.setCursor(columnCount, lcdCursor);
             lcd.print(pitch);
@@ -239,6 +256,11 @@ void CreatorModeCreateNew::print_song_lcd() {
     }
 }
 
+/**
+ * @brief Get the number of rows the LCD can have.
+ *
+ * @return A number of rows.
+ */
 uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
     uint8_t columnCount = 0;
     uint8_t rowCounter = 0;
@@ -258,6 +280,11 @@ uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
 // NOTE: Methods like the ones below would not be included on ports to the UNO because the UNO does not
 // support microSD. Therefore we can be more liberal about how we use our SRAM.
 
+/**
+ * @brief Sets the name of which the song should be saved into permanent storage.
+ * Modifies the "fileName" global variable to hold the new value.
+ *
+ */
 void CreatorModeCreateNew::set_save_name() {
 
     // Keep track of the index to add to name.
@@ -266,7 +293,7 @@ void CreatorModeCreateNew::set_save_name() {
     char name[9];
 
     lcd.clear();
-    lcd.print(F("[Saving Song] (1/3)"));
+    lcd.print(F("[Saving Song]"));
     lcd.setCursor(1, 1);
     lcd.print(F("~ Name The Song"));
     // The display shows some information on the bottom row.
@@ -307,30 +334,21 @@ void CreatorModeCreateNew::set_save_name() {
 
         lcd.print(F(".txt "));
 
+        // Toggle option button.
         if (is_pressed(BTN_OPTION)) {
             optionWaiting = !optionWaiting;
         }
-
-
 
         if (is_pressed(BTN_ADD_SELECT)) {
             // Return an array of each character.
             if (optionWaiting) {
                 if (index == 0) {
-                    lcd.setCursor(0, 2);
-                    for (uint8_t i = 0; i < LCD_COLS; i++) {
-                        lcd.print(F(" "));
-                    }
+                    lcd_clear_row(2);
                     delay(500);
-                    lcd.setCursor(0, 2);
                     lcd.print(F("PLEASE SET A NAME."));
                     delay(2500);
-                    lcd.setCursor(0, 2);
-                    for (uint8_t i = 0; i < LCD_COLS; i++) {
-                        lcd.print(F(" "));
-                    }
+                    lcd_clear_row(2);
                     delay(500);
-
                     continue;
                 }
 
@@ -350,13 +368,14 @@ void CreatorModeCreateNew::set_save_name() {
 
         if (is_pressed(BTN_DEL_CANCEL)) {
             if (optionWaiting) {
-                // "-1" is a return value which tells the program that there was no name given and the user wishes to exit.
+                // Return an empty string.
                 strcpy(fileName, "\0");
                 return;
             }
             if (index == 0) {
                 continue;
             }
+            // Remove a character and go back.
             name[index] = ' ';
             index--;
         }
@@ -364,7 +383,7 @@ void CreatorModeCreateNew::set_save_name() {
 
         // Show information text on bottom row.
         if (millis() - lastUpdate > updateInterval) {
-            lcd.setCursor(0, 3);
+            lcd_clear_row(3);
             switch (slideInfo) {
             case 0:
                 lcd.print(F("SELECT: Add Symbol."));
@@ -373,13 +392,13 @@ void CreatorModeCreateNew::set_save_name() {
                 lcd.print(F("DEL: Remove Symbol."));
                 break;
             case 2:
-                lcd.print(F("OPTION+SEL: Save.  "));
+                lcd.print(F("OPTION+SEL: Save."));
                 break;
             case 3:
-                lcd.print(F("OPTION+DEL: Exit.  "));
+                lcd.print(F("OPTION+DEL: Exit."));
                 break;
             case 4:
-                lcd.print(F("8 Characters Limit "));
+                lcd.print(F("8 Characters Limit"));
                 break;
             }
             lastUpdate = millis();
@@ -394,12 +413,16 @@ void CreatorModeCreateNew::set_save_name() {
     }
 }
 
+/**
+ * @brief Converts the analog read signal from the potentiometer into one character A-Z, 0-9 and underscore.
+ *
+ * @return A character matching the analog signal.
+ */
 const char CreatorModeCreateNew::get_character_from_analog() {
     // An array of every possible character that can be included in the name.
     // Note that because Arduino SD uses file format 8.3 every character will be a capital letter (no lowercase)
     // Characters are A-Z, 0-9, and underscores.
-    const char optionalCharacters[37] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
     // 26 letters + 10 numbers
     const uint8_t analogToValue = (get_current_freq() + 1) / (uint8_t)28;
-    return optionalCharacters[analogToValue];
+    return pgm_read_byte_near(&optionalCharacters[analogToValue]);
 }

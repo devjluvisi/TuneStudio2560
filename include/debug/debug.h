@@ -1,17 +1,17 @@
 /**
  * @file debug.h
  * @author Jacob LuVisi
- * @brief Basic debug functions. This header file does not have a seperate class all possible functions are inlined.
+ * @brief Basic debug and performance metric functions. This header file does not have a seperate class all possible functions are inlined.
  * @version 0.1
  * @date 2021-07-26
  *
  * @copyright Copyright (c) 2021
  *
  */
-
+#include <studio-libs/tune_studio.h>
 #ifndef debug_h
 #define debug_h
-#if DEBUG == false
+#if PERF_METRICS == true
  // measure memory usage.
 #ifdef __arm__
 // should use uinstd.h to define sbrk but Due causes a conflict

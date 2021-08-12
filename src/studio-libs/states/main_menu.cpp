@@ -1,7 +1,7 @@
 /**
  * @file main_menu.cpp
  * @author Jacob LuVisi
- * @brief The state that represents the main menu.
+ * @brief The state that represents the main menu. This state is run when the program first boots up.
  * @version 0.1
  * @date 2021-07-26
  *
@@ -18,6 +18,11 @@ void MainMenu::loop() {
     lcd.print(F("Welcome to..."));
     lcd.setCursor(2, 1);
     lcd.print(F("TuneStudio2560"));
+    lcd.setCursor(0, 3);
+    lcd.print(F("Ver: "));
+    char buffer[12];
+    strcpy_P(buffer, VERSION_ID);
+    lcd.print(buffer);
     delay(4000);
     lcd.clear();
     lcd.setCursor(5, 1);
@@ -31,7 +36,6 @@ void MainMenu::loop() {
     lcd.setCursor(0, 1);
     lcd.print(F("GitHub: "));
     print_scrolling(F("github.com/devjluvisi/TuneStudio2560"), 2, 235);
-    // Information message.
     delay(2000);
     lcd.clear(); // Clear the screen incase the method needs to run again.
     delay(1000);

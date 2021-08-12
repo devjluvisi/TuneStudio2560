@@ -1,7 +1,7 @@
 /**
  * @file tune_studio.h
  * @author Jacob LuVisi
- * @brief The main header file for the application. Includes important objects and methods that are used inside of the main class.
+ * @brief The main header file for the application. Includes important variables and methods that are shared between all TuneStudio files.
  * @version 0.1
  * @date 2021-07-26
  *
@@ -14,33 +14,44 @@
 #define tune_studio_h
 
 // Include all the libraries for the program.
-#include <LiquidCrystal_I2C.h>
-#include <SevSegShift.h>
-#include <Arduino.h>
-#include <studio-libs/song.h>
-#include <debug/debug.h>
-#include <SD.h>
-#include <SPI.h>
-// Different states.
-#include <studio-libs/state.h>
+#include <LiquidCrystal_I2C.h> // Manages basic LCD functionality.
+#include <SevSegShift.h> // Manages connecting the Shift Registers to the Segment Display.
+#include <Arduino.h> // The basic Arduino library.
+#include <studio-libs/song.h> // Manage songs.
+#include <SD.h> // Manage the SD Card.
+#include <SPI.h> // For the SD card library.
+#include <studio-libs/state.h> // Manages the variety of differnet states the program can be running in.
 
-// Debug Variables (True for Serial prints)
-#define DEBUG false
+/**
+ * Enable/Disable the DEBUG functionallity of TuneStudio2560.
+ * Enabling this will: Enable Serial Monitor, prints debugging messages indicating when sections of the code are reached.
+ */
+#define DEBUG true
+ /**
+  * Enable/Disable performance metrics for TuneStudio2560.
+  * Enabling this will: Enable serial console prints on the current Ram Usage, Stack Size, and Heap Fragmentation, as well as provide
+  * metrics on how fast certain functions are executing in micro and milliseconds as well as the change since last execute.
+  *
+  * NOTE: Enabling performance metrics REQUIRES debug to be true.
+  */
+#define PERF_METRICS true
 
-// Program Mode Selection
-// Change the performance, SRAM, and flash usage by adjusting.
-// 0 = Performance Favor (Reduced Variables & Song Sizes, Cutdown code)
-// 1 = Standard (How T2560 was intended.)
-// 2 = Feature (Increased song sizes, extra features)
+  // Program Mode Selection
+  // Change the performance, SRAM, and flash usage by adjusting.
+  // 0 = Performance Favor (Reduced Variables & Song Sizes, Cutdown code)
+  // 1 = Standard (How T2560 was intended.)
+  // 2 = Feature (Increased song sizes, extra features)
 #define PRGM_MODE 1
+
 //////////////////////////////
 //// COMPILER DEFINITIONS ////
 //////////////////////////////
 // Below are various different constant definitions for the compiler to use.
 
-
+// Define a song class so the header file knows it exists.
 class Song;
 
+const char VERSION_ID[] PROGMEM = "1.0.0-R1";
 
 /*
 ************************
@@ -193,6 +204,9 @@ const byte FINISHED_SONG[8] PROGMEM = {
 constexpr uint8_t TONE_BUTTON_AMOUNT = 5;
 constexpr uint8_t TONES_PER_BUTTON = 17;
 
+constexpr uint8_t DEFAULT_NOTE_DELAY = 80;
+constexpr uint8_t DEFAULT_NOTE_LENGTH = 50;
+
 /**
  * @brief Represents an individual "note" in TuneStudio which contains
  * both a human readable "pitch" and a 16-bit integer frequency which is played
@@ -226,15 +240,20 @@ const buttonFrequencies toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
 };
 /**
  * @brief A note which defines a pause.
- *
+ * TODO: Move to PROGMEM
  */
-constexpr note PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
-
+const note PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
+const note EMPTY_NOTE = { (const char*)"0000", (const uint16_t)0 };
 /*
 *********************************
 *** Program Methods & Globals ***
 *********************************
 */
+
+const char ROOT_DIR[] = "/";
+const char PROGRESS_LABEL[] = "PROGRESS:";
+const char FILE_TXT_EXTENSION[] = ".txt";
+const char optionalCharacters[] PROGMEM = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
 
 /**
  * @brief The primary LCD object which controls the main LCD.
@@ -326,6 +345,13 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay = 150);
  */
 void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay);
 
+/**
+ * @brief Clears a row on the LCD.
+ *
+ * @param row The row to clear.
+ */
+void lcd_clear_row(uint8_t row);
+
 
 // Audio Methods
 /**
@@ -403,7 +429,6 @@ note get_note_from_pitch(const char* pitch);
 SD CARD FUNCTIONS
 */
 
-
 /**
  * @brief Saves a song class to the SD card by using the SD.h library and writing all of
  * the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot
@@ -437,4 +462,20 @@ void sd_songcpy(Song* song, const char* fileName);
  * @param fileName The file to delete.
  */
 void sd_rem(const char* fileName);
+
+/**
+ * @brief Generates a README file in the SD card.
+ *
+ */
+void sd_make_readme();
+
+#if DEBUG == true
+/**
+ * @brief Get the current time that the arduino has been running in
+ * hours, minutes, and seconds.
+ */
+const char* get_active_time();
+
+#endif
+
 #endif

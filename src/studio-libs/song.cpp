@@ -23,12 +23,14 @@
 
 Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxLength, bool init) {
 #if DEBUG == true
-    Serial.println(F("song.cpp: Initalized a new song."));
+    Serial.print(get_active_time());
+    Serial.println(F(" song.cpp: Initalized a new song."));
 #endif
 
     if (init) {
 #if DEBUG == true
-        Serial.println(F("Initalized the song on a pin."));
+        Serial.print(get_active_time());
+        Serial.println(F(" Initalized the song on a pin."));
 #endif
 
         pinMode(pin, OUTPUT);
@@ -38,22 +40,27 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxL
     _noteLength = noteLength;
     _maxLength = maxLength;
 
+    EMPTY_FREQ = EMPTY_NOTE.frequency;
+
     // Define a new array of a specified length and fill it with zeros.
     // Note that this is a dyanmically allocated array but it still has a fixed size. In order to prevent fragmentation the object
     // should be cleared from the heap via dispose();
-    _songData = new uint16_t[_maxLength]{ 0 };
+    _songData = new uint16_t[_maxLength]{ EMPTY_FREQ };
 }
 
 Song::~Song() {
 #if DEBUG == true
-    Serial.println(F("Song has been removed from the stack."));
+    Serial.print(get_active_time());
+    Serial.println(F(" Song has been removed from the stack."));
 #endif
     delete[] _songData;
 }
 
+//TODO: Replace with faster direct port manipulation
 void Song::play_note(uint16_t note) {
 #if DEBUG == true
-    Serial.print(F("Playing note: "));
+    Serial.print(get_active_time());
+    Serial.print(F(" Playing note: "));
     Serial.println(note);
 #endif
     tone(_pin, note);
@@ -114,11 +121,19 @@ bool Song::is_empty() {
 }
 
 
-
 song_size_t Song::get_size() {
     song_size_t size = 0;
     while (_songData[size] != EMPTY_FREQ && size != this->_maxLength) {
         size++;
     }
     return size;
+}
+
+void Song::set_attributes(uint8_t noteLength, uint16_t noteDelay) {
+    _noteLength = noteLength;
+    _noteDelay = noteDelay;
+#if DEBUG == true
+    Serial.print(get_active_time());
+    Serial.println(F(" Updated attributes noteLength and noteDelay for a song class."));
+#endif
 }

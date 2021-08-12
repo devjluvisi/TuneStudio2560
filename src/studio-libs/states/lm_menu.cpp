@@ -16,20 +16,6 @@ ListeningModeMenu::~ListeningModeMenu() {}
 
 void ListeningModeMenu::loop() {
 
-    /*
-    if (millis() % 48 == 0) {
-        Song* s = new Song(SPEAKER_1, 20, 40, 255, false);
-        s->add_note(200);
-        s->add_pause();
-        s->add_note(200);
-        sdCard.save_song("GX1", s);
-        delete s;
-    }
-*/
-
-//TODO:
-
-
     lcd.setCursor(2, 0);
     lcd.print(F("[Listening Mode]"));
     // If the SD card is enabled then also print the name of the song.
@@ -37,34 +23,23 @@ void ListeningModeMenu::loop() {
 
     const char* name = sd_get_file(get_selected_song() - 1);
     if (previousSong != get_selected_song()) {
+        lcd_clear_row(1);
         lcd.print(F(">> Name: "));
         //const char* name = "LOL";
         if (strlen(name) != 0) {
-            lcd.print(F("         "));
             lcd.setCursor(8, 1);
             lcd.print(name);
-
         }
         else {
-            lcd.print(F("         "));
             lcd.setCursor(8, 1);
             lcd.print(F("NONE"));
         }
+        lcd_clear_row(2);
+        lcd.print(F(">> Song #"));
+        lcd.print(get_selected_song());
+
         previousSong = get_selected_song();
     }
-
-
-
-
-    //lcd.print(F("NULL    "));
-
-
-    lcd.setCursor(0, 2);
-    lcd.print(F(">> Song #"));
-    lcd.print(get_selected_song());
-    lcd.print(F("  ")); // Add two extra spaces in order to prevent overlapping.
-    lcd.setCursor(0, 3);
-    lcd.print(F("Press SELECT to play"));
 
     if (is_pressed(BTN_TONE_1)) {
         set_selected_song(((get_selected_page() - 1) * 5) + 1);
@@ -119,7 +94,8 @@ void ListeningModeMenu::loop() {
 
 void ListeningModeMenu::init() {
 #if DEBUG == true
-    Serial.println(F("Entered listening mode."));
+    Serial.print(get_active_time());
+    Serial.println(F(" Entered listening mode."));
 #endif
     previousSong = 0;
     delay(500);
@@ -139,4 +115,6 @@ void ListeningModeMenu::init() {
     print_lcd(F("While listening, press \"OPTION+DEL\" to delete song."));
     //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
     delay(1500);
+    lcd.setCursor(0, 3);
+    lcd.print(F("Press SELECT to play"));
 }

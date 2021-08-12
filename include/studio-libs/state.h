@@ -1,8 +1,11 @@
 /**
  * @file state.h
  * @author Jacob LuVisi
- * @brief Represents the "state" that TuneStudio is currently in.
+ * @brief Represents the "state" that TuneStudio is currently in. This header file represents the parent class that all states
+ * in TuneStudio inherit from.
  *
+ * [!] Important information about States [!]
+ * ------------------------------------------
  * Each different section of TuneStudio2560 is split off into different states.
  * Each states have their own "routes" which dictate where they go when the user presses a specific button. (Select, Delete, etc)
  * Each state handles user input differently, displays to the lcd using different text, and handles code differently.
@@ -12,9 +15,13 @@
  *  - loop(): A method to be constantly run.
  * Note that the init() method for a single state can be run multiple times throughout the programs life cycle but only once after the state has
  * first been switched.
+ * Every state is allowed to have its seperate methods from init() and loop() as well as personal private (global) variables with that state.
+ * However, variables allocated dynamically during a states lifecycle must be destroyed in the deconstructor.
  *
- * Each individual state is defined in the ./states folder. This header file represents the parent class to every state.
- * The main.cpp class holds one global "state" variable which is overriden when a new state is loaded.
+ * Each individual state is defined in the "states.h" header file. This header file represents the parent class to every state.
+ * The main.cpp class holds one global "state" variable called "prgmState" which is overriden when a new state is loaded.
+ *
+ * "prgmState" is a pointer to this class (parent class) and can be reallocated to any of the child states.
  *
  * @version 0.1
  * @date 2021-07-26
@@ -36,16 +43,28 @@ enum StateID {
 class ProgramState {
 private:
     bool _hasInitalized = false; // If the state has initalized.
-    StateID _stateId;
+    StateID _stateId; // The corresponding ID which goes with every state to allow fast comparison between states without having to compare objects.
     virtual void init() = 0;
     virtual void loop() = 0;
 public:
     explicit ProgramState(const StateID stateId);
 
+    /**
+     * @brief Executes the states functionality.
+     * Runs the init() function once and then runs the loop() until the program is terminated
+     * or the class is deleted.
+     *
+     */
     void execute();
 
+    /**
+     * @return StateID enum for the current program.
+     */
     StateID get_state();
 
+    /**
+     * @return If the init() method has been run for the current instance of ProgramState.
+     */
     bool has_initalized();
 
     virtual ~ProgramState();
