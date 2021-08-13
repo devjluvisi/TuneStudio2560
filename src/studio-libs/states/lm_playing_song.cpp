@@ -95,50 +95,61 @@ void ListeningModePlayingSong::loop() {
             lcd.clear();
             lcd.setCursor(0, 1);
             lcd.print(F("Restarting!"));
-            delay(1200);
+            delay(900);
             lcd.clear();
             init();
         }
     }
 
     // Forward/Backwards
-    if (isPaused && currentSongNote < currentSongSize) {
-        if (digitalRead(BTN_TONE_1) == LOW) {
-            // Forward
-            currentSongNote += 1;
+    if (currentSongNote < currentSongSize) {
+        if (isPaused) {
+            if (digitalRead(BTN_TONE_1) == LOW) {
+                // Forward
+                currentSongNote += 1;
 
-            delay(100);
-        }
-        else if (digitalRead(BTN_TONE_2) == LOW) {
-            // Backwards
-            if (currentSongNote == 0) {
-                return;
+                delay(100);
             }
-            currentSongNote -= 1;
-            delay(100);
-            // NOTE: The progress bar needs to be reset because the instructions to update the progress bar usually do not 
-            // account for a reduction in the block size. Therefore we need to regenerate the block size from zero.
-            lcd.setCursor(strlen(PROGRESS_LABEL) + 1, 2);
-            blockSize = blockRequirement;
-            for (uint8_t i = 0; i < 8; i++) {
-                if (currentSongNote >= blockSize) {
-                    // Set the new requirement.
-                    blockSize += blockRequirement;
-                    // Add a block to the progress.
-                    lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
+            else if (digitalRead(BTN_TONE_2) == LOW) {
+                // Backwards
+                if (currentSongNote == 0) {
+                    return;
                 }
-                else {
-                    lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
+                currentSongNote -= 1;
+                delay(100);
+                // NOTE: The progress bar needs to be reset because the instructions to update the progress bar usually do not 
+                // account for a reduction in the block size. Therefore we need to regenerate the block size from zero.
+                lcd.setCursor(strlen(PROGRESS_LABEL) + 1, 2);
+                blockSize = blockRequirement;
+                for (uint8_t i = 0; i < 8; i++) {
+                    if (currentSongNote >= blockSize) {
+                        // Set the new requirement.
+                        blockSize += blockRequirement;
+                        // Add a block to the progress.
+                        lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
+                    }
+                    else {
+                        lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
+                    }
                 }
             }
         }
+        // Set the cursor to a point on the LCD where the next block is to be inserted.
+        lcd.setCursor(strlen(PROGRESS_LABEL) + (blockSize / blockRequirement), 2);
+        // If the current song note is past the requirement for the next block.
+        if (currentSongNote >= blockSize) {
+            // Set the new requirement.
+            blockSize += blockRequirement;
+            // Add a block to the progress.
+            lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
+        }
+
     }
     // End
 
     // Deleting the song
     if (digitalRead(BTN_DEL_CANCEL) == LOW && digitalRead(BTN_OPTION) == LOW) {
         lcd.clear();
-        lcd.setCursor(0, 0);
         lcd.print(F("DELETING:"));
         lcd.setCursor(0, 1);
         lcd.print(F(">> "));
@@ -206,22 +217,13 @@ void ListeningModePlayingSong::loop() {
             lastTonePlay = millis();
             currentSongNote++; // Go to the next index of the song.
         }
+
     }
     else if (currentSongNote >= currentSongSize) {
         lcd.setCursor(1, 1);
         lcd.write(byte(FINISHED_SONG_SYMBOL));
         lcd.print(F(" FINISHED SONG "));
         lcd.write(byte(MUSIC_NOTE_SYMBOL));
-    }
-
-    // Set the cursor to a point on the LCD where the next block is to be inserted.
-    lcd.setCursor(strlen(PROGRESS_LABEL) + (blockSize / blockRequirement), 2);
-    // If the current song note is past the requirement for the next block.
-    if (currentSongNote >= blockSize) {
-        // Set the new requirement.
-        blockSize += blockRequirement;
-        // Add a block to the progress.
-        lcd.write(byte(PROGRESS_BLOCK_SYMBOL));
     }
 
 #if PERF_METRICS == true
@@ -248,6 +250,11 @@ void ListeningModePlayingSong::init() {
     lastTonePlay = 0;
     confirmDelete = false;
     const char* name = sd_get_file(get_selected_song() - 1);
+#if DEBUG == true
+    Serial.print(F("Attempting to load song: \""));
+    Serial.print(name);
+    Serial.print(F("\" in song player."));
+#endif
     currentSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY, MAX_SONG_LENGTH, false);
 
     if (strcmp(name, "") == 0) {

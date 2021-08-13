@@ -224,6 +224,7 @@ void CreatorModeCreateNew::print_song_lcd() {
     uint8_t lcdCursor = 1;
     uint8_t columnCount = 0;
 
+    // Print each of the notes from the song onto the LCD.
     uint8_t scrolledLineCounter = scrolledLines;
     for (song_size_t i = 0; i < songSize; i++) {
 
@@ -423,6 +424,7 @@ const char CreatorModeCreateNew::get_character_from_analog() {
     // Note that because Arduino SD uses file format 8.3 every character will be a capital letter (no lowercase)
     // Characters are A-Z, 0-9, and underscores.
     // 26 letters + 10 numbers
+    // The array containing all of the possible values is stored in tune_studio.h in PROGMEM.
     const uint8_t analogToValue = (get_current_freq() + 1) / (uint8_t)28;
     return pgm_read_byte_near(&optionalCharacters[analogToValue]);
 }

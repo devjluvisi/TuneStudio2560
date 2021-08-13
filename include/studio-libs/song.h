@@ -125,9 +125,22 @@ public:
      */
     song_size_t get_size();
 
+    /**
+     * @brief Set the attributes of the song.
+     *
+     * @param noteLength The note length to set.
+     * @param noteDelay The delay between each note to set.
+     */
     void set_attributes(uint8_t noteLength, uint16_t noteDelay);
 
+    /**
+     * @return The length that each note is played for.
+     */
     uint8_t get_note_length();
+
+    /**
+     * @return The delay between each note.
+     */
     uint16_t get_note_delay();
 };
 #endif

@@ -2,57 +2,35 @@
  * @file main.cpp
  * @author Jacob LuVisi
  * @brief The main class for TuneStudio2560.
- * @version 0.1
- * @date 2021-06-27 - ???
+ * @version 1.0.0-Revision 1
+ * @date 2021-06-27 <-> 2021-08-12 (+)
  *
  * @copyright Copyright (c) 2021
  *
  * TuneStudio2560
  * Open source song playback and creation tool made for the Arduino Mega 2560 and compatible.
  *
- * GitHub: https://github.com/devjluvisi/TuneStudio2560
- *
- * For library, unit testing, and code explanation please check out the wiki. (https://github.com/devjluvisi/TuneStudio2560/wiki)
- *
- * -------------------------------------------
- * HARDWARE:
- * A complete list of hardware needed can be found on the GitHub as well as the "For Users" wiki page.
- * TuneStudio2560 was created and designed for the 8-Bit AVR archetecture. It is possible to run this program
- * on AVR-compatible boards which can supply enough IO as well as at least 1x I2C bus and 1x SPI bus (optional).
- * A potential port to other microcontrollers like the Raspberry Pi Pico is under consideration.
- * -------------------------------------------
- * PINS: (A list of my pin layouts (for mega) are in tune_studio.h)
- *
- * - Note: Digital pins can be replaced with Analog Pins if you run out of Digital Pins or PWM.
- * These connections do not go over ground/5V pins. Please check each of your devices to figure out
- * where they go. These connections only describe the direct connections to the Arduino. More info on wiki.
- *
- * Connect RGB Led Red, Green, and Blue to any digital pins. (PWM if possible).
- * Connect Tune Buttons 1-5 on any digital pins.
- * Connect SELECT/ADD button to a digital pin that provides interrupt.
- * Connect DELETE/CANCEL button to a digital pin that provides interrupt.
- * Connect OPTION button to any digital pin.
- * Connect Potentiometer to any Analog pin.
- * Connect Speaker to any Analog pin.
- * Connect I2C LCD to SDA/SCL pins.
- * Connect 7-Segment display DIGIT pins to any Digital Pins (MEGA Only).
- * Connect MicroSD MOSI,MISO,SCK, and SS to the respective SPI pins on your board. If you do not have enough pins
- * then connect them to the ICSP pins (also supports SPI).
- *
- * Total Pins Required: 22
- * - 14 Digital/Analog Pins (4 PWM Reccomended, 1 Required)
- * - 2 Analog Pins
- * - (I2C) SDA/SCL Pins [2 Pins]
- * - (SPI) MOSI, MISO, SCK, SS Pins [4 Pins]
- * -------------------------------------------
+ * ████████ ██    ██ ███    ██ ███████ ███████ ████████ ██    ██ ██████  ██  ██████  ██████  ███████  ██████   ██████
+ *    ██    ██    ██ ████   ██ ██      ██         ██    ██    ██ ██   ██ ██ ██    ██      ██ ██      ██       ██  ████
+ *    ██    ██    ██ ██ ██  ██ █████   ███████    ██    ██    ██ ██   ██ ██ ██    ██  █████  ███████ ███████  ██ ██ ██
+ *    ██    ██    ██ ██  ██ ██ ██           ██    ██    ██    ██ ██   ██ ██ ██    ██ ██           ██ ██    ██ ████  ██
+ *    ██     ██████  ██   ████ ███████ ███████    ██     ██████  ██████  ██  ██████  ███████ ███████  ██████   ██████
  *
  * TuneStudio2560 was developed using PlatformIO on Visual Studio Code and it is highly reccomended to modify
  * this project using that framework.
  *
+ * To view documentation on how the software for TuneStudio2560 operates please check out
+ * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers
+ *
+ * To view general information on how to use TuneStudio2560 see
+ * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users
+ *
+ * To view how to create TuneStudio2560 along with the schematics, parts, and wiring view
+ * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It
+ *
  * LICENSE - MIT
  */
 
- // Main Header File
 #include <studio-libs/tune_studio.h>
 #include <studio-libs/states/states.h>
 #if PERF_METRICS == true
@@ -587,29 +565,6 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
 //// SD CARD FUNCTIONS ////
 //////////////////////////
 
-void sd_throw_err(const __FlashStringHelper* reason, int line = -1) {
-#if DEBUG == true
-  Serial.print(get_active_time());
-  Serial.println(F(" SD Error has been thrown."));
-#endif
-  analogWrite(RGB_RED, RGB_BRIGHTNESS);
-  lcd.clear();
-  lcd.print(F("[SD CARD ERROR]"));
-  lcd.setCursor(0, 1);
-  lcd.print(reason);
-  if (line != -1) {
-    lcd.setCursor(0, 2);
-    lcd.print(F("Line: "));
-    lcd.print(line);
-  }
-  lcd.setCursor(0, 3);
-  lcd.print(F("Returning in 5s..."));
-  delay(5000);
-  analogWrite(RGB_RED, 0);
-  lcd.clear();
-  update_state(MAIN_MENU);
-}
-
 void sd_save_song(char* fileName, Song* song) {
   File songFile;
   if (SD.exists(fileName)) {
@@ -870,7 +825,7 @@ void sd_make_readme() {
   readMe.println(F(" - Follow number paremeters for customizing TONE_DELAY and TONE_LENGTH."));
   readMe.println();
   readMe.println(F("The program will try to alert when there is a problem with the song but not all errors are caught."));
-  readMe.println(F("When an error is encountered the program must be reset using the reset button."));
+  readMe.println(F("When an error is encountered you will be redirected back to the listening mode menu."));
   readMe.println();
   readMe.println(F("You can view more information about SD cards here: https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
   readMe.println(F("To view the main Repository go to: https://github.com/devjluvisi/TuneStudio2560"));

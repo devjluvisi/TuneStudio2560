@@ -5,12 +5,7 @@ This taste case runs to check the RGB Led, Various LEDs, Speakers, Potentiometer
 
 */
 
-
-#include <Arduino.h>
-
 #include <unity.h>
-#include <LiquidCrystal_I2C.h>
-
 #include <studio-libs/tune_studio.h>
 #include <debug/test_hardware.h>
 

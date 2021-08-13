@@ -26,7 +26,7 @@
  * Enable/Disable the DEBUG functionallity of TuneStudio2560.
  * Enabling this will: Enable Serial Monitor, prints debugging messages indicating when sections of the code are reached.
  */
-#define DEBUG true
+#define DEBUG false
  /**
   * Enable/Disable performance metrics for TuneStudio2560.
   * Enabling this will: Enable serial console prints on the current Ram Usage, Stack Size, and Heap Fragmentation, as well as provide
@@ -34,7 +34,7 @@
   *
   * NOTE: Enabling performance metrics REQUIRES debug to be true.
   */
-#define PERF_METRICS true
+#define PERF_METRICS false
 
   // Program Mode Selection
   // Change the performance, SRAM, and flash usage by adjusting.

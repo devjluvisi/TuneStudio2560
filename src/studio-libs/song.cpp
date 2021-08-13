@@ -7,7 +7,7 @@
  *
  * @copyright Copyright (c) 2021
  *
- * NOTE: Every song object created is exactly 517 bytes in size [for max length 255] regardless of the number of notes and
+ * NOTE: Every song object created takes the same amount of SRAM [for max length 255] regardless of the number of notes and
  * empty spaces in the song. Increasing the maximum number of notes may increase the size of the objects.
  *
  * TODO: Optimize functions for song searching to be faster. Instead of iterating through the entire
