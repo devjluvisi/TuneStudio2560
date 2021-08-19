@@ -97,7 +97,11 @@ An active piezo buzzer is used on the Arduino to playback songs and tunes. The s
 - 1x 7-Segment Display (4 Wide) (Common-Cathode)
 - A lot of wires.
 > Schematics
-- (In Progress)
+- Electrical Schematic [Still WIP]
+![Schematic](https://i.imgur.com/tzxPLCZ.png)  
+
+- Fritizing Diagram
+![Diagram](https://i.imgur.com/xtUNJ9G.png)
 
 **[Have these parts? Click here to learn how to build your own TuneStudio2560!](https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It)**
 ## Quick Start & Usage Tutorial
