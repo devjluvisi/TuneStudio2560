@@ -14,9 +14,10 @@
  * loop each time to find the next avaliable space to add a pause/note, iterate only once and then
  * cache that value in memory. Next time we need to search for the next avaliable space to add/remove note
  * we can just read the cached memory value and add it instead of looping through the song each time.
- *
+ * 
  * OR -> Add a variable that tracks how many notes we have added so far.
  *
+ * TODO: Update the get_size() method to be more efficient rather then using an iterative loop. (sizeof() maybe?)
  */
 
 #include <studio-libs/song.h>
@@ -106,9 +107,7 @@ void Song::play_song() {
 
 void Song::clear() {
     for (song_size_t i = this->_maxLength; i > 0; i--) {
-        if (_songData[i] != EMPTY_FREQ) {
             _songData[i] = EMPTY_FREQ;
-        }
     }
 }
 

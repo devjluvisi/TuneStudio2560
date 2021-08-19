@@ -308,7 +308,7 @@ void CreatorModeCreateNew::set_save_name() {
     char analogChar = get_character_from_analog();
     while (true) {
 
-        // Update every 32 milliseconds.
+        // same as millis() % 32 == 0
         if (millis() & ((2 ^ 5) - 1)) {
             analogChar = get_character_from_analog();
             segDisplay.refreshDisplay();
@@ -358,13 +358,12 @@ void CreatorModeCreateNew::set_save_name() {
                 strcpy(fileName, name);
                 return;
             }
+            // If we are at 8 characters then don't update the name.
             if (index == 8) {
                 continue;
             }
             name[index] = analogChar;
             index++;
-            // const char c = get_character_from_analog();
-            // strncat(name, &c, 1);
         }
 
         if (is_pressed(BTN_DEL_CANCEL)) {

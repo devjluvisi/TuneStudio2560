@@ -213,12 +213,16 @@ void setup()
   Serial.print(get_active_time());
   Serial.println(F(" README file has been generated."));
 #endif
+
+  // Set the user to the main menu.
   prgmState = new MainMenu();
 
 }
 
 void loop()
 {
+  // Execute the program state constantly.
+
   prgmState->execute();
   immediateInterrupt = false;
 }
@@ -352,11 +356,13 @@ uint16_t FSHlength(const __FlashStringHelper* FSHinput) {
   return stringLength;
 }
 
+//TODO: Potentially make more RAM efficient by not pulling the entire string from  RAM but only doing character by character.
 void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
   lcd.clear();
   uint8_t cursorX = 0; // Track cursor on X position.
   uint8_t cursorY = 0; // Track cursor on Y position.
 
+  // Copy the text from SRAM
   const uint8_t length = FSHlength(text);
   char buffer[length + 1];
   memcpy_P(buffer, text, length + 1);
@@ -398,11 +404,13 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
     if (is_interrupt()) return;
     lcd.setCursor(0, cursorY);
     {
+      // Create a substring that is of the length of the lcd.
       char subStr[LCD_COLS];
 
       // Copies a part of the buffer (20 chars) into the substring.
       memcpy(subStr, buffer + i, LCD_COLS);
 
+      // Print each character of the substring.
       for (uint8_t j = 0; j < LCD_COLS; j++) {
         lcd.write(subStr[j]);
       }
@@ -566,6 +574,21 @@ bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
 //////////////////////////
 
 void sd_save_song(char* fileName, Song* song) {
+  // Ensure the song being saved is correctly formatted.
+  if(strlen(fileName) > 8 || strlen(fileName) < 1 || song->get_size() < 8) {
+    analogWrite(RGB_RED, RGB_BRIGHTNESS);
+    #if DEBUG == true
+    Serial.print(get_active_time());
+    Serial.println(F(" INVALID FILE NAME/SONG SAVE."));
+    Serial.print(get_active_time());
+    Serial.println(F(" - File name must be between 1-8 characters."));
+    Serial.print(get_active_time());
+    Serial.println(F(" - Song must be at least 8 notes in length."));
+    #endif
+    while(true) { 
+      ;
+    }
+  }
   File songFile;
   if (SD.exists(fileName)) {
 #if DEBUG == true
@@ -632,6 +655,7 @@ void sd_rem(const char* fileName) {
 }
 
 const char* sd_get_file(uint8_t index) {
+  // "static" Fixes Heap Frag Errors.
   static File entry;
   File baseDir = SD.open(ROOT_DIR);
   baseDir.rewindDirectory();
@@ -679,8 +703,10 @@ bool sd_songcpy(Song* song, const char* fileName) {
   uint16_t noteLength = DEFAULT_NOTE_LENGTH;
 
   uint16_t songSize = 0;
+
   // As long as their are avaliable characters in the file.
   while (entry.available()) {
+
     // Store the current character.
     char letter = entry.read();
 
@@ -764,7 +790,10 @@ bool sd_songcpy(Song* song, const char* fileName) {
     entry.close();
     return false;
   }
+
+  // Update the note length and note delay with what the file has read.
   song->set_attributes(noteLength, noteDelay);
+
   // Close the file
   entry.close();
   return true;

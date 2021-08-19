@@ -8,7 +8,16 @@ TuneStudio2560 is a song creation and playback device made for the Arduino Mega 
 
 The type of the tune is determined by both which "tune button" is pressed and how much a potentiometer is turned. Once a song has been saved, users can playback their songs in **Listening Mode** which incorporates pausing, fast forwarding, and rewinding functionalities.
 
-#### *For best compatibility it is recommended to open and upload the project using the [PlatformIO](https://platformio.org/) extension for [Visual Studio Code](https://code.visualstudio.com/).*
+[User Guide](https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users)  
+[Developer Guide](https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers)  
+
+#### *For best compatibility it is recommended to open and upload the project using the [PlatformIO](https://platformio.org/) extension for [Visual Studio Code](https://code.visualstudio.com/).*  
+
+**Program Resource Utilization History**  
+*Percentages are based off of the Arduino Mega's 8KB of SRAM and 256KB of flash memory.*  
+| BUILD | SRAM  | FLASH |
+| ---------- | ------------- | ------------- |
+| **V1.0.0-R1**  | 1705 Bytes (20.8%)  | 37436 Bytes (14.7%) |
 
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
@@ -161,6 +170,6 @@ A very comprehensive test case library made for C.
 [MIT](https://choosealicense.com/licenses/mit/)
 *Yay for free open source software!*
 ### Contact
-*Feel free to contact me with any questions. Email communication is preferred.*
-Email: jluvisi2021@gmail.com
-Phone: (+1) 310-465-8872
+*Feel free to contact me with any questions. Email communication is preferred.*  
+Email: jluvisi2021@gmail.com  
+Phone: (+1) 310-465-8872  

@@ -27,6 +27,7 @@
 #include <studio-libs/tune_studio.h>
 #include <Arduino.h>
 
+//song_size_t variable is correspondent to the length of the song.
 #if PRGM_MODE == 0
 typedef uint8_t song_size_t;
 #elif PRGM_MODE == 2
@@ -105,7 +106,7 @@ public:
     void clear();
 
     /**
-     * @brief Get a note at a specified part of the song.
+     * @brief Get a frequency at a specified index of the song.
      *
      * @param index The index of the note to retrieve.
      * @return The frequency of the note.
@@ -127,6 +128,7 @@ public:
 
     /**
      * @brief Set the attributes of the song.
+     * Only updates the note length and note delay. Leaves the rest of the song untouched.
      *
      * @param noteLength The note length to set.
      * @param noteDelay The delay between each note to set.

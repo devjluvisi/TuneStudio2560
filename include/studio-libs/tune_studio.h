@@ -2,6 +2,7 @@
  * @file tune_studio.h
  * @author Jacob LuVisi
  * @brief The main header file for the application. Includes important variables and methods that are shared between all TuneStudio files.
+ * Note that method definitions described in this file are for main.cpp methods.
  * @version 0.1
  * @date 2021-07-26
  *
@@ -127,6 +128,8 @@ constexpr uint8_t MAX_SONG_AMOUNT = 255;
 *** Custom Characters ***
 *************************
 */
+
+//TODO: Put all characters into one PROGMEM array. Use a loop in setup() to copy and send them without having to call memcpy_P constantly.
 
 /*Custom Char symbol for music note.*/
 constexpr uint8_t MUSIC_NOTE_SYMBOL = 0x00;
@@ -416,7 +419,7 @@ note get_current_tone(uint8_t toneButton);
 /**
  * @brief Get the length of a string stored in flash storage.
  *
- * @param FSHinput The string to check the length of.
+ * @param FSHinput The flash string to check the length of.
  * @return unsigned int
  */
 uint16_t FSHlength(const __FlashStringHelper* FSHinput);
@@ -425,7 +428,7 @@ uint16_t FSHlength(const __FlashStringHelper* FSHinput);
  * @brief Retrieve a note object that matches a specified frequency.
  *
  * @param frequency The frequency to search for.
- * @return note The note which has the frequency.
+ * @return The note which has the frequency.
  */
 note get_note_from_freq(const uint16_t frequency);
 
@@ -433,7 +436,7 @@ note get_note_from_freq(const uint16_t frequency);
  * @brief Retrieve a note object from a specified pitch.
  *
  * @param pitch The pitch string to search for.
- * @return note The note which matches the frequency.
+ * @return The note which matches the frequency.
  */
 note get_note_from_pitch(const char* pitch);
 

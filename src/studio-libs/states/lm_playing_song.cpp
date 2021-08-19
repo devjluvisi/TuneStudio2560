@@ -22,6 +22,7 @@ ListeningModePlayingSong::~ListeningModePlayingSong() {
 }
 
 void ListeningModePlayingSong::loop() {
+    // If an invalid song was selected then return back.
     if (invalidSong) {
         delay(1000);
         update_state(LM_MENU);
