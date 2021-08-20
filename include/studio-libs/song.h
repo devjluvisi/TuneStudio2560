@@ -45,6 +45,7 @@ private:
     uint8_t _noteDelay; // The delay between playing each note of the song.
     uint8_t _noteLength; // The length that the note should be played for.
     song_size_t _maxLength; // Quick access to the size of the array.
+    song_size_t _currSize; // Current size of the song.
     uint16_t* _songData; // A array of all of the different tones.
     uint16_t EMPTY_FREQ;
 public:

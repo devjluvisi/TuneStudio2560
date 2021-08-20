@@ -56,7 +56,6 @@ static volatile uint8_t selectedPage = 1; // The current page of songs which is 
 ////////////////////////////
 
 bool is_interrupt() {
-  segDisplay.refreshDisplay();
 #if PERF_METRICS == true
   if (millis() % 1250 == 0) {
     Serial.println();
@@ -73,7 +72,7 @@ bool is_interrupt() {
   return immediateInterrupt;
 }
 
-// 1801, 42714
+
 ////////////////////////////////
 //// SETUP & LOOP FUNCTIONS ////
 ////////////////////////////////
@@ -96,9 +95,6 @@ void setup()
 
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------\n> TuneStudio2560 has initalized\n> Have fun!\n--------------------------------------"));
-#endif
-
-#if DEBUG == true
   Serial.println(F("[!!!] WARNING: DEBUG mode is enabled. When DEBUG is enabled TuneStudio2560 may not run at full speed due to performance reduction outputting to Serial Monitor. Using performance metrics will also largely reduce speed."));
   delay(1000);
 #endif
@@ -128,6 +124,7 @@ void setup()
   pinMode(TONE_FREQ, INPUT);
   pinMode(SPEAKER_1, OUTPUT);
   pinMode(SD_CS_PIN, OUTPUT);
+
 #if DEBUG == true
   Serial.print(get_active_time());
   Serial.println(F(" pins have been initalized."));
@@ -143,18 +140,11 @@ void setup()
 
   // Add custom characters to the LCD.
   byte buffer[8];
-  memcpy_P(buffer, MUSIC_NOTE, 8);
-  lcd.createChar(MUSIC_NOTE_SYMBOL, buffer);
-  memcpy_P(buffer, PLAYING_SONG, 8);
-  lcd.createChar(PLAYING_SONG_SYMBOL, buffer);
-  memcpy_P(buffer, PAUSE_SONG, 8);
-  lcd.createChar(PAUSE_SONG_SYMBOL, buffer);
-  memcpy_P(buffer, PROGRESS_BLOCK, 8);
-  lcd.createChar(PROGRESS_BLOCK_SYMBOL, buffer);
-  memcpy_P(buffer, FINISHED_SONG, 8);
-  lcd.createChar(FINISHED_SONG_SYMBOL, buffer);
-  memcpy_P(buffer, PROGRESS_BLOCK_UNFILLED, 8);
-  lcd.createChar(PROGRESS_BLOCK_UNFILLED_SYMBOL, buffer);
+  for(uint8_t i = 0; i < CUSTOM_CHAR_AMOUNT; i++) {
+    memcpy_P(buffer, &(CUSTOM_LCD_CHARS[i]), 8);
+    lcd.createChar(i, buffer);
+  }
+
 #if DEBUG == true
   Serial.print(get_active_time());
   Serial.println(F(" lcd has been initalized."));
@@ -261,7 +251,7 @@ uint8_t get_selected_song() {
   return selectedSong;
 }
 
-note get_note_from_freq(const uint16_t frequency) {
+note_t get_note_from_freq(const uint16_t frequency) {
   if (frequency == PAUSE_NOTE.frequency) {
     return PAUSE_NOTE;
   }
@@ -272,7 +262,7 @@ note get_note_from_freq(const uint16_t frequency) {
       if (pgm_read_word(&toneButtons[i].notes[j].frequency) == frequency) {
         char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
         //uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
-        return note{ pitch, frequency }; // Dont need to find the frequency because the parameter already passed it.
+        return note_t{ pitch, frequency }; // Dont need to find the frequency because the parameter already passed it.
       }
     }
   }
@@ -285,7 +275,7 @@ note get_note_from_freq(const uint16_t frequency) {
   return EMPTY_NOTE;
 }
 
-note get_note_from_pitch(const char* pitch) {
+note_t get_note_from_pitch(const char* pitch) {
   // If the note is a pause then return it instantly.
   if (strcmp(PAUSE_NOTE.pitch, pitch) == 0) {
     return PAUSE_NOTE;
@@ -297,7 +287,7 @@ note get_note_from_pitch(const char* pitch) {
       if (strcmp((char*)pgm_read_word(&toneButtons[i].notes[j].pitch), pitch) == 0) {
         //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
         uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
-        return note{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
+        return note_t{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
       }
     }
   }
@@ -310,7 +300,7 @@ note get_note_from_pitch(const char* pitch) {
   return EMPTY_NOTE;
 }
 
-note get_current_tone(uint8_t toneButton) {
+note_t get_current_tone(uint8_t toneButton) {
 
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
@@ -320,15 +310,15 @@ note get_current_tone(uint8_t toneButton) {
   case 0:
     return EMPTY_NOTE;
   case BTN_TONE_1:
-    return note{ ((char*)pgm_read_word(&toneButtons[0].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[0].notes[subTone].frequency)) };
+    return note_t{ ((char*)pgm_read_word(&toneButtons[0].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[0].notes[subTone].frequency)) };
   case BTN_TONE_2:
-    return note{ ((char*)pgm_read_word(&toneButtons[1].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[1].notes[subTone].frequency)) };
+    return note_t{ ((char*)pgm_read_word(&toneButtons[1].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[1].notes[subTone].frequency)) };
   case BTN_TONE_3:
-    return note{ ((char*)pgm_read_word(&toneButtons[2].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[2].notes[subTone].frequency)) };
+    return note_t{ ((char*)pgm_read_word(&toneButtons[2].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[2].notes[subTone].frequency)) };
   case BTN_TONE_4:
-    return note{ ((char*)pgm_read_word(&toneButtons[3].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[3].notes[subTone].frequency)) };
+    return note_t{ ((char*)pgm_read_word(&toneButtons[3].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[3].notes[subTone].frequency)) };
   case BTN_TONE_5:
-    return note{ ((char*)pgm_read_word(&toneButtons[4].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[4].notes[subTone].frequency)) };
+    return note_t{ ((char*)pgm_read_word(&toneButtons[4].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[4].notes[subTone].frequency)) };
   default:
 #if DEBUG == true
     Serial.print(get_active_time());
@@ -356,7 +346,6 @@ uint16_t FSHlength(const __FlashStringHelper* FSHinput) {
   return stringLength;
 }
 
-//TODO: Potentially make more RAM efficient by not pulling the entire string from  RAM but only doing character by character.
 void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
   lcd.clear();
   uint8_t cursorX = 0; // Track cursor on X position.
@@ -777,7 +766,7 @@ bool sd_songcpy(Song* song, const char* fileName) {
       // Set a terminating character.
       buffer[index - 1] = '\0';
       // Add the note.
-      note foundNote = get_note_from_pitch(buffer);
+      note_t foundNote = get_note_from_pitch(buffer);
       if (foundNote.frequency == EMPTY_NOTE.frequency) {
         entry.close();
         return false;

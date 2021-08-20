@@ -65,7 +65,7 @@ void CreatorModeCreateNew::loop() {
         }
     }
     // Create a note from the last tune button which was pressed.
-    const note currentNote = optionWaiting && lastButtonPress == BTN_TONE_2 ? PAUSE_NOTE : get_current_tone(lastButtonPress);
+    const note_t currentNote = optionWaiting && lastButtonPress == BTN_TONE_2 ? PAUSE_NOTE : get_current_tone(lastButtonPress);
     // If the previous note was the pause note then disable the option waiting as it has been used.
 
     segDisplay.refreshDisplay();

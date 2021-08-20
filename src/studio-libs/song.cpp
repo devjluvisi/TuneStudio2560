@@ -10,14 +10,6 @@
  * NOTE: Every song object created takes the same amount of SRAM [for max length 255] regardless of the number of notes and
  * empty spaces in the song. Increasing the maximum number of notes may increase the size of the objects.
  *
- * TODO: Optimize functions for song searching to be faster. Instead of iterating through the entire
- * loop each time to find the next avaliable space to add a pause/note, iterate only once and then
- * cache that value in memory. Next time we need to search for the next avaliable space to add/remove note
- * we can just read the cached memory value and add it instead of looping through the song each time.
- * 
- * OR -> Add a variable that tracks how many notes we have added so far.
- *
- * TODO: Update the get_size() method to be more efficient rather then using an iterative loop. (sizeof() maybe?)
  */
 
 #include <studio-libs/song.h>
@@ -40,7 +32,7 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxL
     _noteDelay = noteDelay;
     _noteLength = noteLength;
     _maxLength = maxLength;
-
+    _currSize = 0;
     EMPTY_FREQ = EMPTY_NOTE.frequency;
 
     // Define a new array of a specified length and fill it with zeros.
@@ -76,15 +68,16 @@ bool Song::is_song_full() {
 void Song::add_note(uint16_t note) {
     if (Song::is_song_full()) return;
     _songData[get_size()] = note;
+    _currSize++;
 }
 
 void Song::add_pause() {
-    if (Song::is_song_full()) return;
-    _songData[get_size()] = PAUSE_NOTE.frequency;
+    add_note(PAUSE_NOTE.frequency);
 }
 
 void Song::remove_note() {
     _songData[get_size() - 1] = EMPTY_FREQ;
+    _currSize--;
 }
 
 void Song::play_song() {
@@ -109,6 +102,7 @@ void Song::clear() {
     for (song_size_t i = this->_maxLength; i > 0; i--) {
             _songData[i] = EMPTY_FREQ;
     }
+    _currSize = 0;
 }
 
 uint16_t Song::get_note(song_size_t index) {
@@ -121,11 +115,7 @@ bool Song::is_empty() {
 
 
 song_size_t Song::get_size() {
-    song_size_t size = 0;
-    while (_songData[size] != EMPTY_FREQ && size != this->_maxLength) {
-        size++;
-    }
-    return size;
+    return _currSize;
 }
 
 void Song::set_attributes(uint8_t noteLength, uint16_t noteDelay) {

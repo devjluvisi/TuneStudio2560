@@ -129,84 +129,34 @@ constexpr uint8_t MAX_SONG_AMOUNT = 255;
 *************************
 */
 
-//TODO: Put all characters into one PROGMEM array. Use a loop in setup() to copy and send them without having to call memcpy_P constantly.
+const byte CUSTOM_LCD_CHARS[6][8] PROGMEM = {
+{0x04, 0x06, 0x05, 0x04, 0x04, 0x0C, 0x1C, 0x0C},
+{0x10, 0x18, 0x1C, 0x1E, 0x1E, 0x1C, 0x18, 0x10},
+{0x00, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x00},
+{0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F},
+{0x1F, 0x1F, 0x1F, 0x10, 0x10, 0x10, 0x10, 0x10},
+{0x1F, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1F}
+};
+
+constexpr uint8_t CUSTOM_CHAR_AMOUNT = sizeof(CUSTOM_LCD_CHARS)/sizeof(CUSTOM_LCD_CHARS[0]);
 
 /*Custom Char symbol for music note.*/
 constexpr uint8_t MUSIC_NOTE_SYMBOL = 0x00;
-const byte MUSIC_NOTE[8] PROGMEM = {
-  0x04,
-  0x06,
-  0x05,
-  0x04,
-  0x04,
-  0x0C,
-  0x1C,
-  0x0C
-};
 
 /*Custom Char symbol for a playing song symbol.*/
 constexpr uint8_t PLAYING_SONG_SYMBOL = 0x01;
-const byte PLAYING_SONG[8] PROGMEM = {
-  0x10,
-  0x18,
-  0x1C,
-  0x1E,
-  0x1E,
-  0x1C,
-  0x18,
-  0x10
-};
 
 /*Custom Char symbol for a paused song symbol.*/
 constexpr uint8_t PAUSE_SONG_SYMBOL = 0x02;
-const byte PAUSE_SONG[8] PROGMEM = {
-  0x00,
-  0x1B,
-  0x1B,
-  0x1B,
-  0x1B,
-  0x1B,
-  0x1B,
-  0x00
-};
 
 /*Custom Char symbol for a progress block.*/
 constexpr uint8_t PROGRESS_BLOCK_SYMBOL = 0x03;
-const byte PROGRESS_BLOCK[8] PROGMEM = {
-  0x1F,
-  0x1F,
-  0x1F,
-  0x1F,
-  0x1F,
-  0x1F,
-  0x1F,
-  0x1F
-};
+
 /*Custom char symbol for when a song is finished*/
 constexpr uint8_t FINISHED_SONG_SYMBOL = 0x04;
-const byte FINISHED_SONG[8] PROGMEM = {
-  0x1F,
-  0x1F,
-  0x1F,
-  0x10,
-  0x10,
-  0x10,
-  0x10,
-  0x10
-};
 
 /* Custom char symbol for an unfilled progress block */
 constexpr uint8_t PROGRESS_BLOCK_UNFILLED_SYMBOL = 0x05;
-const byte PROGRESS_BLOCK_UNFILLED[8] PROGMEM = {
-  0x1F,
-  0x11,
-  0x11,
-  0x11,
-  0x11,
-  0x11,
-  0x11,
-  0x1F
-};
 /*
 *************************************
 *** Tones, Pitches, and Frequency ***
@@ -228,26 +178,26 @@ constexpr uint8_t DEFAULT_NOTE_LENGTH = 50;
  * both a human readable "pitch" and a 16-bit integer frequency which is played
  * by the buzzer.
  */
-typedef struct note {
+typedef struct {
   const char* pitch;
   const uint16_t frequency;
-} note;
+} note_t;
 
 /**
  * @brief Represents a tune button as well as all of the different notes that it can play.
  * Each tune button can play 17 different notes in their respective range.
  */
-typedef struct buttonFrequencies {
+typedef struct {
   const uint8_t pin;
-  const note notes[TONES_PER_BUTTON];
-} buttonFrequencies;
+  const note_t notes[TONES_PER_BUTTON];
+} buttonFrequencies_t;
 
 
 /**
  * @brief An array of all possible tones which can be played.
  * 85 total tones, 17 per button, 5 buttons.
  */
-const buttonFrequencies toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
+const buttonFrequencies_t toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
     {BTN_TONE_1, {{"B0", 31}, {"C1", 33}, {"CS1", 35}, {"D1", 37}, {"DS1", 39}, {"E1", 41}, {"F1", 44}, {"FS1", 46}, {"G1", 49}, {"GS1", 52}, {"A1", 55}, {"AS1", 58}, {"B1", 62}, {"C2", 65}, {"CS2", 69}, {"D2", 73}, {"DS2", 78}}},
     {BTN_TONE_2, {{"E2", 82}, {"F2", 87}, {"FS2", 93}, {"G2", 98}, {"GS2", 104}, {"A2", 110}, {"AS2", 117}, {"B2", 123}, {"C3", 131}, {"CS3", 139}, {"D3", 147}, {"DS3", 156}, {"E3", 165}, {"F3", 175}, {"FS3", 185}, {"G3", 196}, {"GS3", 208}}},
     {BTN_TONE_3, {{"A3", 220}, {"AS3", 233}, {"B3", 247}, {"C4", 262}, {"CS4", 277}, {"D4", 294}, {"DS4", 311}, {"E4", 330}, {"F4", 349}, {"FS4", 370}, {"G4", 392}, {"GS4", 415}, {"A4", 440}, {"AS4", 466}, {"B4", 494}, {"C5", 523}, {"CS5", 554}}},
@@ -258,8 +208,8 @@ const buttonFrequencies toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
  * @brief A note which defines a pause.
  * TODO: Move to PROGMEM
  */
-const note PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
-const note EMPTY_NOTE = { (const char*)"0000", (const uint16_t)0 };
+const note_t PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
+const note_t EMPTY_NOTE = { (const char*)"0000", (const uint16_t)0 };
 /*
 *********************************
 *** Program Methods & Globals ***
@@ -414,7 +364,7 @@ uint16_t get_current_freq();
  * @param toneButton The button which was pressed.
  * @return A note struct from the toneButton that was pressed. Finds the note by copying information from PROGMEM.
  */
-note get_current_tone(uint8_t toneButton);
+note_t get_current_tone(uint8_t toneButton);
 
 /**
  * @brief Get the length of a string stored in flash storage.
@@ -430,7 +380,7 @@ uint16_t FSHlength(const __FlashStringHelper* FSHinput);
  * @param frequency The frequency to search for.
  * @return The note which has the frequency.
  */
-note get_note_from_freq(const uint16_t frequency);
+note_t get_note_from_freq(const uint16_t frequency);
 
 /**
  * @brief Retrieve a note object from a specified pitch.
@@ -438,7 +388,7 @@ note get_note_from_freq(const uint16_t frequency);
  * @param pitch The pitch string to search for.
  * @return The note which matches the frequency.
  */
-note get_note_from_pitch(const char* pitch);
+note_t get_note_from_pitch(const char* pitch);
 
 /*
 SD CARD FUNCTIONS
