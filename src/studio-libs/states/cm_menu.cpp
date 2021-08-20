@@ -20,7 +20,7 @@ void CreatorModeMenu::loop() {
     lcd.print(F("[Creator Mode]"));
     lcd.setCursor(1, 2);
     lcd.print(F(">> INSTRUCTIONS <<"));
-    delay_ms(1250);
+    delay_ms(delayTime * 2.5F);
     print_lcd(F("To start, press the select button."));
     print_lcd(F("To exit, press the DEL/CANCEL button."));
     print_lcd(F("Create a song using the 5 tune buttons."));
@@ -51,7 +51,7 @@ void CreatorModeMenu::loop() {
     lcd.print(F("frequency ranges:"));
     delay_ms(delayTime);
     print_scrolling(F("GREEN: B0 (31hz) to DS2 (78hz), BLUE: E2 (82hz) to GS3 (208hz), RED: A3 (220hz) to CS5 (554hz), YELLOW: D5 (587hz) to FS6 (1480hz), WHITE: G6 (1568hz) to B7 (3951hz)"), 2, 150);
-    delay_ms(1250);
+    delay_ms(delayTime * 2.5F);
     lcd.clear();
     delay_ms(delayTime);
 

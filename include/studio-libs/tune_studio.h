@@ -52,7 +52,7 @@
 // Define a song class so the header file knows it exists.
 class Song;
 
-const char VERSION_ID[] PROGMEM = "1.0.2-R1";
+const char VERSION_ID[] PROGMEM = "1.0.3-R1";
 
 /*
 ************************
@@ -118,8 +118,10 @@ constexpr uint8_t LCD_ROWS = 4;
 // The delay between reading each button press.
 constexpr uint16_t DEBOUNCE_RATE = 500;
 
-// Maximum length of songs.
+// Maximum number of notes in a song.
 constexpr uint8_t MAX_SONG_LENGTH = 255;
+// Minimum number of notes in a song.
+constexpr uint8_t MIN_SONG_LENGTH = 8;
 // Maximum allowed number of songs.
 constexpr uint8_t MAX_SONG_AMOUNT = 255;
 
@@ -219,7 +221,8 @@ const note_t EMPTY_NOTE = { "0000", (const uint16_t)0 };
 const char ROOT_DIR[] = "/";
 const char PROGRESS_LABEL[] = "PROGRESS:";
 const char FILE_TXT_EXTENSION[] = ".txt";
-const char optionalCharacters[] PROGMEM = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
+const char README_FILE[] = "README.TXT";
+const char OPTIONAL_NAMING_CHARACTERS[] PROGMEM = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
 
 /**
  * @brief The primary LCD object which controls the main LCD.
@@ -238,7 +241,7 @@ extern SevSegShift segDisplay;
 bool is_interrupt();
 
 /**
- * @brief A custom delay function which checks if an immediate interrupt is occuring.
+ * @brief A custom (blocking) delay function which checks if an immediate interrupt is occuring.
  * Works the same as the normal arduino delay(ms) function just with a custom handler.
  *
  * @param milliseconds The time to delay for.
@@ -273,15 +276,6 @@ void update_state(StateID state);
  * @return If the button is being pressed.
  */
 bool is_pressed(uint8_t buttonPin);
-
-/**
- * @brief Checks for button presses & updates Debounce rate.
- *
- * @param buttonPin The pin of the button to check for.
- * @param buttonPin2 The pin of the second button to check for.
- * @return If both of the buttons are being pressed.
- */
-bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2);
 
 /**
  * @brief Prints text to the lcd and wraps text automatically.
@@ -356,14 +350,6 @@ uint16_t get_current_freq();
  * @return A note struct from the toneButton that was pressed. Finds the note by copying information from PROGMEM.
  */
 note_t get_current_tone(uint8_t toneButton);
-
-/**
- * @brief Get the length of a string stored in flash storage.
- *
- * @param FSHinput The flash string to check the length of.
- * @return unsigned int
- */
-uint16_t FSHlength(const __FlashStringHelper* FSHinput);
 
 /**
  * @brief Retrieve a note object that matches a specified frequency.

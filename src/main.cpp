@@ -140,8 +140,8 @@ void setup()
 #endif
 
   // Interrupt to handle when the select button is pressed.
-  attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(BTN_DEL_CANCEL), cancel_btn_click, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, LOW);
+  attachInterrupt(digitalPinToInterrupt(BTN_DEL_CANCEL), cancel_btn_click, LOW);
 
   // Initalize the LCD.
   lcd.init();
@@ -314,28 +314,32 @@ note_t get_current_tone(uint8_t toneButton) {
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
   const uint16_t subTone = (uint16_t)(get_current_freq() + 1) / (uint8_t)61;
-
-  switch (toneButton) {
-  case 0:
-    return EMPTY_NOTE;
-  case BTN_TONE_1:
-    return note_t{ ((char*)pgm_read_word(&toneButtons[0].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[0].notes[subTone].frequency)) };
-  case BTN_TONE_2:
-    return note_t{ ((char*)pgm_read_word(&toneButtons[1].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[1].notes[subTone].frequency)) };
-  case BTN_TONE_3:
-    return note_t{ ((char*)pgm_read_word(&toneButtons[2].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[2].notes[subTone].frequency)) };
-  case BTN_TONE_4:
-    return note_t{ ((char*)pgm_read_word(&toneButtons[3].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[3].notes[subTone].frequency)) };
-  case BTN_TONE_5:
-    return note_t{ ((char*)pgm_read_word(&toneButtons[4].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[4].notes[subTone].frequency)) };
-  default:
+  uint8_t buttonIndex;
+  switch(toneButton) {
+    case BTN_TONE_1:
+      buttonIndex = 0;
+      break;
+    case BTN_TONE_2:
+      buttonIndex = 1;
+      break;
+    case BTN_TONE_3:
+      buttonIndex = 2;
+      break;
+    case BTN_TONE_4:
+      buttonIndex = 3;
+      break;
+    case BTN_TONE_5:
+      buttonIndex = 4;
+      break;
+    default:
+      buttonIndex = 255; 
 #if DEBUG == true
-    Serial.print(get_active_time());
-    Serial.println(F(" Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
+      Serial.print(get_active_time());
+      Serial.println(F(" Error in get_current_tone(uint8_t toneButton). Cannot find specified tone button."));
 #endif
-    return EMPTY_NOTE;
+      break;
   }
-
+  return buttonIndex != 255 ? note_t{ ((char*)pgm_read_word(&toneButtons[buttonIndex].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[buttonIndex].notes[subTone].frequency)) } : EMPTY_NOTE;
 }
 
 uint16_t get_current_freq() {
@@ -346,34 +350,31 @@ uint16_t get_current_freq() {
 //// LCD FUNCTIONS ////
 //////////////////////
 
-uint16_t FSHlength(const __FlashStringHelper* FSHinput) {
-  PGM_P FSHinputPointer = reinterpret_cast<PGM_P>(FSHinput);
-  uint16_t stringLength = 0;
-  while (pgm_read_byte(FSHinputPointer++)) {
-    stringLength++;
-  }
-  return stringLength;
-}
 
 void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
   lcd.clear();
   uint8_t cursorX = 0; // Track cursor on X position.
   uint8_t cursorY = 0; // Track cursor on Y position.
 
-  // Copy the text from SRAM
-  const uint8_t length = FSHlength(text);
-  char buffer[length + 1];
-  memcpy_P(buffer, text, length + 1);
+  // Track a pointer to each character in the flash string.
+  const char *p = (const char PROGMEM *)text;
 
-  for (uint8_t i = 0; i < length; i++) {
+  // As long as a terminating character is not encountered, continue.
+  while(pgm_read_byte_near(p) != '\0') {
     if (is_interrupt()) return;
+
+    // Read character from PROGMEM and store it in SRAM.
+    char letter = pgm_read_byte_near(p++);
+
     lcd.setCursor(cursorX, cursorY);
+
     // Check if the beginning character is a space.
-    if (!(cursorX == 0 && buffer[i] == ' ')) {
-      lcd.print(buffer[i]); // Print letter to LCD.
+    if (!(cursorX == 0 && letter == ' ')) {
+      lcd.write(letter); // Print letter to LCD.
       delay_ms(charDelay);
       cursorX++; // Go up by one cursor.
     }
+
     // Reached end of the row.
     if (cursorX != 0 && cursorX % LCD_COLS == 0) {
       cursorY++;
@@ -391,33 +392,30 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
 }
 
 void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay) {
-
   const uint16_t initalCharDelay = charDelay * 2;
-  // Copy the string from PROGMEM to the stack.
-  const uint8_t length = FSHlength(text);
-  char buffer[length + 1];
-  memcpy_P(buffer, text, length + 1);
 
-  for (uint8_t i = 0; i < length - LCD_COLS + 1; i++) {
+  // Track a pointer to each character in the flash string.
+  const char *p = (const char PROGMEM *)text;
+  // If the inital char delay should be waited.
+  bool flag = false;
+
+  while(pgm_read_byte_near(p+(LCD_COLS-1)) != '\0') {
     if (is_interrupt()) return;
     lcd.setCursor(0, cursorY);
     {
-      // Create a substring that is of the length of the lcd.
-      char subStr[LCD_COLS];
-
-      // Copies a part of the buffer (20 chars) into the substring.
-      memcpy(subStr, buffer + i, LCD_COLS);
-
-      // Print each character of the substring.
-      for (uint8_t j = 0; j < LCD_COLS; j++) {
-        lcd.write(subStr[j]);
+      // Create a substring by going through 20 characters on the progmem string.
+      for(uint8_t i = 0; i < LCD_COLS; i++) {
+        lcd.write(pgm_read_byte_near(p++));
       }
+      // Move the pointer back 19 spaces to prepare for next character in substring.
+      p-=(LCD_COLS-1);
     }
-
-    if (i == 0) {
-      delay_ms(initalCharDelay); // Delay an extra amount for the inital text..
+    if(!flag) {
+      delay_ms(initalCharDelay);
+      flag = true;
     }
     delay_ms(charDelay);
+    
   }
 }
 
@@ -559,21 +557,13 @@ bool is_pressed(uint8_t buttonPin) {
   return false;
 }
 
-bool is_pressed(uint8_t buttonPin1, uint8_t buttonPin2) {
-  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalRead(buttonPin1) == LOW && digitalRead(buttonPin2) == LOW) {
-    lastButtonPress = millis();
-    return true;
-  }
-  return false;
-}
-
 ////////////////////////////
 //// SD CARD FUNCTIONS ////
 //////////////////////////
 
 void sd_save_song(char* fileName, Song* song) {
   // Ensure the song being saved is correctly formatted.
-  if(strlen(fileName) > 8 || strlen(fileName) < 1 || song->get_size() < 8) {
+  if(strlen(fileName) > 8 || strlen(fileName) < 1 || song->get_size() < MIN_SONG_LENGTH) {
     analogWrite(RGB_RED, RGB_BRIGHTNESS);
     #if DEBUG == true
     Serial.print(get_active_time());
@@ -622,12 +612,8 @@ void sd_save_song(char* fileName, Song* song) {
 
   // Convert each frequency in the song to a pitch and save it on the SD.
   for (song_size_t i = 0; i < song->get_size(); i++) {
-
-    const char* pitch = get_note_from_freq(song->get_note(i)).pitch;
-
     songFile.print(F("  - "));
-    songFile.println(pitch);
-
+    songFile.println(get_note_from_freq(song->get_note(i)).pitch);
   }
   songFile.println();
   songFile.println(F("# END"));
@@ -668,7 +654,7 @@ const char* sd_get_file(uint8_t index) {
     }
 
     // Skip if directory, README file, or if the file does not have a .txt extension.
-    if (entry.isDirectory() || !strcasestr(entry.name(), FILE_TXT_EXTENSION) || strcmp(entry.name(), "README.TXT") == 0) {
+    if (entry.isDirectory() || !strcasestr(entry.name(), FILE_TXT_EXTENSION) || strcmp(entry.name(), README_FILE) == 0) {
       entry.close();
       continue;
     }
@@ -784,7 +770,7 @@ bool sd_songcpy(Song* song, const char* fileName) {
       songSize++;
     }
   }
-  if (songSize < 8 || songSize > 255) {
+  if (songSize < MIN_SONG_LENGTH || songSize > MAX_SONG_LENGTH) {
     entry.close();
     return false;
   }
@@ -832,11 +818,11 @@ void sd_make_readme() {
 
   File readMe;
 
-  if (SD.exists((char*)"README.TXT")) {
+  if (SD.exists((char*)README_FILE)) {
     readMe.close();
     return;
   }
-  readMe = SD.open("README.TXT", FILE_WRITE);
+  readMe = SD.open(README_FILE, FILE_WRITE);
   readMe.println(F("---------> || TuneStudio2560 || <---------"));
   readMe.println(F("Welcome to the TuneStudio2560 SD Card!"));
   readMe.println(F("The SD card allows users to seemlessly edit, create, and remove songs without having to interact with TuneStudio at all!"));

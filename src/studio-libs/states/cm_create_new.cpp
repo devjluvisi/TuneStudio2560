@@ -87,9 +87,9 @@ void CreatorModeCreateNew::loop() {
             optionWaiting = false;
         }
         if (optionWaiting) {
+            optionWaiting = false;
             // SAVE SONG.
-            if (newSong->get_size() < 8) {
-                optionWaiting = false;
+            if (newSong->get_size() < MIN_SONG_LENGTH) {
                 lcd.clear();
                 lcd.setCursor(0, 1);
                 lcd.print(F("[ERROR]"));
@@ -98,8 +98,6 @@ void CreatorModeCreateNew::loop() {
                 print_song_lcd();
                 return;
             }
-            // Initalize an SD card module.
-            optionWaiting = false;
 
             // Update the fileName variable.
             set_save_name();
@@ -111,7 +109,6 @@ void CreatorModeCreateNew::loop() {
 #endif
             // Exit the program.
             if (fileName[0] == '\0') {
-                optionWaiting = false;
                 print_song_lcd();
                 return;
             }
@@ -134,7 +131,6 @@ void CreatorModeCreateNew::loop() {
             lcd.setCursor(0, 2);
             lcd.print(F("Returning to Song."));
             delay_ms(1500);
-            optionWaiting = false;
             print_song_lcd();
             return;
         }
@@ -172,6 +168,7 @@ void CreatorModeCreateNew::loop() {
         delay_ms(200);
         noTone(SPEAKER_1);
         playSound = false;
+
 #if PERF_METRICS == true
         Serial.print(get_active_time());
         Serial.print(F(" Free Memory: "));
@@ -182,13 +179,8 @@ void CreatorModeCreateNew::loop() {
 }
 
 void CreatorModeCreateNew::init() {
-    pinMode(SPEAKER_1, INPUT);
-
-    lcd.setCursor(0, 0);
     lcd.print(F("[SONG]"));
-
     segDisplay.setBrightness(-100);
-    lcd.setCursor(0, 1);
 
     newSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
@@ -208,6 +200,14 @@ void CreatorModeCreateNew::print_song_lcd() {
     const song_size_t songSize = newSong->get_size();
 
     // Setup the top row of the display.
+
+/*
+// Alternative "clean" way of doing it. (Takes more SRAM and Flash)
+    char buffer[20];
+    lcd.clear();
+    sprintf(buffer, "[SONG] ([%d] %d/%d)", scrolledLines+1, songSize, MAX_SONG_LENGTH);
+*/
+
     lcd.clear();
     char buffer[3 + sizeof(char)];
     lcd.print(F("[SONG] (["));
@@ -227,23 +227,22 @@ void CreatorModeCreateNew::print_song_lcd() {
     // Print each of the notes from the song onto the LCD.
     uint8_t scrolledLineCounter = scrolledLines;
     for (song_size_t i = 0; i < songSize; i++) {
-
         const char* pitch = get_note_from_freq(newSong->get_note(i)).pitch;
+        const uint8_t pitchSize = strlen(pitch);
 
         // Get if adding the pitch to the current column would overflow. If so then reset the column.
-        if (columnCount + strlen(pitch) > LCD_COLS) {
+        if (columnCount + pitchSize > LCD_COLS) {
             columnCount = 0;
-            if (scrolledLineCounter != 0) {
-                --scrolledLineCounter;
-            }
-            else {
+            if (scrolledLineCounter == 0) {
                 ++lcdCursor;
             }
-
+            else {
+                --scrolledLineCounter;
+            }
         }
         // -1 for the top [Song] header.
         // Stop printing if we are off the screen.
-        if (lcdCursor > LCD_ROWS - 1) {
+        if (lcdCursor > (LCD_ROWS - 1)) {
             return;
         }
 
@@ -253,7 +252,7 @@ void CreatorModeCreateNew::print_song_lcd() {
             lcd.print(pitch);
         }
 
-        columnCount += strlen(pitch);
+        columnCount += pitchSize;
     }
 }
 
@@ -263,17 +262,15 @@ void CreatorModeCreateNew::print_song_lcd() {
  * @return A number of rows.
  */
 uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
-    
     uint8_t columnCount = 0;
     uint8_t rowCounter = 0;
     for (song_size_t i = 0; i < newSong->get_size(); i++) {
-        const char* pitch = get_note_from_freq(newSong->get_note(i)).pitch;
-
-        if (columnCount + strlen(pitch) > LCD_COLS) {
+        const uint8_t pitchSize = strlen(get_note_from_freq(newSong->get_note(i)).pitch);
+        if (columnCount + pitchSize > LCD_COLS) {
             columnCount = 0;
             rowCounter++;
         }
-        columnCount += strlen(pitch);
+        columnCount += pitchSize;
     }
     return rowCounter;
     
@@ -372,6 +369,7 @@ void CreatorModeCreateNew::set_save_name() {
             if (optionWaiting) {
                 // Return an empty string.
                 strcpy(fileName, "\0");
+                optionWaiting = false;
                 return;
             }
             if (index == 0) {
@@ -406,10 +404,9 @@ void CreatorModeCreateNew::set_save_name() {
             lastUpdate = millis();
             if (slideInfo == 4) {
                 slideInfo = 0;
+                return;
             }
-            else {
-                slideInfo++;
-            }
+            slideInfo++;
         }
 
     }
@@ -426,6 +423,5 @@ const char CreatorModeCreateNew::get_character_from_analog() {
     // Characters are A-Z, 0-9, and underscores.
     // 26 letters + 10 numbers
     // The array containing all of the possible values is stored in tune_studio.h in PROGMEM.
-    const uint8_t analogToValue = (get_current_freq() + 1) / (uint8_t)28;
-    return pgm_read_byte_near(&optionalCharacters[analogToValue]);
+    return pgm_read_byte_near(&OPTIONAL_NAMING_CHARACTERS[((get_current_freq() + 1) / (uint8_t)28)]);
 }
