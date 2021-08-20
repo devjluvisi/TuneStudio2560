@@ -43,12 +43,15 @@
  If this flag is set to true then the current execution loop halts and attempts to return back
  to the main loop() function as fast as possible.
 
- The delay(ms) function in this program also makes use of this variable.
+ The delay_ms(ms) function in this program also makes use of this variable.
  */
 static volatile bool immediateInterrupt = false;
 static volatile unsigned long lastButtonPress = 0; // The last time a button was pressed in millis().
 static volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
 static volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
+
+LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
+SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
 
 
 //////////////////////////////
@@ -72,6 +75,12 @@ bool is_interrupt() {
   return immediateInterrupt;
 }
 
+void delay_ms(const unsigned long milliseconds) {
+  const unsigned long waitTime = milliseconds + millis();
+  while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
+    continue;
+  }
+}
 
 ////////////////////////////////
 //// SETUP & LOOP FUNCTIONS ////
@@ -96,7 +105,7 @@ void setup()
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------\n> TuneStudio2560 has initalized\n> Have fun!\n--------------------------------------"));
   Serial.println(F("[!!!] WARNING: DEBUG mode is enabled. When DEBUG is enabled TuneStudio2560 may not run at full speed due to performance reduction outputting to Serial Monitor. Using performance metrics will also largely reduce speed."));
-  delay(1000);
+  delay_ms(1000);
 #endif
 #if DEBUG == false && PERF_METRICS == true
   Serial.begin(9600);
@@ -105,7 +114,7 @@ void setup()
   }
   while (true) {
     Serial.println(F("ERROR: YOU MUST ENABLE DEBUG IN ORDER TO USE PERFORMANCE METRICS."));
-    delay(500);
+    delay_ms(500);
   }
 #endif
 
@@ -362,7 +371,7 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
     // Check if the beginning character is a space.
     if (!(cursorX == 0 && buffer[i] == ' ')) {
       lcd.print(buffer[i]); // Print letter to LCD.
-      delay(charDelay);
+      delay_ms(charDelay);
       cursorX++; // Go up by one cursor.
     }
     // Reached end of the row.
@@ -373,7 +382,7 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
 
     // Reached end of the LCD.
     if (cursorY != 0 && cursorY % LCD_ROWS == 0) {
-      delay(600);
+      delay_ms(600);
       cursorX = 0;
       cursorY = 0;
       lcd.clear();
@@ -406,9 +415,9 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
     }
 
     if (i == 0) {
-      delay(initalCharDelay); // Delay an extra amount for the inital text..
+      delay_ms(initalCharDelay); // Delay an extra amount for the inital text..
     }
-    delay(charDelay);
+    delay_ms(charDelay);
   }
 }
 

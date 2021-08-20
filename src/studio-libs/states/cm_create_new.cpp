@@ -23,9 +23,9 @@ void CreatorModeCreateNew::loop() {
     if (is_pressed(BTN_TONE_1)) {
         // Play the song back.
         if (optionWaiting) {
-            delay(150);
+            delay_ms(150);
             newSong->play_song();
-            delay(150);
+            delay_ms(150);
             optionWaiting = false;
             return;
         }
@@ -94,7 +94,7 @@ void CreatorModeCreateNew::loop() {
                 lcd.setCursor(0, 1);
                 lcd.print(F("[ERROR]"));
                 print_scrolling(F("Please make your song at least eight or more notes to save."), 2, 150);
-                delay(500);
+                delay_ms(500);
                 print_song_lcd();
                 return;
             }
@@ -133,7 +133,7 @@ void CreatorModeCreateNew::loop() {
             lcd.print(F("Song Saved."));
             lcd.setCursor(0, 2);
             lcd.print(F("Returning to Song."));
-            delay(1500);
+            delay_ms(1500);
             optionWaiting = false;
             print_song_lcd();
             return;
@@ -169,7 +169,7 @@ void CreatorModeCreateNew::loop() {
 
     if (playSound) {
         newSong->play_note(currentNote.frequency);
-        delay(200);
+        delay_ms(200);
         noTone(SPEAKER_1);
         playSound = false;
 #if PERF_METRICS == true
@@ -190,7 +190,7 @@ void CreatorModeCreateNew::init() {
     segDisplay.setBrightness(-100);
     lcd.setCursor(0, 1);
 
-    newSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY, MAX_SONG_LENGTH, false);
+    newSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
     previousUpdate = 0;
     lastButtonPress = 0;
@@ -263,6 +263,7 @@ void CreatorModeCreateNew::print_song_lcd() {
  * @return A number of rows.
  */
 uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
+    
     uint8_t columnCount = 0;
     uint8_t rowCounter = 0;
     for (song_size_t i = 0; i < newSong->get_size(); i++) {
@@ -275,6 +276,7 @@ uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
         columnCount += strlen(pitch);
     }
     return rowCounter;
+    
 }
 
 
@@ -345,11 +347,11 @@ void CreatorModeCreateNew::set_save_name() {
             if (optionWaiting) {
                 if (index == 0) {
                     lcd_clear_row(2);
-                    delay(500);
+                    delay_ms(500);
                     lcd.print(F("PLEASE SET A NAME."));
-                    delay(2500);
+                    delay_ms(2500);
                     lcd_clear_row(2);
-                    delay(500);
+                    delay_ms(500);
                     continue;
                 }
 

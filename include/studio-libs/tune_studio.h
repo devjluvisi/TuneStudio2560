@@ -52,7 +52,7 @@
 // Define a song class so the header file knows it exists.
 class Song;
 
-const char VERSION_ID[] PROGMEM = "1.0.0-R1";
+const char VERSION_ID[] PROGMEM = "1.0.2-R1";
 
 /*
 ************************
@@ -208,8 +208,8 @@ const buttonFrequencies_t toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
  * @brief A note which defines a pause.
  * TODO: Move to PROGMEM
  */
-const note_t PAUSE_NOTE = { (const char*)"PS", (const uint16_t)1 };
-const note_t EMPTY_NOTE = { (const char*)"0000", (const uint16_t)0 };
+const note_t PAUSE_NOTE = { "PS", (const uint16_t)1 };
+const note_t EMPTY_NOTE = { "0000", (const uint16_t)0 };
 /*
 *********************************
 *** Program Methods & Globals ***
@@ -225,12 +225,12 @@ const char optionalCharacters[] PROGMEM = { 'A','B','C','D','E','F','G','H','I',
  * @brief The primary LCD object which controls the main LCD.
  *
  */
-inline LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
+extern LiquidCrystal_I2C lcd;
 
 /**
  * @brief Represents the 4-wide 7 segment display which is connected to 2x SN74HC595N shift registers.
  */
-inline SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
+extern SevSegShift segDisplay;
 
 /**
  * @return If the interrupt flag is true.
@@ -239,20 +239,11 @@ bool is_interrupt();
 
 /**
  * @brief A custom delay function which checks if an immediate interrupt is occuring.
- *
  * Works the same as the normal arduino delay(ms) function just with a custom handler.
- *
- * This function is always inlined and will override the default delay function.
  *
  * @param milliseconds The time to delay for.
  */
-inline void delay(const unsigned long milliseconds) __attribute__((always_inline));
-void delay(const unsigned long milliseconds) {
-  const unsigned long waitTime = milliseconds + millis();
-  while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
-    continue;
-  }
-}
+void delay_ms(const unsigned long milliseconds);
 
 /**
  * @brief An ISR to handle whenever the select button is pressed throughout the program.

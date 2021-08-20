@@ -104,15 +104,15 @@ void ListeningModeMenu::init() {
     Serial.println(F(" Entered listening mode."));
 #endif
     previousSong = 0;
-    delay(500);
+    delay_ms(500);
     lcd.setCursor(2, 1);
     lcd.print(F("[Listening Mode]"));
     lcd.setCursor(1, 2);
     lcd.print(F(">> INSTRUCTIONS <<"));
-    delay(1250);
+    delay_ms(1250);
     lcd.clear();
     print_lcd(F("Press select button to skip instructions."), 50);
-    delay(500);
+    delay_ms(500);
     print_lcd(F("Select 1 of the 5 tune buttons to play a song saved in memory."));
     print_lcd(F("When using microSD, press the \"OPTION\" button to cycle to the next page of songs. Each page is 5 different songs."));
     print_lcd(F("Press the \"DEL/CANCEL\" button to go back to main menu."));
@@ -120,7 +120,7 @@ void ListeningModeMenu::init() {
     print_lcd(F("While paused, press Green Tone to go back, Blue Tone to go forward, and SELECT to restart after a song is finished."));
     print_lcd(F("While listening, press \"OPTION+DEL\" to delete song."));
     //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
-    delay(1500);
+    delay_ms(1500);
     lcd.setCursor(0, 3);
     lcd.print(F("Press SELECT to play"));
 }

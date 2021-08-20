@@ -24,7 +24,7 @@ ListeningModePlayingSong::~ListeningModePlayingSong() {
 void ListeningModePlayingSong::loop() {
     // If an invalid song was selected then return back.
     if (invalidSong) {
-        delay(1000);
+        delay_ms(1000);
         update_state(LM_MENU);
         return;
     }
@@ -87,16 +87,16 @@ void ListeningModePlayingSong::loop() {
                 lcd.print(F(" NOW PLAYING "));
             }
             lcd.write(byte(MUSIC_NOTE_SYMBOL));
-            delay(200);
+            delay_ms(200);
         }
         else {
             // If the song has finished then restart it.
-            delay(500);
+            delay_ms(500);
             delete currentSong;
             lcd.clear();
             lcd.setCursor(0, 1);
             lcd.print(F("Restarting!"));
-            delay(900);
+            delay_ms(900);
             lcd.clear();
             init();
         }
@@ -109,7 +109,7 @@ void ListeningModePlayingSong::loop() {
                 // Forward
                 currentSongNote += 1;
 
-                delay(100);
+                delay_ms(100);
             }
             else if (digitalRead(BTN_TONE_2) == LOW) {
                 // Backwards
@@ -117,7 +117,7 @@ void ListeningModePlayingSong::loop() {
                     return;
                 }
                 currentSongNote -= 1;
-                delay(100);
+                delay_ms(100);
                 // NOTE: The progress bar needs to be reset because the instructions to update the progress bar usually do not 
                 // account for a reduction in the block size. Therefore we need to regenerate the block size from zero.
                 lcd.setCursor(strlen(PROGRESS_LABEL) + 1, 2);
@@ -159,7 +159,7 @@ void ListeningModePlayingSong::loop() {
         lcd.print(F("ARE YOU SURE? (Y/N)"));
         lcd.setCursor(0, 3);
         lcd.print(F("SELECT=Y, CANCEL=N"));
-        delay(1000);
+        delay_ms(1000);
 
         while (true) {
             if (digitalRead(BTN_ADD_SELECT) == LOW) {
@@ -168,27 +168,27 @@ void ListeningModePlayingSong::loop() {
                 lcd.clear();
                 lcd.setCursor(0, 1);
                 lcd.print(F("Deleted."));
-                delay(2000);
+                delay_ms(2000);
                 delete currentSong;
                 update_state(MAIN_MENU);
-                delay(500);
+                delay_ms(500);
 
                 return;
             }
             if (digitalRead(BTN_DEL_CANCEL) == LOW) {
-                delay(850);
+                delay_ms(850);
                 break;
             }
         }
         delete currentSong;
         lcd.clear();
-        delay(850);
+        delay_ms(850);
 
         init();
     }
     // Return to main menu.
     else if (digitalRead(BTN_DEL_CANCEL) == LOW) {
-        delay(1000);
+        delay_ms(1000);
         update_state(LM_MENU);
         return;
     }
@@ -208,13 +208,13 @@ void ListeningModePlayingSong::loop() {
     if (!isPaused && currentSongNote < currentSongSize && millis() - lastTonePlay > currentSong->get_note_delay()) {
         if (currentSong->get_note(currentSongNote) != PAUSE_NOTE.frequency) {
             currentSong->play_note(currentSong->get_note(currentSongNote));
-            delay(currentSong->get_note_length());
+            delay_ms(currentSong->get_note_length());
             noTone(SPEAKER_1);
             lastTonePlay = millis();
             currentSongNote++;
         }
         else {
-            delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
+            delay_ms(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
             lastTonePlay = millis();
             currentSongNote++; // Go to the next index of the song.
         }
@@ -256,13 +256,13 @@ void ListeningModePlayingSong::init() {
     Serial.print(name);
     Serial.print(F("\" in song player."));
 #endif
-    currentSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY, MAX_SONG_LENGTH, false);
+    currentSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
     if (strcmp(name, "") == 0) {
         lcd.clear();
         lcd.print(F("Invalid Song"));
         analogWrite(RGB_RED, RGB_BRIGHTNESS);
-        delay(1000);
+        delay_ms(1000);
         analogWrite(RGB_RED, 0);
         invalidSong = true;
         return;
@@ -292,7 +292,7 @@ void ListeningModePlayingSong::init() {
         lcd.clear();
         lcd.print(F("Invalid Song"));
         analogWrite(RGB_RED, RGB_BRIGHTNESS);
-        delay(1000);
+        delay_ms(1000);
         analogWrite(RGB_RED, 0);
         invalidSong = true;
     }
@@ -302,7 +302,7 @@ void ListeningModePlayingSong::init() {
     blockRequirement = currentSongSize / 8;
     blockSize = blockRequirement;
 
-    delay(750);
+    delay_ms(750);
 
     if (!invalidSong) {
         lcd.setCursor(1, 1);

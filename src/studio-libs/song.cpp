@@ -14,31 +14,21 @@
 
 #include <studio-libs/song.h>
 
-Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxLength, bool init) {
+Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay) {
 #if DEBUG == true
     Serial.print(get_active_time());
     Serial.println(F(" song.cpp: Initalized a new song."));
 #endif
-
-    if (init) {
-#if DEBUG == true
-        Serial.print(get_active_time());
-        Serial.println(F(" Initalized the song on a pin."));
-#endif
-
-        pinMode(pin, OUTPUT);
-    }
     _pin = pin;
     _noteDelay = noteDelay;
     _noteLength = noteLength;
-    _maxLength = maxLength;
+    _maxLength = MAX_SONG_LENGTH;
     _currSize = 0;
-    EMPTY_FREQ = EMPTY_NOTE.frequency;
 
     // Define a new array of a specified length and fill it with zeros.
     // Note that this is a dyanmically allocated array but it still has a fixed size. In order to prevent fragmentation the object
     // should be cleared from the heap via dispose();
-    _songData = new uint16_t[_maxLength]{ EMPTY_FREQ };
+    _songData = new uint16_t[_maxLength]{ EMPTY_NOTE.frequency };
 }
 
 Song::~Song() {
@@ -62,7 +52,7 @@ void Song::play_note(uint16_t note) {
 bool Song::is_song_full() {
     // Check if the final value in the array is zero. If so we know it is not full since 0's represent empty values in
     // an integer array.
-    return _songData[_maxLength - 1] != EMPTY_FREQ;
+    return _songData[_maxLength - 1] != EMPTY_NOTE.frequency;
 }
 
 void Song::add_note(uint16_t note) {
@@ -76,7 +66,7 @@ void Song::add_pause() {
 }
 
 void Song::remove_note() {
-    _songData[get_size() - 1] = EMPTY_FREQ;
+    _songData[get_size() - 1] = EMPTY_NOTE.frequency;
     _currSize--;
 }
 
@@ -86,21 +76,21 @@ void Song::play_song() {
     // While the song index is not empty and does not equal the maximum length allowed.
     while (songIndex != size) {
         if (_songData[songIndex] == PAUSE_NOTE.frequency) {
-            delay(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
+            delay_ms(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
             songIndex++; // Go to the next index of the song.
             continue; // Go to the next iteration of the loop.
         }
         play_note(_songData[songIndex]);
-        delay(_noteLength);
+        delay_ms(_noteLength);
         noTone(_pin);
-        delay(_noteDelay);
+        delay_ms(_noteDelay);
         songIndex++;
     }
 }
 
 void Song::clear() {
     for (song_size_t i = this->_maxLength; i > 0; i--) {
-            _songData[i] = EMPTY_FREQ;
+            _songData[i] = EMPTY_NOTE.frequency;
     }
     _currSize = 0;
 }
@@ -110,7 +100,7 @@ uint16_t Song::get_note(song_size_t index) {
 }
 
 bool Song::is_empty() {
-    return _songData[0] == EMPTY_FREQ;
+    return _songData[0] == EMPTY_NOTE.frequency;
 }
 
 

@@ -25,7 +25,6 @@
 #define song_h
 
 #include <studio-libs/tune_studio.h>
-#include <Arduino.h>
 
 //song_size_t variable is correspondent to the length of the song.
 #if PRGM_MODE == 0
@@ -47,7 +46,6 @@ private:
     song_size_t _maxLength; // Quick access to the size of the array.
     song_size_t _currSize; // Current size of the song.
     uint16_t* _songData; // A array of all of the different tones.
-    uint16_t EMPTY_FREQ;
 public:
     /**
      * @brief Construct a new song object.
@@ -55,10 +53,8 @@ public:
      * @param pin The pin to use for speaker output.
      * @param noteLength The length that the note should be played.
      * @param noteDelay The delay between each note of the song.
-     * @param maxLength The maximum length of a song (# of notes).
-     * @param init If the constructor should initalize the pin as an output via pinMode.
      */
-    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay, song_size_t maxLength, bool init);
+    Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay);
     /**
      * @brief Destroy the Song object and
      * Eliminates the _songData[] array by flushing it from the heap.

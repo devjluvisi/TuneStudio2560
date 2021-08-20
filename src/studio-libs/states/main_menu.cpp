@@ -23,22 +23,22 @@ void MainMenu::loop() {
     char buffer[12];
     strcpy_P(buffer, VERSION_ID);
     lcd.print(buffer);
-    delay(4000);
+    delay_ms(4000);
     lcd.clear();
     lcd.setCursor(5, 1);
     lcd.print(F("By"));
     lcd.setCursor(2, 2);
     lcd.print(F("Jacob LuVisi"));
-    delay(2000);
+    delay_ms(2000);
     print_lcd(F("To enter creator mode press the select button. To enter listening mode press the delete button. To view more information please check out my github."));
-    delay(1000);
+    delay_ms(1000);
     lcd.clear();
     lcd.setCursor(0, 1);
     lcd.print(F("GitHub: "));
     print_scrolling(F("github.com/devjluvisi/TuneStudio2560"), 2, 235);
-    delay(2000);
+    delay_ms(2000);
     lcd.clear(); // Clear the screen incase the method needs to run again.
-    delay(1000);
+    delay_ms(1000);
 }
 
 void MainMenu::init() {
