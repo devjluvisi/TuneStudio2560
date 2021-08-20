@@ -21,7 +21,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 | ---------- | ------------- | ------------- |
 | **V1.0.0-R1**  | 1705 Bytes (20.8%)  | 37436 Bytes (14.7%) |
 | **V1.0.1-R1**  | 1705 Bytes (20.8%)  | 37272 Bytes (14.7%) |
-| **V1.0.2-R1**  | 1705 Bytes (20.8%)  | 37272 Bytes (14.7%) |
+| **V1.0.2-R1**  | 1689 Bytes (20.6%)  | 35446 Bytes (14.0%) |
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
 - Uses the standard chromatic scale to identify different tones/pitches for ease of use.
