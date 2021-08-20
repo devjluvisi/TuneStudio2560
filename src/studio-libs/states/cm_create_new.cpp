@@ -167,6 +167,8 @@ void CreatorModeCreateNew::loop() {
         newSong->play_note(currentNote.frequency);
         delay_ms(200);
         noTone(SPEAKER_1);
+        // Eliminates static noise
+        pinModeFast(SPEAKER_1, INPUT);
         playSound = false;
 
 #if PERF_METRICS == true
@@ -189,6 +191,8 @@ void CreatorModeCreateNew::init() {
     scrolledLines = 0;
     optionWaiting = false;
     playSound = false;
+    // Eliminates static noise
+    pinModeFast(SPEAKER_1, INPUT);
     return;
 }
 

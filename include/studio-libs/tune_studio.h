@@ -22,6 +22,7 @@
 #include <SD.h> // Manage the SD Card.
 #include <SPI.h> // For the SD card library.
 #include <studio-libs/state.h> // Manages the variety of differnet states the program can be running in.
+#include <lib/digitalWriteFast.h>
 
 /**
  * Enable/Disable the DEBUG functionallity of TuneStudio2560.
@@ -181,7 +182,7 @@ constexpr uint8_t DEFAULT_NOTE_LENGTH = 50;
  * by the buzzer.
  */
 typedef struct {
-  const char* pitch;
+  const char * const pitch;
   const uint16_t frequency;
 } note_t;
 
@@ -194,12 +195,11 @@ typedef struct {
   const note_t notes[TONES_PER_BUTTON];
 } buttonFrequencies_t;
 
-
 /**
  * @brief An array of all possible tones which can be played.
  * 85 total tones, 17 per button, 5 buttons.
  */
-const buttonFrequencies_t toneButtons[TONE_BUTTON_AMOUNT] PROGMEM{
+const buttonFrequencies_t PROGRAM_NOTES[TONE_BUTTON_AMOUNT] PROGMEM{
     {BTN_TONE_1, {{"B0", 31}, {"C1", 33}, {"CS1", 35}, {"D1", 37}, {"DS1", 39}, {"E1", 41}, {"F1", 44}, {"FS1", 46}, {"G1", 49}, {"GS1", 52}, {"A1", 55}, {"AS1", 58}, {"B1", 62}, {"C2", 65}, {"CS2", 69}, {"D2", 73}, {"DS2", 78}}},
     {BTN_TONE_2, {{"E2", 82}, {"F2", 87}, {"FS2", 93}, {"G2", 98}, {"GS2", 104}, {"A2", 110}, {"AS2", 117}, {"B2", 123}, {"C3", 131}, {"CS3", 139}, {"D3", 147}, {"DS3", 156}, {"E3", 165}, {"F3", 175}, {"FS3", 185}, {"G3", 196}, {"GS3", 208}}},
     {BTN_TONE_3, {{"A3", 220}, {"AS3", 233}, {"B3", 247}, {"C4", 262}, {"CS4", 277}, {"D4", 294}, {"DS4", 311}, {"E4", 330}, {"F4", 349}, {"FS4", 370}, {"G4", 392}, {"GS4", 415}, {"A4", 440}, {"AS4", 466}, {"B4", 494}, {"C5", 523}, {"CS5", 554}}},
@@ -365,7 +365,7 @@ note_t get_note_from_freq(const uint16_t frequency);
  * @param pitch The pitch string to search for.
  * @return The note which matches the frequency.
  */
-note_t get_note_from_pitch(const char* pitch);
+note_t get_note_from_pitch(const char* const pitch);
 
 /*
 SD CARD FUNCTIONS
@@ -398,14 +398,14 @@ const char* sd_get_file(uint8_t index);
  *
  * @return If the song was able to be successfully copied.
  */
-bool sd_songcpy(Song* song, const char* fileName);
+bool sd_songcpy(Song* song, const char* const fileName);
 
 /**
  * @brief Delete a file from the microSD.
  *
  * @param fileName The file to delete.
  */
-void sd_rem(const char* fileName);
+void sd_rem(const char* const fileName);
 
 /**
  * @brief Generates a README file in the SD card.

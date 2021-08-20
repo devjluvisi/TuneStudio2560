@@ -71,7 +71,7 @@ void ListeningModePlayingSong::loop() {
 
 
     // When the user presses the add/select button.
-    if (digitalRead(BTN_ADD_SELECT) == LOW) {
+    if (digitalReadFast(BTN_ADD_SELECT) == LOW) {
         // If the song is being played then pause it.
         if (currentSongNote < currentSongSize) {
             isPaused = !isPaused;
@@ -105,13 +105,13 @@ void ListeningModePlayingSong::loop() {
     // Forward/Backwards
     if (currentSongNote < currentSongSize) {
         if (isPaused) {
-            if (digitalRead(BTN_TONE_1) == LOW) {
+            if (digitalReadFast(BTN_TONE_1) == LOW) {
                 // Forward
                 currentSongNote += 1;
 
                 delay_ms(100);
             }
-            else if (digitalRead(BTN_TONE_2) == LOW) {
+            else if (digitalReadFast(BTN_TONE_2) == LOW) {
                 // Backwards
                 if (currentSongNote == 0) {
                     return;
@@ -149,7 +149,7 @@ void ListeningModePlayingSong::loop() {
     // End
 
     // Deleting the song
-    if (digitalRead(BTN_DEL_CANCEL) == LOW && digitalRead(BTN_OPTION) == LOW) {
+    if (digitalReadFast(BTN_DEL_CANCEL) == LOW && digitalReadFast(BTN_OPTION) == LOW) {
         lcd.clear();
         lcd.print(F("DELETING:"));
         lcd.setCursor(0, 1);
@@ -162,7 +162,7 @@ void ListeningModePlayingSong::loop() {
         delay_ms(1000);
 
         while (true) {
-            if (digitalRead(BTN_ADD_SELECT) == LOW) {
+            if (digitalReadFast(BTN_ADD_SELECT) == LOW) {
                 // Remove the file from SD.
                 sd_rem(sd_get_file(get_selected_song() - 1));
                 lcd.clear();
@@ -175,7 +175,7 @@ void ListeningModePlayingSong::loop() {
 
                 return;
             }
-            if (digitalRead(BTN_DEL_CANCEL) == LOW) {
+            if (digitalReadFast(BTN_DEL_CANCEL) == LOW) {
                 delay_ms(850);
                 break;
             }
@@ -187,7 +187,7 @@ void ListeningModePlayingSong::loop() {
         init();
     }
     // Return to main menu.
-    else if (digitalRead(BTN_DEL_CANCEL) == LOW) {
+    else if (digitalReadFast(BTN_DEL_CANCEL) == LOW) {
         delay_ms(1000);
         update_state(LM_MENU);
         return;

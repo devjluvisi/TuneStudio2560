@@ -31,12 +31,17 @@
  * LICENSE - MIT
  */
 
+
+/*
+TODO LIST:
+ - Move char strings in toneButtons PROGMEM array to PROGMEM as they are currently stored in SRAM.
+*/
+
 #include <studio-libs/tune_studio.h>
 #include <studio-libs/states/states.h>
 #if PERF_METRICS == true
 #include <debug/debug.h>
 #endif
-
  /**
  Indicates whether or not an immediate interrupt should be called.
  Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
@@ -50,7 +55,9 @@ static volatile unsigned long lastButtonPress = 0; // The last time a button was
 static volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
 static volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
 
+// The LCD of TuneStudio2560.
 LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
+// The 4 Digit 7 Segment Display.
 SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
 
 
@@ -59,13 +66,14 @@ SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
 ////////////////////////////
 
 bool is_interrupt() {
+
 #if PERF_METRICS == true
   if (millis() % 1250 == 0) {
     Serial.println();
     Serial.print(get_active_time());
-    Serial.println(" FREE MEMORY: " + String(freeMemory()) + +"KB/8192KB");
+    Serial.println(" FREE MEMORY: " + String(freeMemory()) + +"B/8192B");
     Serial.print(get_active_time());
-    Serial.println(" STACK SIZE: " + String((RAMEND - SP)) + "KB");
+    Serial.println(" STACK SIZE: " + String((RAMEND - SP)) + "B");
     Serial.print(get_active_time());
     Serial.println(" HEAP FRAG: " + String(getFragmentation()) + "%");
     Serial.println();
@@ -119,9 +127,9 @@ void setup()
 #endif
 
   // Setup all of the pins.
-  pinMode(RGB_BLUE, OUTPUT);
-  pinMode(RGB_GREEN, OUTPUT);
-  pinMode(RGB_RED, OUTPUT);
+  pinModeFast(RGB_BLUE, OUTPUT);
+  pinModeFast(RGB_GREEN, OUTPUT);
+  pinModeFast(RGB_RED, OUTPUT);
   pinMode(BTN_TONE_1, INPUT_PULLUP);
   pinMode(BTN_TONE_2, INPUT_PULLUP);
   pinMode(BTN_TONE_3, INPUT_PULLUP);
@@ -130,9 +138,9 @@ void setup()
   pinMode(BTN_ADD_SELECT, INPUT_PULLUP);
   pinMode(BTN_DEL_CANCEL, INPUT_PULLUP);
   pinMode(BTN_OPTION, INPUT_PULLUP);
-  pinMode(TONE_FREQ, INPUT);
-  pinMode(SPEAKER_1, OUTPUT);
-  pinMode(SD_CS_PIN, OUTPUT);
+  pinModeFast(TONE_FREQ, INPUT);
+  pinModeFast(SPEAKER_1, OUTPUT);
+  pinModeFast(SD_CS_PIN, OUTPUT);
 
 #if DEBUG == true
   Serial.print(get_active_time());
@@ -140,8 +148,8 @@ void setup()
 #endif
 
   // Interrupt to handle when the select button is pressed.
-  attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, LOW);
-  attachInterrupt(digitalPinToInterrupt(BTN_DEL_CANCEL), cancel_btn_click, LOW);
+  attachInterrupt(digitalPinToInterrupt(BTN_ADD_SELECT), select_btn_click, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(BTN_DEL_CANCEL), cancel_btn_click, CHANGE);
 
   // Initalize the LCD.
   lcd.init();
@@ -220,8 +228,6 @@ void setup()
 
 void loop()
 {
-  // Execute the program state constantly.
-
   prgmState->execute();
   immediateInterrupt = false;
 }
@@ -268,8 +274,8 @@ note_t get_note_from_freq(const uint16_t frequency) {
   // 5 tune buttons, 17 pitches each
   for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
     for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
-      if (pgm_read_word(&toneButtons[i].notes[j].frequency) == frequency) {
-        char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
+      if (pgm_read_word(&PROGRAM_NOTES[i].notes[j].frequency) == frequency) {
+        char* pitch = (char*)pgm_read_word(&PROGRAM_NOTES[i].notes[j].pitch);
         //uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
         return note_t{ pitch, frequency }; // Dont need to find the frequency because the parameter already passed it.
       }
@@ -293,9 +299,9 @@ note_t get_note_from_pitch(const char* pitch) {
   // 5 tune buttons, 17 pitches each
   for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
     for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
-      if (strcmp((char*)pgm_read_word(&toneButtons[i].notes[j].pitch), pitch) == 0) {
+      if (strcmp((char*)pgm_read_word(&PROGRAM_NOTES[i].notes[j].pitch), pitch) == 0) {
         //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
-        uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
+        uint16_t freq = (uint16_t)pgm_read_word(&PROGRAM_NOTES[i].notes[j].frequency);
         return note_t{ pitch, freq }; // Dont need to find the pitch because the parameter already passed it.
       }
     }
@@ -339,7 +345,7 @@ note_t get_current_tone(uint8_t toneButton) {
 #endif
       break;
   }
-  return buttonIndex != 255 ? note_t{ ((char*)pgm_read_word(&toneButtons[buttonIndex].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&toneButtons[buttonIndex].notes[subTone].frequency)) } : EMPTY_NOTE;
+  return buttonIndex != 255 ? note_t{ ((char*)pgm_read_word(&PROGRAM_NOTES[buttonIndex].notes[subTone].pitch)), ((uint16_t)pgm_read_word(&PROGRAM_NOTES[buttonIndex].notes[subTone].frequency)) } : EMPTY_NOTE;
 }
 
 uint16_t get_current_freq() {
@@ -471,7 +477,7 @@ void update_state(StateID state) {
 void select_btn_click() {
 
   // Ignore interrupt if not enough time has passed or the option button is being pressed.
-  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalRead(BTN_OPTION) == LOW) {
+  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalReadFast(BTN_OPTION) == LOW) {
     return;
   }
   lastButtonPress = millis();
@@ -512,7 +518,7 @@ void select_btn_click() {
 void cancel_btn_click() {
 
   // Ignore interrupt if not enough time has passed or the option button is being pressed.
-  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalRead(BTN_OPTION) == LOW) {
+  if ((millis() - lastButtonPress < DEBOUNCE_RATE) || digitalReadFast(BTN_OPTION) == LOW) {
     return;
   }
 
@@ -550,7 +556,7 @@ void cancel_btn_click() {
 }
 
 bool is_pressed(uint8_t buttonPin) {
-  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalRead(buttonPin) == LOW) {
+  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalReadFast(buttonPin) == LOW) {
     lastButtonPress = millis();
     return true;
   }
@@ -599,24 +605,20 @@ void sd_save_song(char* fileName, Song* song) {
 
   songFile.println(F("# Welcome to a song file!"));
   songFile.println(F("# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
-  songFile.println();
-  songFile.println(F("# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)"));
+  songFile.println(F("\n# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)"));
   songFile.print(F("TONE_DELAY="));
   songFile.println(DEFAULT_NOTE_DELAY);
-  songFile.println();
-  songFile.println(F("# The length that each tone should play for (ms). (Must be 255 or less and greater than 0)"));
+  songFile.println(F("\n# The length that each tone should play for (ms). (Must be 255 or less and greater than 0)"));
   songFile.print(F("TONE_LENGTH="));
   songFile.println(DEFAULT_NOTE_LENGTH);
-  songFile.println();
-  songFile.println(F("Data:"));
+  songFile.println(F("\nData:"));
 
   // Convert each frequency in the song to a pitch and save it on the SD.
   for (song_size_t i = 0; i < song->get_size(); i++) {
     songFile.print(F("  - "));
     songFile.println(get_note_from_freq(song->get_note(i)).pitch);
   }
-  songFile.println();
-  songFile.println(F("# END"));
+  songFile.println(F("\n# END"));
   songFile.close();
 #if DEBUG == true
   Serial.print(get_active_time());
@@ -822,28 +824,36 @@ void sd_make_readme() {
     readMe.close();
     return;
   }
+  
+  // BIG STRING WOW
+  static const char README_TEXT[] PROGMEM = 
+    "---------> || TuneStudio2560 || <---------\n"
+    "Welcome to the TuneStudio2560 SD Card!\n"
+    "The SD card allows users to seemlessly edit, create, and remove songs without having to interact with TuneStudio at all!\n"
+    "If you have already created songs then you will find them here.\n"
+    "You can edit the songs and create your own but you must follow the standard file format. Two spaces and one hyphen followed by a space and then the tone.\n"
+    "Each SD card also has \"#\" which indicate comments. These comments cannot be read by the device so feel free to put your own \"#\" followed by text to put notes!\n"
+    "\n"
+    "Remember: \n"
+    " - Song must follow correct format.\n"
+    " - Song must have between 8-255 tones.\n"
+    " - Ensure that tones added are valid and exist.\n"
+    " - Follow number paremeters for customizing TONE_DELAY and TONE_LENGTH.\n"
+    "\n"
+    "The program will try to alert when there is a problem with the song but not all errors are caught.\n"
+    "When an error is encountered you will be redirected back to the listening mode menu.\n"
+    "\n"
+    "You can view more information about SD cards here: https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users\n"
+    "To view the main Repository go to: https://github.com/devjluvisi/TuneStudio2560\n"
+    "\n"
+    "I hope you enjoy!";
+  static PROGMEM const char * const README_PTR = README_TEXT;
+
   readMe = SD.open(README_FILE, FILE_WRITE);
-  readMe.println(F("---------> || TuneStudio2560 || <---------"));
-  readMe.println(F("Welcome to the TuneStudio2560 SD Card!"));
-  readMe.println(F("The SD card allows users to seemlessly edit, create, and remove songs without having to interact with TuneStudio at all!"));
-  readMe.println(F("If you have already created songs then you will find them here."));
-  readMe.println(F("You can edit the songs and create your own but you must follow the standard file format. Two spaces and one hyphen followed by a space and then the tone."));
-  readMe.println(F("Each SD card also has \"#\" which indicate comments. These comments cannot be read by the device so feel free to put your own \"#\" followed by text to put notes!"));
-  readMe.println();
-  readMe.println(F("Remember: "));
-  readMe.println(F(" - Song must follow correct format."));
-  readMe.println(F(" - Song must have less then the max allowed number of tones."));
-  readMe.println(F(" - Song must have at least eight tones."));
-  readMe.println(F(" - Ensure that tones added are valid and exist."));
-  readMe.println(F(" - Follow number paremeters for customizing TONE_DELAY and TONE_LENGTH."));
-  readMe.println();
-  readMe.println(F("The program will try to alert when there is a problem with the song but not all errors are caught."));
-  readMe.println(F("When an error is encountered you will be redirected back to the listening mode menu."));
-  readMe.println();
-  readMe.println(F("You can view more information about SD cards here: https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
-  readMe.println(F("To view the main Repository go to: https://github.com/devjluvisi/TuneStudio2560"));
-  readMe.println();
-  readMe.println(F("I hope you enjoy!"));
+  for(uint16_t i = 0; i < strlen_P(README_TEXT); i++) {
+    readMe.print((char)pgm_read_byte_near(&README_PTR[i]));
+  }
+
   readMe.close();
 
 }

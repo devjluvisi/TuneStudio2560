@@ -35,7 +35,6 @@ void ProgramState::execute() {
 
         lcd.clear(); // Remove all information from the previous state.
         segDisplay.blank(); // Clear the 7 segment display.
-        segDisplay.refreshDisplay(); // Update the 7 segment display.
 
         this->init();
         this->_hasInitalized = true;
