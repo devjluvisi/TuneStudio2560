@@ -10,6 +10,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 
 [User Guide](https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users)  
 [Developer Guide](https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers)  
+[Reference Website](#!)
 
 **[Check out the real life image library!](https://drive.google.com/drive/folders/1CkPubvIi6yJfRg2Uyx3KxVqNjCzE9Wjo)**
 
@@ -17,14 +18,16 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 
 **Program Resource Utilization History**  
 *Percentages are based off of the Arduino Mega's 8KB of SRAM and 256KB of flash memory.*  
-| BUILD | SRAM  | FLASH |
-| ---------- | ------------- | ------------- |
+|      BUILD     |       SRAM          |        FLASH        |
+| -------------- | ------------------- | ------------------- |
 | **V1.0.0-R1**  | 1705 Bytes (20.8%)  | 37436 Bytes (14.7%) |
-| **V1.0.1-R1**  | 1705 Bytes (20.8%)  | 37272 Bytes (14.7%) |
-| **V1.0.2-R1**  | 1689 Bytes (20.6%)  | 35446 Bytes (14.0%) |
-| **V1.0.3-R1**  | 1689 Bytes (20.6%)  | 35046 Bytes (13.8%) |
-| **V1.0.4-R1**  | 1689 Bytes (20.6%)  | 34468 Bytes (13.6%) |
-| **V1.0.5-R1**  | 1689 Bytes (20.6%)  | 34346 Bytes (13.5%) |
+|   V1.0.1-R1    | 1705 Bytes (20.8%)  | 37272 Bytes (14.7%) |
+|   V1.0.2-R1    | 1689 Bytes (20.6%)  | 35446 Bytes (14.0%) |
+|   V1.0.3-R1    | 1689 Bytes (20.6%)  | 35046 Bytes (13.8%) |
+|   V1.0.4-R1    | 1689 Bytes (20.6%)  | 34468 Bytes (13.6%) |
+|   V1.0.5-R1    | 1689 Bytes (20.6%)  | 34346 Bytes (13.5%) |
+| **V1.1.0-R2**  | 1664 Bytes (20.3%)  | 32386 Bytes (12.8%) |
+
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
 - Uses the standard chromatic scale to identify different tones/pitches for ease of use.

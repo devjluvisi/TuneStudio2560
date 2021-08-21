@@ -48,7 +48,9 @@ void Song::play_note(uint16_t note) {
     Serial.print(F(" Playing note: "));
     Serial.println(note);
 #endif
-    tone(_pin, note);
+    // Since v1.1.0-R2
+    // Check NewTone lib for details: https://bitbucket.org/teckel12/arduino-new-tone/src/master/
+    NewTone(_pin, note);
 }
 
 bool Song::is_song_full() {
@@ -84,7 +86,7 @@ void Song::play_song() {
         }
         play_note(_songData[songIndex]);
         delay_ms(_noteLength);
-        noTone(_pin);
+        noNewTone(_pin);
         delay_ms(_noteDelay);
         songIndex++;
     }

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+
+<!-- Trust me, there is nothing fancy you want to steal here. -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>TuneStudio2560</title>
+        <meta name="description" content="A simple webpage to track the version history, changes, and future possible updates for TuneStudio2560. View repository: https://github.com/devjluvisi/TuneStudio2560">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body style="padding-bottom: 5%;">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header style="text-align: center;">
+            <h1>TuneStudio2560 Reference Site</h1>
+            <h3>A song creation and playback device made for the Arduino Mega 2560.</h3>
+            <p>More updates to come in the future!</p>
+        </header>
+        <hr />
+        <main>
+            <section style="padding-bottom: 15px;">
+                <h3>Repository</h3>
+                <article style="font-weight: bold;">
+                    ~ <a href="https://github.com/devjluvisi/TuneStudio2560" target="_blank">Main GitHub Repository</a>
+                    <br />
+                    ~ <a href="https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users" target="_blank">User Guide</a>
+                    <br />
+                    ~ <a href="https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers" target="_blank">Developer Guide</a>
+                </article>
+            </section>
+            <hr />
+            <section>
+                <h3>Changelog</h3>
+                <article>
+                    <p>
+                        The changelog shows all changes for major releases in TuneStudio2560.<br />
+                        Each public release is shown by an <strong>"R"</strong> and then a number. <i>Ex: Public release 1 is R1.</i><br />
+                        The version is shown by the <strong>1.X.X</strong> which shows the iteration <strong>(major.iterations since last major update.minor)</strong>
+                    </p>
+                    <p><strong>Major Iterations: </strong><br />Represent signifigant changes in the program. <br/>Major changes usually bring many additions and functions.</p>
+                    <p><strong>Minor Iterations: </strong><br />Small fixes to the code. <br />Sometimes things are added but it minor iterations are usually bug fixes and code optimizations. <br />If there is a signifigant amount of minor iterations then a new release will be made.</p>
+                </article>
+                
+            </section>
+            <section>
+                <!-- v1.0.0-R1 -->
+                <article>
+                    <b><em>v1.0.0-R1</em></b>
+                    <div style="font-family: monospace;">
+                        <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1705 Bytes (1.705KB)</span> <br />
+                        <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 37436 Bytes (37.4KB)</span>
+                    </div>
+                    <u>____________________</u>
+                    <br />
+                    <ul>
+                        <li>First Offical Release! &#127881;</li>
+                    </ul>
+                </article>
+                <!-- v1.1.0-R2 -->
+                <article>
+                    <b><em>v1.1.0-R2</em></b>
+                    <div style="font-family: monospace;">
+                        <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1664 Bytes (1.664KB)</span> <br />
+                        <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 32386 Bytes (32.4KB)</span>
+                    </div>
+                    <u>____________________</u>
+                    <br />
+                    <ul>
+                        <li>Moved custom lcd characters into one PROGMEM array.</li>
+                        <li>Global variable renaming.</li>
+                        <li>Code Syntax Format.</li>
+                        <li>Optimized song class get_size() method to be much faster.</li>
+                        <li>Removed unused variables from song class.</li>
+                        <li>Moved delay, LiquidCrystal_I2C object, and SevSegShift object from inline to local reference.</li>
+                        <li>Optimized print_lcd and print_scrolling methods to be much more efficient.</li>
+                        <li>print_lcd and print_scrolling methods now use much less ram (stack ram in use) and only read char by char instead of copying from PROGMEM.</li>
+                        <li>General conditional branching optimizations in CreatorModeCreateNew class.</li>
+                        <li>Added new library for fast pinMode, digitalWrite, and digitalRead.</li>
+                        <li>Combined previous repeating print_lcd functions into one by combing large PROGMEM strings and allowing print_lcd to read '\n' characters to clear the display.</li>
+                        <li>Condensed sd_make_readme() to be much smaller in code size.</li>
+                        <li>General variable caching optimizations in CreatorModeCreateNew class.</li>
+                        <li>Optimized get_current_tone method to be smaller and more efficient.</li>
+                        <li>analogWrite() has been replaced with digitalWrite() for when PRGM_MODE is set to 0 (smaller program size when PRGM_MODE = 0).</li>
+                        <li>Faster ADC (analogRead) performance due to new macros. (+30 Bytes for 4-5x faster analogRead performance, increases speed of CreatorModeCreateNew by 300-400 IPS)</li>
+                        <li>Added new library for fast and small tone() and noTone() functions.</li>
+                        <li>PERF_METRICS now has additional readouts in loop() function. Will now display microseconds per loop, SRAM consumption, free ram %, clock cycles for the previous iteration, and iterations per second (IPS).</li>
+                    </ul>
+                </article>
+            </section>
+            <hr />
+            <section>
+                <h3>Future Todo List &#9989;:</h3>
+                <article>
+                    <ol>
+                        <li>
+                            Reduce SRAM by moving cstrings from PROGRAM_NOTES to PROGMEM.
+                        </li>
+                        <li>
+                            Create a Cross-Platform desktop application that allows for the ease of use when adding/removing/editing notes from songs.
+                        </li>
+                        <li>
+                            Continue flash and memory optimizations.
+                        </li>
+                        <li>
+                            Port TuneStudio2560 to more boards.
+                        </li>
+                        <li>
+                           Update website with pictures and video.
+                        </li>
+                        <li>
+                            To be continued...
+                        </li>
+                    </ol>
+                </article>
+            </section>
+        </main>
+        <hr />
+        <footer>
+            <p>Made by Jacob LuVisi</p>
+            <p>For Questions Contact:
+                <br />
+                Email: <a href="mailto:jluvisi2021@gmail.com">jluvisi2021@gmail.com</a>
+            </p>
+        </footer>
+    </body>
+</html>

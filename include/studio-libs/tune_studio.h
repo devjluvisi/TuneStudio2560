@@ -17,10 +17,7 @@
 // Include all the libraries for the program.
 #include <LiquidCrystal_I2C.h> // Manages basic LCD functionality.
 #include <SevSegShift.h> // Manages connecting the Shift Registers to the Segment Display.
-#include <Arduino.h> // The basic Arduino library.
 #include <studio-libs/song.h> // Manage songs.
-#include <SD.h> // Manage the SD Card.
-#include <SPI.h> // For the SD card library.
 #include <studio-libs/state.h> // Manages the variety of differnet states the program can be running in.
 #include <lib/digitalWriteFast.h>
 
@@ -43,7 +40,21 @@
   // 0 = Performance Favor (Reduced Variables & Song Sizes, Cutdown code)
   // 1 = Standard (How T2560 was intended.)
   // 2 = Feature (Increased song sizes, extra features)
-#define PRGM_MODE 1
+#define PRGM_MODE 0
+
+// Set FAST_ADC to 1 for faster analogRead(). 
+// 5-6x faster analogRead but takes 30 more bytes of flash.
+// Increases creator mode iterations per second by around 300-400.
+#define FAST_ADC 0
+#if FAST_ADC
+#ifndef cbi
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
+#endif
+
 
 //////////////////////////////
 //// COMPILER DEFINITIONS ////
@@ -53,7 +64,7 @@
 // Define a song class so the header file knows it exists.
 class Song;
 
-const char VERSION_ID[] PROGMEM = "1.0.5-R1";
+const char VERSION_ID[] PROGMEM = "1.1.0-R2";
 
 /*
 ************************
@@ -97,6 +108,14 @@ constexpr uint8_t BTN_TONE_3 = 28;
 constexpr uint8_t BTN_TONE_4 = 26;
 // White LED
 constexpr uint8_t BTN_TONE_5 = 24;
+
+/**
+ * @brief Converts a button pin to a pin index.
+ *  Ex: BTN_TONE_1 is pin 27 (by default) if it is passed then the macro will return 0.
+ *  Unknown values are given 255.
+ * 
+ */
+#define BTN_TO_INDEX(x) x == BTN_TONE_1 ? 0 : x == BTN_TONE_2 ? 1 : x == BTN_TONE_3 ? 2 : x == BTN_TONE_4 ? 3 : x == BTN_TONE_5 ? 4 : UINT8_MAX
 
 // Interaction Buttons
 

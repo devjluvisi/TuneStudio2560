@@ -24,6 +24,8 @@
 #ifndef song_h
 #define song_h
 
+#include <NewTone.h>
+
 #include <studio-libs/tune_studio.h>
 
 //song_size_t variable is correspondent to the length of the song.
@@ -39,14 +41,14 @@ typedef uint8_t song_size_t;
 constexpr uint16_t PAUSE_DELAY = 500;
 
 class Song {
-private:
-    uint8_t _pin; // The pin to send the frequencies to.
-    uint8_t _noteDelay; // The delay between playing each note of the song.
-    uint8_t _noteLength; // The length that the note should be played for.
-    song_size_t _maxLength; // Quick access to the size of the array.
-    song_size_t _currSize; // Current size of the song.
-    uint16_t* _songData; // A array of all of the different tones.
-public:
+  private:
+  uint8_t _pin; // The pin to send the frequencies to.
+  uint8_t _noteDelay; // The delay between playing each note of the song.
+  uint8_t _noteLength; // The length that the note should be played for.
+  song_size_t _maxLength; // Quick access to the size of the array.
+  song_size_t _currSize; // Current size of the song.
+  uint16_t * _songData; // A array of all of the different tones.
+  public:
     /**
      * @brief Construct a new song object.
      *
@@ -55,91 +57,91 @@ public:
      * @param noteDelay The delay between each note of the song.
      */
     Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay);
-    /**
-     * @brief Destroy the Song object and
-     * Eliminates the _songData[] array by flushing it from the heap.
-     */
-    ~Song();
+  /**
+   * @brief Destroy the Song object and
+   * Eliminates the _songData[] array by flushing it from the heap.
+   */
+  ~Song();
 
-    /**
-     * @brief Play a note at a specified pin. This method is not neccessarily tied to any specific song object and works the same
-     * no matter how the song is built.
-     *
-     * @param note The note to play.
-     */
-    void play_note(uint16_t note);
+  /**
+   * @brief Play a note at a specified pin. This method is not neccessarily tied to any specific song object and works the same
+   * no matter how the song is built.
+   *
+   * @param note The note to play.
+   */
+  void play_note(uint16_t note);
 
-    /**
-     * @return If the song has reached its max length and nothing more can be added to it.
-     */
-    bool is_song_full();
+  /**
+   * @return If the song has reached its max length and nothing more can be added to it.
+   */
+  bool is_song_full();
 
-    /**
-     * @brief Adds a note to the end of the song. If the song is full then the method completes without executing.
-     *
-     * @param note The note to add.
-     */
-    void add_note(uint16_t note);
+  /**
+   * @brief Adds a note to the end of the song. If the song is full then the method completes without executing.
+   *
+   * @param note The note to add.
+   */
+  void add_note(uint16_t note);
 
-    /**
-     * @brief Adds a pause to the song. The amount of time the song is paused by is determined by a unchangeable variable. If the song is full then the method completes without executing.
-     *
-     */
-    void add_pause();
+  /**
+   * @brief Adds a pause to the song. The amount of time the song is paused by is determined by a unchangeable variable. If the song is full then the method completes without executing.
+   *
+   */
+  void add_pause();
 
-    /**
-     * @brief Remove a note from the end of the song.
-     */
-    void remove_note();
+  /**
+   * @brief Remove a note from the end of the song.
+   */
+  void remove_note();
 
-    /**
-     * @brief Plays the current song.
-     */
-    void play_song();
+  /**
+   * @brief Plays the current song.
+   */
+  void play_song();
 
-    /**
-     * @brief Flushes all data from the array.
-     */
-    void clear();
+  /**
+   * @brief Flushes all data from the array.
+   */
+  void clear();
 
-    /**
-     * @brief Get a frequency at a specified index of the song.
-     *
-     * @param index The index of the note to retrieve.
-     * @return The frequency of the note.
-     */
-    uint16_t get_note(song_size_t index);
+  /**
+   * @brief Get a frequency at a specified index of the song.
+   *
+   * @param index The index of the note to retrieve.
+   * @return The frequency of the note.
+   */
+  uint16_t get_note(song_size_t index);
 
-    /**
-     * @return If a song is empty as in it has no notes in it.
-     */
-    bool is_empty();
+  /**
+   * @return If a song is empty as in it has no notes in it.
+   */
+  bool is_empty();
 
-    /**
-     * @brief Gets the size of the song (number of individual frequencies). Note that this uses a regular iterative loop to find the size
-     * so its return value should be cached when possible for maximum performance.
-     *
-     * @return Size of the song.
-     */
-    song_size_t get_size();
+  /**
+   * @brief Gets the size of the song (number of individual frequencies). Note that this uses a regular iterative loop to find the size
+   * so its return value should be cached when possible for maximum performance.
+   *
+   * @return Size of the song.
+   */
+  song_size_t get_size();
 
-    /**
-     * @brief Set the attributes of the song.
-     * Only updates the note length and note delay. Leaves the rest of the song untouched.
-     *
-     * @param noteLength The note length to set.
-     * @param noteDelay The delay between each note to set.
-     */
-    void set_attributes(uint8_t noteLength, uint16_t noteDelay);
+  /**
+   * @brief Set the attributes of the song.
+   * Only updates the note length and note delay. Leaves the rest of the song untouched.
+   *
+   * @param noteLength The note length to set.
+   * @param noteDelay The delay between each note to set.
+   */
+  void set_attributes(uint8_t noteLength, uint16_t noteDelay);
 
-    /**
-     * @return The length that each note is played for.
-     */
-    uint8_t get_note_length();
+  /**
+   * @return The length that each note is played for.
+   */
+  uint8_t get_note_length();
 
-    /**
-     * @return The delay between each note.
-     */
-    uint16_t get_note_delay();
+  /**
+   * @return The delay between each note.
+   */
+  uint16_t get_note_delay();
 };
 #endif

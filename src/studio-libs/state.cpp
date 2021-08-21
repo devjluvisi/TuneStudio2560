@@ -10,7 +10,6 @@
  */
 
 #include <studio-libs/state.h>
-#include <Arduino.h>
 #include <studio-libs/tune_studio.h>
 
 ProgramState::ProgramState(StateID stateId) {
