@@ -58,7 +58,7 @@ bool Song::is_song_full() {
 }
 
 void Song::add_note(uint16_t note) {
-    if (Song::is_song_full()) return;
+    if (Song::is_song_full() || note == EMPTY_NOTE.frequency) return;
     _songData[get_size()] = note;
     _currSize++;
 }

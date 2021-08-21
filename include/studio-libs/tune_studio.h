@@ -120,7 +120,12 @@ constexpr uint8_t LCD_ROWS = 4;
 constexpr uint16_t DEBOUNCE_RATE = 500;
 
 // Maximum number of notes in a song.
-constexpr uint8_t MAX_SONG_LENGTH = 255;
+#if PRGM_MODE == 0
+constexpr uint8_t MAX_SONG_LENGTH = 64;
+#else
+constexpr uint8_t MAX_SONG_LENGTH = 225;
+#endif
+
 // Minimum number of notes in a song.
 constexpr uint8_t MIN_SONG_LENGTH = 8;
 // Maximum allowed number of songs.
@@ -132,6 +137,7 @@ constexpr uint8_t MAX_SONG_AMOUNT = 255;
 *************************
 */
 
+// A PROGMEM array of all custom characters we want to load into the LCD.
 const byte CUSTOM_LCD_CHARS[6][8] PROGMEM = {
 {0x04, 0x06, 0x05, 0x04, 0x04, 0x0C, 0x1C, 0x0C},
 {0x10, 0x18, 0x1C, 0x1E, 0x1E, 0x1C, 0x18, 0x10},
@@ -141,6 +147,7 @@ const byte CUSTOM_LCD_CHARS[6][8] PROGMEM = {
 {0x1F, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1F}
 };
 
+// Amount of custom characters we want to load.
 constexpr uint8_t CUSTOM_CHAR_AMOUNT = sizeof(CUSTOM_LCD_CHARS)/sizeof(CUSTOM_LCD_CHARS[0]);
 
 /*Custom Char symbol for music note.*/
@@ -275,11 +282,13 @@ void update_state(StateID state);
  * @param buttonPin The pin of the button to check for.
  * @return If the button is being pressed.
  */
-bool is_pressed(uint8_t buttonPin);
+bool is_pressed(const uint8_t buttonPin);
 
 /**
  * @brief Prints text to the lcd and wraps text automatically.
  *
+ *  Will clear the screen on a \\n character encounter.
+ * 
  * @param text The text to print.
  * @param charDelay The delay before each character.
  */

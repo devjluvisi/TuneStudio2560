@@ -31,10 +31,10 @@
  * LICENSE - MIT
  */
 
-
 /*
 TODO LIST:
  - Move char strings in toneButtons PROGMEM array to PROGMEM as they are currently stored in SRAM.
+ - Remove features on PRGM_MODE 0 until the size of the program is less then 32KB and the SRAM usage is less then 2KB at max.
 */
 
 #include <studio-libs/tune_studio.h>
@@ -130,17 +130,39 @@ void setup()
   pinModeFast(RGB_BLUE, OUTPUT);
   pinModeFast(RGB_GREEN, OUTPUT);
   pinModeFast(RGB_RED, OUTPUT);
-  pinMode(BTN_TONE_1, INPUT_PULLUP);
-  pinMode(BTN_TONE_2, INPUT_PULLUP);
-  pinMode(BTN_TONE_3, INPUT_PULLUP);
-  pinMode(BTN_TONE_4, INPUT_PULLUP);
-  pinMode(BTN_TONE_5, INPUT_PULLUP);
-  pinMode(BTN_ADD_SELECT, INPUT_PULLUP);
-  pinMode(BTN_DEL_CANCEL, INPUT_PULLUP);
-  pinMode(BTN_OPTION, INPUT_PULLUP);
+  pinModeFast(BTN_TONE_1, INPUT);
+  pinModeFast(BTN_TONE_2, INPUT);
+  pinModeFast(BTN_TONE_3, INPUT);
+  pinModeFast(BTN_TONE_4, INPUT);
+  pinModeFast(BTN_TONE_5, INPUT);
+  pinModeFast(BTN_ADD_SELECT, INPUT);
+  pinModeFast(BTN_DEL_CANCEL, INPUT);
+  pinModeFast(BTN_OPTION, INPUT);
   pinModeFast(TONE_FREQ, INPUT);
   pinModeFast(SPEAKER_1, OUTPUT);
   pinModeFast(SD_CS_PIN, OUTPUT);
+
+  // Make all button pins INPUT_PULLUP
+  // For Arduino Mega 2560 ONLY
+  {
+    PORTA = PORTA |
+    (
+      (1 << PORTA2) | 
+      (1 << PORTA3) | 
+      (1 << PORTA4) |  
+      (1 << PORTA5) 
+    );
+    PORTE = PORTE |
+    (
+      (1 << PORTE4) |
+      (1 << PORTE5)
+    );
+    PORTG = PORTG |
+    (
+      (1 << PORTG5)
+    );
+  }
+  
 
 #if DEBUG == true
   Serial.print(get_active_time());
@@ -170,19 +192,16 @@ void setup()
   // More information: https://github.com/bridystone/SevSegShift
 
   const byte numDigits = 4;
-  byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
-  byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
-  /* configuration without ShiftRegister - Direct arduino connection
-  byte digitPins[] = {2, 3, 4, 5}; // PINs of Arduino
-  byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13}; // PINs of Arduino
-  */
+  constexpr byte digitPins[] = { 8 + 2, 8 + 5, 8 + 6, 2 }; // of ShiftRegister(s) | 8+x (2nd Register)
+  constexpr byte segmentPins[] = { 8 + 3, 8 + 7, 4, 6, 7, 8 + 4, 3,  5 }; // of Shiftregister(s) | 8+x (2nd Register)
+
   const bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
   const byte hardwareConfig = COMMON_CATHODE; // See README.md for options
   const bool updateWithDelays = false; // Default 'false' is Recommended
   const bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
   bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
 
-  segDisplay.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
+  segDisplay.begin(hardwareConfig, numDigits, (byte *)digitPins, (byte *)segmentPins, resistorsOnSegments,
     updateWithDelays, leadingZeros, disableDecPoint);
   segDisplay.blank();
   segDisplay.refreshDisplay();
@@ -319,9 +338,12 @@ note_t get_current_tone(uint8_t toneButton) {
 
   // Split the potentiometer value into 17 different sections because each tune button represents 17 different tones.
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
-  const uint16_t subTone = (uint16_t)(get_current_freq() + 1) / (uint8_t)61;
+  
+  const uint8_t subTone = (get_current_freq() + 1) / 61;
   uint8_t buttonIndex;
   switch(toneButton) {
+    case 0:
+      return EMPTY_NOTE;
     case BTN_TONE_1:
       buttonIndex = 0;
       break;
@@ -359,6 +381,7 @@ uint16_t get_current_freq() {
 
 void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
   lcd.clear();
+  
   uint8_t cursorX = 0; // Track cursor on X position.
   uint8_t cursorY = 0; // Track cursor on Y position.
 
@@ -375,7 +398,7 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
     lcd.setCursor(cursorX, cursorY);
 
     // Check if the beginning character is a space.
-    if (!(cursorX == 0 && letter == ' ')) {
+    if (!(cursorX == 0 && letter == ' ') && letter != '\n') {
       lcd.write(letter); // Print letter to LCD.
       delay_ms(charDelay);
       cursorX++; // Go up by one cursor.
@@ -388,7 +411,7 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
     }
 
     // Reached end of the LCD.
-    if (cursorY != 0 && cursorY % LCD_ROWS == 0) {
+    if ((cursorY != 0 && cursorY % LCD_ROWS == 0) || letter == '\n') {
       delay_ms(600);
       cursorX = 0;
       cursorY = 0;
@@ -398,7 +421,6 @@ void print_lcd(const __FlashStringHelper* text, uint8_t charDelay) {
 }
 
 void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t charDelay) {
-  const uint16_t initalCharDelay = charDelay * 2;
 
   // Track a pointer to each character in the flash string.
   const char *p = (const char PROGMEM *)text;
@@ -417,7 +439,7 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
       p-=(LCD_COLS-1);
     }
     if(!flag) {
-      delay_ms(initalCharDelay);
+      delay_ms(600);
       flag = true;
     }
     delay_ms(charDelay);
@@ -555,8 +577,8 @@ void cancel_btn_click() {
   }
 }
 
-bool is_pressed(uint8_t buttonPin) {
-  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalReadFast(buttonPin) == LOW) {
+bool is_pressed(const uint8_t buttonPin) {
+  if (!(millis() - lastButtonPress < DEBOUNCE_RATE) && digitalRead(buttonPin) == LOW) {
     lastButtonPress = millis();
     return true;
   }
@@ -603,9 +625,11 @@ void sd_save_song(char* fileName, Song* song) {
   }
   songFile = SD.open(fileName, FILE_WRITE);
 
-  songFile.println(F("# Welcome to a song file!"));
-  songFile.println(F("# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users"));
-  songFile.println(F("\n# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)"));
+  songFile.println(F(
+    "# Welcome to a song file!\n"
+    "# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users\n"
+    "\n# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)"
+    ));
   songFile.print(F("TONE_DELAY="));
   songFile.println(DEFAULT_NOTE_DELAY);
   songFile.println(F("\n# The length that each tone should play for (ms). (Must be 255 or less and greater than 0)"));

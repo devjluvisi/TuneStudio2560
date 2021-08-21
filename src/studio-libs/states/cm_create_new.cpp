@@ -83,11 +83,7 @@ void CreatorModeCreateNew::loop() {
     }
     // Add a tune if the button to add/select is pressed.
     if (is_pressed(BTN_ADD_SELECT)) {
-        if (currentNote.frequency == PAUSE_NOTE.frequency) {
-            optionWaiting = false;
-        }
-        if (optionWaiting) {
-            optionWaiting = false;
+        if (optionWaiting && currentNote.frequency != PAUSE_NOTE.frequency) {
             // SAVE SONG.
             if (newSong->get_size() < MIN_SONG_LENGTH) {
                 lcd.clear();
@@ -112,13 +108,15 @@ void CreatorModeCreateNew::loop() {
                 print_song_lcd();
                 return;
             }
+            const uint8_t fileNameLength = strlen(fileName);
+            const uint8_t fileExtensionLength = strlen(FILE_TXT_EXTENSION);
 
             // Create a buffer to store both the file name as well as the new file extension.
-            char buffer[strlen(fileName) + strlen(FILE_TXT_EXTENSION)];
+            char buffer[fileNameLength + fileExtensionLength];
             // Copy the file name to the buffer.
-            strncpy(buffer, fileName, strlen(fileName));
+            strncpy(buffer, fileName, fileNameLength);
             // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
-            strncpy(buffer + strlen(fileName), FILE_TXT_EXTENSION, strlen(FILE_TXT_EXTENSION) + 1);
+            strncpy(buffer + fileNameLength, FILE_TXT_EXTENSION, fileExtensionLength + 1);
             // Save the song.
             sd_save_song(buffer, newSong);
 #if DEBUG == true
@@ -134,6 +132,7 @@ void CreatorModeCreateNew::loop() {
             print_song_lcd();
             return;
         }
+        // Add the note if the user was not trying to save.
         newSong->add_note(currentNote.frequency);
         this->print_song_lcd();
 #if DEBUG == true

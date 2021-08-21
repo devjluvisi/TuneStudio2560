@@ -108,7 +108,6 @@ void ListeningModePlayingSong::loop() {
             if (digitalReadFast(BTN_TONE_1) == LOW) {
                 // Forward
                 currentSongNote += 1;
-
                 delay_ms(100);
             }
             else if (digitalReadFast(BTN_TONE_2) == LOW) {
