@@ -53,7 +53,7 @@
 // Define a song class so the header file knows it exists.
 class Song;
 
-const char VERSION_ID[] PROGMEM = "1.0.3-R1";
+const char VERSION_ID[] PROGMEM = "1.0.5-R1";
 
 /*
 ************************
