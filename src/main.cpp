@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Jacob LuVisi
  * @brief The main class for TuneStudio2560.
- * @version 1.0.0-Revision 1
+ * @version 1.2.0-Release 3
  * @date 2021-06-27 <-> 2021-08-12 (+)
  *
  * @copyright Copyright (c) 2021
