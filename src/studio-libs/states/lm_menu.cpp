@@ -15,22 +15,14 @@ ListeningModeMenu::ListeningModeMenu(): ProgramState::ProgramState(LM_MENU) {}
 ListeningModeMenu::~ListeningModeMenu() {}
 
 void ListeningModeMenu::loop() {
-
-  lcd.setCursor(2, 0);
-  lcd.print(F("[Listening Mode]"));
-  // If the SD card is enabled then also print the name of the song.
-  lcd.setCursor(0, 1);
-
   const char * name = sd_get_file(get_selected_song() - 1);
   if (previousSong != get_selected_song()) {
     lcd_clear_row(1);
     lcd.print(F(">> Name: "));
-    //const char* name = "LOL";
-    if (strlen(name) != 0) {
-      lcd.setCursor(8, 1);
+    lcd.setCursor(8, 1);
+    if(strlen(name)) {
       lcd.print(name);
-    } else {
-      lcd.setCursor(8, 1);
+    }else{
       lcd.print(F("NONE"));
     }
     lcd_clear_row(2);
@@ -39,56 +31,14 @@ void ListeningModeMenu::loop() {
     lcd.print(F("/("));
     lcd.print(get_selected_page());
     lcd.print(F(")"));
-
     previousSong = get_selected_song();
   }
-
-  if (is_pressed(BTN_TONE_1)) {
-    set_selected_song(((get_selected_page() - 1) * 5) + 1);
-    // Page 1 = (1-1)*5+1 = 0*5+1= Song #1
-    // Page 2 = (2-1)*5+1 = 1*5+1= Song #6
-    // Page 3 = (3-1)*5+1 = 2*5+1= Song #11
-    // etc.
-    return;
-  } else
-  if (is_pressed(BTN_TONE_2)) {
-    set_selected_song(((get_selected_page() - 1) * 5) + 2);
-    // Page 1 = (1-1)*5+2 = 0*5+2= Song #2
-    // Page 2 = (2-1)*5+2 = 1*5+2= Song #7
-    // Page 3 = (3-1)*5+2 = 2*5+2= Song #12
-    // etc.
-    return;
-  } else
-  if (is_pressed(BTN_TONE_3)) {
-    set_selected_song(((get_selected_page() - 1) * 5) + 3);
-    // Page 1 = (1-1)*5+3 = 0*5+3= Song #3
-    // Page 2 = (2-1)*5+3 = 1*5+3= Song #8
-    // Page 3 = (3-1)*5+3 = 2*5+3= Song #13
-    // etc.
-    return;
-  } else
-  if (is_pressed(BTN_TONE_4)) {
-    set_selected_song(((get_selected_page() - 1) * 5) + 4);
-    // Page 1 = (1-1)*5+4 = 0*5+4= Song #4
-    // Page 2 = (2-1)*5+4 = 1*5+4= Song #9
-    // Page 3 = (3-1)*5+4 = 2*5+4= Song #14
-    // etc.
-    return;
-  } else
-  if (is_pressed(BTN_TONE_5)) {
-    set_selected_song(((get_selected_page() - 1) * 5) + 5);
-    // Page 1 = (1-1)*5+5 = 0*5+5= Song #5
-    // Page 2 = (2-1)*5+5 = 1*5+5= Song #10
-    // Page 3 = (3-1)*5+5 = 2*5+5= Song #15
-    // etc.
-    return;
-  } else
-  if (is_pressed(BTN_OPTION)) {
-    // Go to the next page and set the song to the first led.
+  const uint8_t indexer = !digitalReadFast(BTN_TONE_1) ? 1 : !digitalReadFast(BTN_TONE_2) ? 2 : !digitalReadFast(BTN_TONE_3) ? 3 : !digitalReadFast(BTN_TONE_4) ? 4 : !digitalReadFast(BTN_TONE_5) ? 5 : 0;
+  set_selected_song(indexer == 0 ? previousSong : ((get_selected_page() - 1) * 5) + indexer);
+  if(is_pressed(BTN_OPTION)) {
     set_selected_page(get_selected_page() + 1 > (MAX_SONG_AMOUNT / 5) ? 0 : get_selected_page() + 1);
     set_selected_song(((get_selected_page() - 1) * 5) + 1);
     previousSong = -1;
-    return;
   }
 }
 
@@ -120,4 +70,6 @@ void ListeningModeMenu::init() {
   delay_ms(1500);
   lcd.setCursor(0, 3);
   lcd.print(F("Press SELECT to play"));
+  lcd.setCursor(2, 0);
+  lcd.print(F("[Listening Mode]"));
 }

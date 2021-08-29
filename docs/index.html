@@ -5,22 +5,33 @@
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 
 <!-- Trust me, there is nothing fancy you want to steal here. -->
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>TuneStudio2560</title>
         <meta name="description" content="A simple webpage to track the version history, changes, and future possible updates for TuneStudio2560. View repository: https://github.com/devjluvisi/TuneStudio2560">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+            .body-dark{
+                background-color: rgb(44, 47, 54);
+                color: white;
+            }
+            
+            
+        </style>
     </head>
-    <body style="padding-bottom: 5%;">
+    <body id="#body" style="padding-bottom: 5%;">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <header style="text-align: center;">
-            <h1>TuneStudio2560 Reference Site</h1>
-            <h3>A song creation and playback device made for the Arduino Mega 2560.</h3>
-            <p>More updates to come in the future!</p>
+        <header>
+            <div style="text-align: center;">
+                <h1>TuneStudio2560 Reference Site</h1>
+                <h3>A song creation and playback device made for the Arduino Mega 2560.</h3>
+                <p>More updates to come in the future!</p>
+            </div>
+            <a id="#darkToggle" href="javascript:toggleDark()" style="text-align: left;">Toggle Dark Mode (Dark Mode: On)</a>
         </header>
         <hr />
         <main>
@@ -32,6 +43,34 @@
                     ~ <a href="https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users" target="_blank">User Guide</a>
                     <br />
                     ~ <a href="https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers" target="_blank">Developer Guide</a>
+                </article>
+            </section>
+            <hr />
+            <section>
+                <h3><u><i>(NEW)</i></u> MakerStudio2560</h3>
+                <article>
+                    <p>
+                        TuneStudio2560 allows the user editing of files on the SD card by individually editing every .txt file in the root "/" directory.<br />
+                        Want to create and edit songs in a user friendly GUI instead (Website)? <mark><strong><i>Recommended</i></strong></mark><br />
+                        <noscript>
+                            <br />
+                            <span style="font-family: 'Courier New', Courier, monospace; color: red;">JavaScript required.</span><br />
+                        </noscript>
+                        <br />
+                        <a href="MakerStudio2560.html" target="_blank"><strong> &gt;&gt; Check out the interactive MakerStudio2560 &lt;&lt; </strong></a>
+                        <br />
+                        <details style="cursor: pointer;">
+                            <summary>What is <strong>MakerStudio2560</strong>? <i>Click to Expand</i></summary>
+                            <p style="padding-left: 1%;">
+                                <strong>MakerStudio2560</strong> is an interactive song creation tool made for TuneStudio2560.<br />
+                                <strong>MakerStudio2560</strong> allows for easy adding, removal, editing and even playback of songs you have stored on your SD card!<br />
+                                To put it simply, <strong>MakerStudio2560</strong> can be thought of as the CreatorMode which is avaliable on TuneStudio2560 except that instead of being on an Arduino it is on your web browser!
+                                <br />
+                                <br />
+                                <strong>MakerStudio2560</strong> is completely client-side web based and requires JavaScript to function properly.
+                            </p>
+                        </details>
+                    </p>
                 </article>
             </section>
             <hr />
@@ -49,10 +88,17 @@
                 
             </section>
             <section>
+                <i>All releases were tested using PRGM_MODE = 0 (Performance/Small Code Size Mode)</i>
+                <br />
+                <i>Check out Developer Wiki for more info.</i>
+            </section>
+            <br />
+            <section>
                 <!-- v1.0.0-R1 -->
                 <article>
                     <b><em>v1.0.0-R1</em></b>
                     <div style="font-family: monospace;">
+                        <span title="Release Date">Released: Aug 12, 2021</span> <br />
                         <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1705 Bytes (1.705KB)</span> <br />
                         <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 37436 Bytes (37.4KB)</span>
                     </div>
@@ -66,6 +112,7 @@
                 <article>
                     <b><em>v1.1.0-R2</em></b>
                     <div style="font-family: monospace;">
+                        <span title="Release Date">Released: Aug 21, 2021</span> <br />
                         <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1664 Bytes (1.664KB)</span> <br />
                         <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 32386 Bytes (32.4KB)</span>
                     </div>
@@ -75,21 +122,81 @@
                         <li>Moved custom lcd characters into one PROGMEM array.</li>
                         <li>Global variable renaming.</li>
                         <li>Code Syntax Format.</li>
-                        <li>Optimized song class get_size() method to be much faster.</li>
+                        <li>Optimized song class <code>get_size()</code> method to be much faster.</li>
                         <li>Removed unused variables from song class.</li>
                         <li>Moved delay, LiquidCrystal_I2C object, and SevSegShift object from inline to local reference.</li>
-                        <li>Optimized print_lcd and print_scrolling methods to be much more efficient.</li>
-                        <li>print_lcd and print_scrolling methods now use much less ram (stack ram in use) and only read char by char instead of copying from PROGMEM.</li>
+                        <li>Optimized <code>print_lcd</code> and <code>print_scrolling</code> methods to be much more efficient.</li>
+                        <li><code>print_lcd</code> and <code>print_scrolling</code> methods now use much less ram (stack ram in use) and only read char by char instead of copying from PROGMEM.</li>
                         <li>General conditional branching optimizations in CreatorModeCreateNew class.</li>
-                        <li>Added new library for fast pinMode, digitalWrite, and digitalRead.</li>
-                        <li>Combined previous repeating print_lcd functions into one by combing large PROGMEM strings and allowing print_lcd to read '\n' characters to clear the display.</li>
-                        <li>Condensed sd_make_readme() to be much smaller in code size.</li>
+                        <li>Added new library for fast <code>pinMode</code>, <code>digitalWrite</code>, and <code>digitalRead</code>.</li>
+                        <li>Combined previous repeating <code>print_lcd</code> functions into one by combing large PROGMEM strings and allowing <code>print_lcd</code> to read <strong><q>\n</q></strong> characters to clear the display.</li>
+                        <li>Condensed <code>sd_make_readme()</code> to be much smaller in code size.</li>
                         <li>General variable caching optimizations in CreatorModeCreateNew class.</li>
-                        <li>Optimized get_current_tone method to be smaller and more efficient.</li>
-                        <li>analogWrite() has been replaced with digitalWrite() for when PRGM_MODE is set to 0 (smaller program size when PRGM_MODE = 0).</li>
+                        <li>Optimized <code>get_current_tone()</code> method to be smaller and more efficient.</li>
+                        <li><code>analogWrite()</code> has been replaced with <code>digitalWrite()</code> for when PRGM_MODE is set to 0 (smaller program size when PRGM_MODE = 0).</li>
                         <li>Faster ADC (analogRead) performance due to new macros. (+30 Bytes for 4-5x faster analogRead performance, increases speed of CreatorModeCreateNew by 300-400 IPS)</li>
-                        <li>Added new library for fast and small tone() and noTone() functions.</li>
-                        <li>PERF_METRICS now has additional readouts in loop() function. Will now display microseconds per loop, SRAM consumption, free ram %, clock cycles for the previous iteration, and iterations per second (IPS).</li>
+                        <li>Added new library for fast and small <code>tone()</code> and <code>noTone()</code> functions.</li>
+                        <li>PERF_METRICS now has additional readouts in <code>loop()</code> function. <br />
+                            Will now display microseconds per loop, SRAM consumption, free ram %, clock cycles for the previous iteration, and iterations per second (IPS).</li>
+                    </ul>
+                </article>
+                <!-- v1.2.0-R3 -->
+                <article>
+                    <b><em>v1.2.0-R3</em></b>
+                    <div style="font-family: monospace;">
+                        <span title="Release Date">Released: Aug 29, 2021</span> <br />
+                        <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1511 Bytes (1.511KB)</span> <br />
+                        <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 29906 Bytes (30.0KB)</span>
+                    </div>
+                    <u>____________________</u>
+                    <br />
+                    <ul>
+                        <li>Converted <code>strcpy_P</code> to <code>(__FlashStringHelper*)</code> where applicable.</li>
+                        <li>Optimized ListeningModeMenu program state to be smaller.</li>
+                        <li>Optimized <code>clear()</code> method for song.cpp to use <code>memset</code> instead of for loop.</li>
+                        <li>Added additional Serial outs when DEBUG macro is enabled.</li>
+                        <li>Deleted <code>select_btn_click</code> and <code>cancel_btn_click</code> interrupts and replaced them with a single <code>isr_btn_handle()</code> method.</li>
+                        <li>General method optimizations in the main class.</li>
+                        <li>Added checks for PRGM_MODE to reduce program size when PRGM_MODE == 0. (README no longer prints in full for example)</li>
+                        <li><span style="color: red; font-weight: bold;">MAJOR</span> Changed functionallity of how <code>Songs</code> are referenced and work in the program.
+                            <details>
+                                <summary>
+                                    <i>Click to view developer comments.</i>
+                                </summary>
+                                <div style="padding-left: 1%">
+                                    <span>
+                                        Songs are no longer dynamically allocated and deleted with pointers, rather a new <code>prgmSong</code> global variable is used as a sort of buffer to store the current song and use it.
+                                        <br />
+                                        When finished, the song should have <code>clear()</code> applied to it instead of <code>delete</code>.
+                                        <br />
+                                        This was done to prevent future heap fragmentation problems as well as to give the programmer a better idea of available RAM when the program first compiles. 
+                                        <br />
+                                        The size of the songs are now determined strictly by the <code>MAX_SONG_LENGTH</code> constant (at compile time) and the Song object now uses a C++ template to communicate size.
+                                    </span>
+                                </p>
+                            </details>
+                        </li>
+                        <li><span style="color: red; font-weight: bold;">MAJOR</span> Moved <code>PROGRAM_NOTES</code> pitches string data from RAM to PROGMEM.
+                            <details>
+                                <summary>
+                                    <i>Click to view developer comments.</i>
+                                </summary>
+                                <div style="padding-left: 1%">
+                                    <span>
+                                        Moved all of the cstring data from RAM to PROGMEM which was previously present in <code>PROGRAM_NOTES</code> global array.
+                                        <br />
+                                        Previously, only the array structure itself and the string pointers were stored into PROGMEM, the actual string data (like "FS2") was not.
+                                        <br />
+                                        This addition allows a large chunk of SRAM to become free to use (now 1511 bytes) and it also means that the maximum SRAM usage (under PRGM_MODE==0) is now less then 2KB at any point in time.
+                                        <br />
+                                        All of the PROGMEM string data was split into individual variables and moved into <strong>pitches.h</strong> file.
+                                        <br />
+                                        A new method <code>const char* pgm_pcpyr(uint8_t btnIndex, uint8_t noteIndex)</code> is now responsible for retrieving the pitch data directly from PROGMEM.
+                                    </span>
+                                </p>
+                            </details>
+                        </li>
+                        <li><i>These optimizations mean SRAM utilization during execution is now below 2KB at any point in time meaning a potential Arduino Uno port has officially become possible.</i></li>
                     </ul>
                 </article>
             </section>
@@ -99,7 +206,7 @@
                 <article>
                     <ol>
                         <li>
-                            Reduce SRAM by moving cstrings from PROGRAM_NOTES to PROGMEM.
+                            <s>Reduce SRAM by moving cstrings from PROGRAM_NOTES to PROGMEM.</s>
                         </li>
                         <li>
                             Create a Cross-Platform desktop application that allows for the ease of use when adding/removing/editing notes from songs.
@@ -108,7 +215,10 @@
                             Continue flash and memory optimizations.
                         </li>
                         <li>
-                            Port TuneStudio2560 to more boards.
+                            Use optimized SD card library.
+                        </li>
+                        <li>
+                            Port TuneStudio2560 to more boards (including ARM).
                         </li>
                         <li>
                            Update website with pictures and video.
@@ -122,11 +232,39 @@
         </main>
         <hr />
         <footer>
-            <p>Made by Jacob LuVisi</p>
+            <p><strong>Made by Jacob LuVisi</strong></p>
             <p>For Questions Contact:
                 <br />
                 Email: <a href="mailto:jluvisi2021@gmail.com">jluvisi2021@gmail.com</a>
             </p>
         </footer>
     </body>
+    <script>
+        let DARK_MODE_KEY = "darkMode"
+        let ENABLED = "enabled"
+        let DISABLED = "disabled"
+
+        if(localStorage.getItem(DARK_MODE_KEY) === ENABLED) {
+            document.getElementById("#body").classList.add("body-dark");
+            document.getElementById("#darkToggle").innerText = "Toggle Dark Mode (Dark Mode: On)";
+            var el = document.querySelectorAll('a');
+            for(var i=0;i<el.length;i++){
+             el[i].style.color = 'teal';
+            }
+        }else{
+            document.getElementById("#body").classList.remove("body-dark");
+            document.getElementById("#darkToggle").innerText = "Toggle Dark Mode (Dark Mode: Off)";
+        
+        }
+
+        function toggleDark() {
+            if(localStorage.getItem(DARK_MODE_KEY) === ENABLED) {
+                localStorage.setItem(DARK_MODE_KEY, DISABLED)
+            }else{
+                localStorage.setItem(DARK_MODE_KEY, ENABLED)
+            }
+            console.log("Dark Mode Toggeled");
+            window.location.reload()
+        }
+    </script>
 </html>

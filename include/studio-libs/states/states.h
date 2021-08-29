@@ -27,7 +27,6 @@ class ListeningModePlayingSong: public ProgramState {
   unsigned long lastTextUpdate; // Tracks the last time that text was updated on the bottom line of the LCD.
   uint8_t bottomTextMode; // Tracks what to display on the bottom line of the LCD.
   const uint16_t bottomTextDelayInterval = 5000;
-  Song* currentSong;
   bool invalidSong; // Track if the song is invalid and does not work.
   bool isPaused;
   bool confirmDelete;
@@ -64,7 +63,6 @@ class CreatorModeCreateNew: public ProgramState {
   uint8_t lastButtonPress; // The last button which was pressed.
   bool optionWaiting; // If the option button has been pressed.
   bool playSound; // If the loop should play a sound on the next iteration.
-  Song* newSong; // An instance of a song object.
   uint8_t scrolledLines; // The amount of lines scrolled on the lcd.
   char fileName[9];
 

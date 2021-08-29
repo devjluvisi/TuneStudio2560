@@ -21,7 +21,7 @@ void CreatorModeCreateNew::loop() {
     // Play the song back.
     if (optionWaiting) {
       delay_ms(150);
-      newSong -> play_song();
+      prgmSong.play_song();
       delay_ms(150);
       optionWaiting = false;
       return;
@@ -50,7 +50,7 @@ void CreatorModeCreateNew::loop() {
     optionWaiting = !optionWaiting;
     // Scroll the LCD.
     if (!optionWaiting) {
-      scrolledLines += 1;
+      scrolledLines++;
       if (scrolledLines > get_lcd_required_rows()) {
         scrolledLines = 0;
       }
@@ -85,11 +85,16 @@ void CreatorModeCreateNew::loop() {
   if (is_pressed(BTN_ADD_SELECT)) {
     if (optionWaiting && currentNote.frequency != PAUSE_NOTE.frequency) {
       // SAVE SONG.
-      if (newSong -> get_size() < MIN_SONG_LENGTH) {
+      if (prgmSong.get_size() < MIN_SONG_LENGTH) {
         lcd.clear();
         lcd.setCursor(0, 1);
         lcd.print(F("[ERROR]"));
+        #if PRGM_MODE != 0
         print_scrolling(F("Please make your song at least eight or more notes to save."), 2, 150);
+        #else
+        lcd.setCursor(0, 2);
+        lcd.print(F("Song too short!"));
+        #endif
         delay_ms(500);
         print_song_lcd();
         return;
@@ -118,7 +123,7 @@ void CreatorModeCreateNew::loop() {
       // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
       strncpy(buffer + fileNameLength, FILE_TXT_EXTENSION, fileExtensionLength + 1);
       // Save the song.
-      sd_save_song(buffer, newSong);
+      sd_save_song(buffer, prgmSong);
       #if DEBUG == true
       Serial.print(get_active_time());
       Serial.println(F(" Saved song from creator mode."));
@@ -126,14 +131,16 @@ void CreatorModeCreateNew::loop() {
       lcd.clear();
       lcd.setCursor(0, 1);
       lcd.print(F("Song Saved."));
+      #if PRGM_MODE != 0
       lcd.setCursor(0, 2);
       lcd.print(F("Returning to Song."));
+      #endif
       delay_ms(1500);
       print_song_lcd();
       return;
     }
     // Add the note if the user was not trying to save.
-    newSong -> add_note(currentNote.frequency);
+    prgmSong.add_note(currentNote.frequency);
     this -> print_song_lcd();
   } else if (is_pressed(BTN_DEL_CANCEL)) {
     // Exit the state.
@@ -143,20 +150,19 @@ void CreatorModeCreateNew::loop() {
       #else
       analogWrite(RGB_BLUE, 0);
       #endif
-      delete newSong;
       update_state(MAIN_MENU);
       return;
     }
     // If the song still has notes remaining.
-    if (newSong -> get_size() != 0) {
-      newSong -> remove_note();
+    if (prgmSong.get_size() != 0) {
+      prgmSong.remove_note();
       this -> print_song_lcd();
     }
 
   }
 
   if (playSound) {
-    newSong -> play_note(currentNote.frequency);
+    prgmSong.play_note(currentNote.frequency);
     delay_ms(200);
     noNewTone(SPEAKER_1);
     // Eliminates static noise
@@ -169,8 +175,6 @@ void CreatorModeCreateNew::loop() {
 void CreatorModeCreateNew::init() {
   lcd.print(F("[SONG]"));
   segDisplay.setBrightness(-100);
-
-  newSong = new Song(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
   previousUpdate = 0;
   lastButtonPress = 0;
@@ -187,7 +191,7 @@ void CreatorModeCreateNew::init() {
  *
  */
 void CreatorModeCreateNew::print_song_lcd() {
-  const song_size_t songSize = newSong -> get_size();
+  const song_size_t songSize = prgmSong.get_size();
 
   // Setup the top row of the display.
 
@@ -199,16 +203,12 @@ void CreatorModeCreateNew::print_song_lcd() {
   */
 
   lcd.clear();
-  char buffer[3 + sizeof(char)];
   lcd.print(F("[SONG] (["));
-  itoa(scrolledLines + 1, buffer, 10);
-  lcd.print(buffer);
+  lcd.print((scrolledLines+1));
   lcd.print(F("] "));
-  itoa(songSize, buffer, 10);
-  lcd.print(buffer);
+  lcd.print(songSize);
   lcd.print(F("/"));
-  itoa(MAX_SONG_LENGTH, buffer, 10);
-  lcd.print(buffer);
+  lcd.print(MAX_SONG_LENGTH);
   lcd.print(F(")"));
 
   uint8_t lcdCursor = 1;
@@ -217,7 +217,7 @@ void CreatorModeCreateNew::print_song_lcd() {
   // Print each of the notes from the song onto the LCD.
   uint8_t scrolledLineCounter = scrolledLines;
   for (song_size_t i = 0; i < songSize; i++) {
-    const char * pitch = get_note_from_freq(newSong -> get_note(i)).pitch;
+    const char * pitch = get_note_from_freq(prgmSong.get_note(i)).pitch;
     const uint8_t pitchSize = strlen(pitch);
 
     // Get if adding the pitch to the current column would overflow. If so then reset the column.
@@ -252,8 +252,8 @@ void CreatorModeCreateNew::print_song_lcd() {
 uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
   uint8_t columnCount = 0;
   uint8_t rowCounter = 0;
-  for (song_size_t i = 0; i < newSong -> get_size(); i++) {
-    const uint8_t pitchSize = strlen(get_note_from_freq(newSong -> get_note(i)).pitch);
+  for (song_size_t i = 0; i < prgmSong.get_size(); i++) {
+    const uint8_t pitchSize = strlen(get_note_from_freq(prgmSong.get_note(i)).pitch);
     if (columnCount + pitchSize > LCD_COLS) {
       columnCount = 0;
       rowCounter++;
@@ -316,7 +316,7 @@ void CreatorModeCreateNew::set_save_name() {
     lcd.print(F("Name > "));
 
     // Go through the current name array and print it out.
-    for (int i = 0; i < index; i++) {
+    for (uint8_t i = 0; i < index; i++) {
       lcd.print(name[i]);
     }
     // If the user string is not at its maximum characters

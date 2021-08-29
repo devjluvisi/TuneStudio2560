@@ -3,7 +3,7 @@
  * @author Jacob LuVisi
  * @brief The main header file for the application. Includes important variables and methods that are shared between all TuneStudio files.
  * Note that method definitions described in this file are for main.cpp methods.
- * @version 0.1
+ * @version 1.2.0-R3
  * @date 2021-07-26
  *
  * @copyright Copyright (c) 2021
@@ -20,6 +20,8 @@
 #include <studio-libs/song.h> // Manage songs.
 #include <studio-libs/state.h> // Manages the variety of differnet states the program can be running in.
 #include <lib/digitalWriteFast.h>
+#include <studio-libs/pitches.h>
+#include <studio-libs/song.h>
 
 /**
  * Enable/Disable the DEBUG functionallity of TuneStudio2560.
@@ -42,10 +44,12 @@
   // 2 = Feature (Increased song sizes, extra features)
 #define PRGM_MODE 0
 
+
+
 // Set FAST_ADC to 1 for faster analogRead(). 
 // 5-6x faster analogRead but takes 30 more bytes of flash.
 // Increases creator mode iterations per second by around 300-400.
-#define FAST_ADC 0
+#define FAST_ADC (PRGM_MODE == 2 ? true : false)
 #if FAST_ADC
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -61,10 +65,15 @@
 //////////////////////////////
 // Below are various different constant definitions for the compiler to use.
 
-// Define a song class so the header file knows it exists.
-class Song;
 
-const char VERSION_ID[] PROGMEM = "1.1.0-R2";
+/**
+ * The current version of the Program.
+ * How the versions work:
+ * (Major Version Release).(Minor Code Updates since last release).(Minor Updates)-R(Release Number)
+ * Minor Updates refer to updates which fix bugs or do optimizations. Sometimes minor updates may add function as well.
+ * Minor Code Updates occur when enough minor updates have been made to justify a new release.
+ */
+const char VERSION_ID[] PROGMEM = "1.2.0-R3";
 
 /*
 ************************
@@ -115,7 +124,7 @@ constexpr uint8_t BTN_TONE_5 = 24;
  *  Unknown values are given 255.
  * 
  */
-#define BTN_TO_INDEX(x) x == BTN_TONE_1 ? 0 : x == BTN_TONE_2 ? 1 : x == BTN_TONE_3 ? 2 : x == BTN_TONE_4 ? 3 : x == BTN_TONE_5 ? 4 : UINT8_MAX
+constexpr uint8_t BTN_TO_INDEX(uint8_t x) { return x == BTN_TONE_1 ? 0 : x == BTN_TONE_2 ? 1 : x == BTN_TONE_3 ? 2 : x == BTN_TONE_4 ? 3 : x == BTN_TONE_5 ? 4 : UINT8_MAX; }
 
 // Interaction Buttons
 
@@ -139,10 +148,13 @@ constexpr uint8_t LCD_ROWS = 4;
 constexpr uint16_t DEBOUNCE_RATE = 500;
 
 // Maximum number of notes in a song.
+// Note! Adjusting requires the editing of the song_size_t typedef in "song.h"
 #if PRGM_MODE == 0
 constexpr uint8_t MAX_SONG_LENGTH = 64;
+#elif PRGM_MODE == 2
+constexpr song_size_t MAX_SONG_LENGTH = 512;
 #else
-constexpr uint8_t MAX_SONG_LENGTH = 225;
+constexpr song_size_t MAX_SONG_LENGTH = 255;
 #endif
 
 // Minimum number of notes in a song.
@@ -156,7 +168,11 @@ constexpr uint8_t MAX_SONG_AMOUNT = 255;
 *************************
 */
 
-// A PROGMEM array of all custom characters we want to load into the LCD.
+/**
+ * [v1.1.0-R2]
+ * A PROGMEM list of bytes that represent custom characters which should be loaded into the LCD.
+ * 
+ */
 const byte CUSTOM_LCD_CHARS[6][8] PROGMEM = {
 {0x04, 0x06, 0x05, 0x04, 0x04, 0x0C, 0x1C, 0x0C},
 {0x10, 0x18, 0x1C, 0x1E, 0x1E, 0x1C, 0x18, 0x10},
@@ -207,7 +223,7 @@ constexpr uint8_t DEFAULT_NOTE_LENGTH = 50;
  * both a human readable "pitch" and a 16-bit integer frequency which is played
  * by the buzzer.
  */
-typedef struct {
+typedef struct note {
   const char * const pitch;
   const uint16_t frequency;
 } note_t;
@@ -216,22 +232,29 @@ typedef struct {
  * @brief Represents a tune button as well as all of the different notes that it can play.
  * Each tune button can play 17 different notes in their respective range.
  */
-typedef struct {
+typedef struct buttonFrequencies {
   const uint8_t pin;
   const note_t notes[TONES_PER_BUTTON];
 } buttonFrequencies_t;
 
+
 /**
  * @brief An array of all possible tones which can be played.
  * 85 total tones, 17 per button, 5 buttons.
+ * 
+ * TODO: Make method in main.cpp which takes a constant char[5] from memory and converts it to a const char pointer like the program can read.
+ * Copy the length 5 char array from Program Memory and convert it to a pointer and pass it.
  */
 const buttonFrequencies_t PROGRAM_NOTES[TONE_BUTTON_AMOUNT] PROGMEM{
-    {BTN_TONE_1, {{"B0", 31}, {"C1", 33}, {"CS1", 35}, {"D1", 37}, {"DS1", 39}, {"E1", 41}, {"F1", 44}, {"FS1", 46}, {"G1", 49}, {"GS1", 52}, {"A1", 55}, {"AS1", 58}, {"B1", 62}, {"C2", 65}, {"CS2", 69}, {"D2", 73}, {"DS2", 78}}},
-    {BTN_TONE_2, {{"E2", 82}, {"F2", 87}, {"FS2", 93}, {"G2", 98}, {"GS2", 104}, {"A2", 110}, {"AS2", 117}, {"B2", 123}, {"C3", 131}, {"CS3", 139}, {"D3", 147}, {"DS3", 156}, {"E3", 165}, {"F3", 175}, {"FS3", 185}, {"G3", 196}, {"GS3", 208}}},
-    {BTN_TONE_3, {{"A3", 220}, {"AS3", 233}, {"B3", 247}, {"C4", 262}, {"CS4", 277}, {"D4", 294}, {"DS4", 311}, {"E4", 330}, {"F4", 349}, {"FS4", 370}, {"G4", 392}, {"GS4", 415}, {"A4", 440}, {"AS4", 466}, {"B4", 494}, {"C5", 523}, {"CS5", 554}}},
-    {BTN_TONE_4, {{"D5", 587}, {"DS5", 622}, {"E5", 659}, {"F5", 698}, {"FS5", 740}, {"G5", 784}, {"GS5", 831}, {"A5", 880}, {"AS5", 932}, {"B5", 988}, {"C6", 1047}, {"CS6", 1109}, {"D6", 1175}, {"DS6", 1245}, {"E6", 1319}, {"F6", 1397}, {"FS6", 1480}}},
-    {BTN_TONE_5, {{"G6", 1568}, {"GS6", 1661}, {"A6", 1760}, {"AS6", 1865}, {"B6", 1976}, {"C7", 2093}, {"CS7", 2217}, {"D7", 2349}, {"DS7", 2489}, {"E7", 2637}, {"F7", 2794}, {"FS7", 2960}, {"G7", 3136}, {"GS7", 3322}, {"A7", 3520}, {"AS7", 3729}, {"B7", 3951}}}
+    {BTN_TONE_1, {{pitch_b0, 31}, {pitch_c1, 33}, {pitch_cs1, 35}, {pitch_d1, 37}, {pitch_ds1, 39}, {pitch_e1, 41}, {pitch_f1, 44}, {pitch_fs1, 46}, {pitch_g1, 49}, {pitch_gs1, 52}, {pitch_a1, 55}, {pitch_as1, 58}, {pitch_b1, 62}, {pitch_c2, 65}, {pitch_cs2, 69}, {pitch_d2, 73}, {pitch_ds2, 78}}},
+    {BTN_TONE_2, {{pitch_e2, 82}, {pitch_f2, 87}, {pitch_fs2, 93}, {pitch_g2, 98}, {pitch_gs2, 104}, {pitch_a2, 110}, {pitch_as2, 117}, {pitch_b2, 123}, {pitch_c3, 131}, {pitch_cs3, 139}, {pitch_d3, 147}, {pitch_ds3, 156}, {pitch_e3, 165}, {pitch_f3, 175}, {pitch_fs3, 185}, {pitch_g3, 196}, {pitch_gs3, 208}}},
+    {BTN_TONE_3, {{pitch_a3, 220}, {pitch_as3, 233}, {pitch_b3, 247}, {pitch_c4, 262}, {pitch_cs4, 277}, {pitch_d4, 294}, {pitch_ds4, 311}, {pitch_e4, 330}, {pitch_f4, 349}, {pitch_fs4, 370}, {pitch_g4, 392}, {pitch_gs4, 415}, {pitch_a4, 440}, {pitch_as4, 466}, {pitch_b4, 494}, {pitch_c5, 523}, {pitch_cs5, 554}}},
+    {BTN_TONE_4, {{pitch_d5, 587}, {pitch_ds5, 622}, {pitch_e5, 659}, {pitch_f5, 698}, {pitch_fs5, 740}, {pitch_g5, 784}, {pitch_gs5, 831}, {pitch_a5, 880}, {pitch_as5, 932}, {pitch_b5, 988}, {pitch_c6, 1047}, {pitch_cs6, 1109}, {pitch_d6, 1175}, {pitch_ds6, 1245}, {pitch_e6, 1319}, {pitch_f6, 1397}, {pitch_fs6, 1480}}},
+    {BTN_TONE_5, {{pitch_g6, 1568}, {pitch_gs6, 1661}, {pitch_a6, 1760}, {pitch_as6, 1865}, {pitch_b6, 1976}, {pitch_c7, 2093}, {pitch_cs7, 2217}, {pitch_d7, 2349}, {pitch_ds7, 2489}, {pitch_e7, 2637}, {pitch_f7, 2794}, {pitch_fs7, 2960}, {pitch_g7, 3136}, {pitch_gs7, 3322}, {pitch_a7, 3520}, {pitch_as7, 3729}, {pitch_b7, 3951}}}
 };
+
+
+
 /**
  * @brief A note which defines a pause.
  * TODO: Move to PROGMEM
@@ -262,6 +285,18 @@ extern LiquidCrystal_I2C lcd;
 extern SevSegShift segDisplay;
 
 /**
+ * @since v1.2.0-R3
+ * Songs are no longer pointers and are no longer dynamically allocated.
+ * Any song the program is going to use is now accessible by the "prgmSong" global variable.
+ * 
+ * @brief Represents a song object to be used in the program.
+ * This song object is used between program states and can be accessed at any time.
+ * When a new song wants to be used by the application, the song is cleared using .clear() and notes are re-added.
+ * 
+ */
+extern Song<MAX_SONG_LENGTH> prgmSong;
+
+/**
  * @return If the interrupt flag is true.
  */
 bool is_interrupt();
@@ -275,18 +310,11 @@ bool is_interrupt();
 void delay_ms(const unsigned long milliseconds);
 
 /**
- * @brief An ISR to handle whenever the select button is pressed throughout the program.
- * Reroutes the state to the respective new state for the button press.
- *
+ * @brief Handles any interrupts which could be generated by the add/select or del/cancel buttons.
+ * Whether or not the immediateInterrupt variable should be toggled on depends on the current 
+ * ProgramState and how it wants to handle interrupts.
  */
-void select_btn_click();
-
-/**
- * @brief An ISR to handle whenever the delete/cancel button is pressed throughout the program.
- * Reroutes the state to the respective new state for the button press.
- *
- */
-void cancel_btn_click();
+void isr_btn_handle();
 
 /**
  * @brief Forcefully update the current state.
@@ -330,6 +358,8 @@ void print_scrolling(const __FlashStringHelper* text, uint8_t cursorY, uint8_t c
  * @param row The row to clear.
  */
 void lcd_clear_row(uint8_t row);
+
+
 
 // Audio Methods
 /**
@@ -407,10 +437,10 @@ SD CARD FUNCTIONS
  * @param fileName The name to save the song as.
  * @param song The song to save.
  */
-void sd_save_song(char* fileName, Song* song);
+void sd_save_song(char * fileName, Song<MAX_SONG_LENGTH> song);
 
 /**
- * @brief Gets a file from the SD card in descending order. For example index "0" would be the file at the top of the SD card.
+ * @brief Gets a file name from the SD card in descending order according to a specified index. For example index "0" would be the file at the top of the SD card.
  *
  * @param index The index of the file to get.
  * @return The name of the file (includes the file extension)
@@ -418,7 +448,7 @@ void sd_save_song(char* fileName, Song* song);
 const char* sd_get_file(uint8_t index);
 
 /**
- * @brief Copies song data from a .txt file onto a song pointer. Note that this only reads the file and copies its frequencies.
+ * @brief Copies and parses song data from a .txt file onto the global song object.
  * The file must be in the correct format to work properly.
  *
  * @param song The song to copy to.
@@ -426,7 +456,7 @@ const char* sd_get_file(uint8_t index);
  *
  * @return If the song was able to be successfully copied.
  */
-bool sd_songcpy(Song* song, const char* const fileName);
+bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName);
 
 /**
  * @brief Delete a file from the microSD.
@@ -440,6 +470,27 @@ void sd_rem(const char* const fileName);
  *
  */
 void sd_make_readme();
+
+/**
+ * Method Naming Logic:
+ * pgm -> Has to do with PROGMEM space.
+ * p -> Uses a pitch.
+ * cpy -> Copies data.
+ * r -> Returns copied data.
+ * 
+ * @brief [v1.2.0-R3] Copies the string data from a pointer to a pitch cstring from PROGMEM and then
+ * returns the string data for that pointer.
+ * 
+ * After the pointer is retrieved from PROGMEM the value is stored in a private static buffer array which can be used
+ * by other methods.
+ * 
+ * Ex: pgm_pcpyr(0, 0) -> "B0"
+ * 
+ * @param btnIndex The button to get in the PROGRAM_NOTES array.
+ * @param noteIndex The note to get for that button.
+ * @return The data which was copied from the pointer.
+ */
+const char* pgm_pcpyr(uint8_t btnIndex, uint8_t noteIndex);
 
 #if DEBUG == true
 /**

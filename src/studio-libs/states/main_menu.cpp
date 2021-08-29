@@ -20,9 +20,7 @@ void MainMenu::loop() {
     lcd.print(F("TuneStudio2560"));
     lcd.setCursor(0, 3);
     lcd.print(F("Ver: "));
-    char buffer[12];
-    strcpy_P(buffer, VERSION_ID);
-    lcd.print(buffer);
+    lcd.print((__FlashStringHelper*)VERSION_ID);
     delay_ms(4000);
     lcd.clear();
     lcd.setCursor(5, 1);

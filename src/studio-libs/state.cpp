@@ -29,7 +29,7 @@ ProgramState::~ProgramState() {}
 
 void ProgramState::execute() {
     if (!this->_hasInitalized) {
-
+        
         // Execute these instructions before every initalization
 
         lcd.clear(); // Remove all information from the previous state.

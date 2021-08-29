@@ -17,7 +17,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 #### *For best compatibility it is recommended to open and upload the project using the [PlatformIO](https://platformio.org/) extension for [Visual Studio Code](https://code.visualstudio.com/).*  
 
 **Program Resource Utilization History**  
-*Percentages are based off of the Arduino Mega's 8KB of SRAM and 256KB of flash memory.*  
+*Percentages are based off of the Arduino Mega's 8KB of SRAM and 256KB of flash memory using PRGM_MODE=0*  
 |      BUILD     |       SRAM          |        FLASH        |
 | -------------- | ------------------- | ------------------- |
 | **V1.0.0-R1**  | 1705 Bytes (20.8%)  | 37436 Bytes (14.7%) |
@@ -27,6 +27,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 |   V1.0.4-R1    | 1689 Bytes (20.6%)  | 34468 Bytes (13.6%) |
 |   V1.0.5-R1    | 1689 Bytes (20.6%)  | 34346 Bytes (13.5%) |
 | **V1.1.0-R2**  | 1664 Bytes (20.3%)  | 32386 Bytes (12.8%) |
+| **V1.2.0-R3**  | 1511 Bytes (18.4%)  | 29906 Bytes (11.8%) |
 
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.

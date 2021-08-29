@@ -8,8 +8,15 @@
  * array stores the frequencies of each of the individual notes. In order to get the respective "pitch" of the current note the
  * frequency must be passed into the get_note_from_freq(const uint16_t frequency) method in the main class.
  *
- * The array which stores the frequencies for the song is dynamically allocated initally depending on the _maxLength value but it cannot
- * be reallocated once it is set in the constructor. When a song pointer has finished its use it should be removed via delete.
+ * [OUTDATED] R1 & R2:
+ * X // The array which stores the frequencies for the song is dynamically allocated initally depending on the _maxLength value but it cannot
+ * X // be reallocated once it is set in the constructor. When a song pointer has finished its use it should be removed via delete.
+ * 
+ * R3 & NEWER:
+ * The array for the song class is set automatically by PRGM_MODE and the MAX_SONG_LENGTH constant in tune_studio.h
+ * Only one song object in TuneStudio is created and that is the global "prgmSong" object which can be used by different states
+ * at any time during the programming cycle. (Songs are no longer created/freed on the heap as of v1.2.0-R3)
+ * 
  *
  * The size of the song is dependent on the PRGM_MODE ("Program Mode"). This allows any user who edits TuneStudio2560 to change the max length
  * of the song to their own desire. A special song_size_t datatype is used to keep track of which unsigned integer datatype to use depending on the Program Mode for
@@ -26,28 +33,18 @@
 
 #include <NewTone.h>
 
-#include <studio-libs/tune_studio.h>
-
-//song_size_t variable is correspondent to the length of the song.
-#if PRGM_MODE == 0
 typedef uint8_t song_size_t;
-#elif PRGM_MODE == 2
-typedef uint32_t song_size_t;
-#else
-typedef uint8_t song_size_t;
-#endif
 
 // The time to delay the song when the user adds a pause.
 constexpr uint16_t PAUSE_DELAY = 500;
-
+template < song_size_t MAX_SONG_SIZE >
 class Song {
   private:
   uint8_t _pin; // The pin to send the frequencies to.
   uint8_t _noteDelay; // The delay between playing each note of the song.
   uint8_t _noteLength; // The length that the note should be played for.
-  song_size_t _maxLength; // Quick access to the size of the array.
   song_size_t _currSize; // Current size of the song.
-  uint16_t * _songData; // A array of all of the different tones.
+  uint16_t _songData[MAX_SONG_SIZE]; // A array of all of the different tones.
   public:
     /**
      * @brief Construct a new song object.
@@ -57,12 +54,7 @@ class Song {
      * @param noteDelay The delay between each note of the song.
      */
     Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay);
-  /**
-   * @brief Destroy the Song object and
-   * Eliminates the _songData[] array by flushing it from the heap.
-   */
-  ~Song();
-
+    
   /**
    * @brief Play a note at a specified pin. This method is not neccessarily tied to any specific song object and works the same
    * no matter how the song is built.
@@ -123,7 +115,7 @@ class Song {
    *
    * @return Size of the song.
    */
-  song_size_t get_size();
+  uint8_t get_size();
 
   /**
    * @brief Set the attributes of the song.

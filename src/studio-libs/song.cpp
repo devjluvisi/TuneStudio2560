@@ -13,10 +13,10 @@
  */
 
 #include <studio-libs/song.h>
+#include <studio-libs/tune_studio.h>
 
 
-
-Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay) {
+template <> Song<MAX_SONG_LENGTH>::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay) {
 #if DEBUG == true
     Serial.print(get_active_time());
     Serial.println(F(" song.cpp: Initalized a new song."));
@@ -24,25 +24,15 @@ Song::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay) {
     _pin = pin;
     _noteDelay = noteDelay;
     _noteLength = noteLength;
-    _maxLength = MAX_SONG_LENGTH;
     _currSize = 0;
-
-    // Define a new array of a specified length and fill it with zeros.
-    // Note that this is a dyanmically allocated array but it still has a fixed size. In order to prevent fragmentation the object
-    // should be cleared from the heap via dispose();
-    _songData = new uint16_t[_maxLength]{ EMPTY_NOTE.frequency };
+    _songData[MAX_SONG_LENGTH] = {EMPTY_NOTE.frequency};
 }
 
-Song::~Song() {
-#if DEBUG == true
-    Serial.print(get_active_time());
-    Serial.println(F(" Song has been removed from the stack."));
-#endif
-    delete[] _songData;
+template<> uint8_t Song<MAX_SONG_LENGTH>::get_size() {
+    return _currSize;
 }
 
-//TODO: Replace with faster direct port manipulation
-void Song::play_note(uint16_t note) {
+template <> void Song<MAX_SONG_LENGTH>::play_note(uint16_t note) {
 #if DEBUG == true
     Serial.print(get_active_time());
     Serial.print(F(" Playing note: "));
@@ -53,32 +43,28 @@ void Song::play_note(uint16_t note) {
     NewTone(_pin, note);
 }
 
-bool Song::is_song_full() {
+template<> bool Song<MAX_SONG_LENGTH>::is_song_full() {
     // Check if the final value in the array is zero. If so we know it is not full since 0's represent empty values in
     // an integer array.
-    return _songData[_maxLength - 1] != EMPTY_NOTE.frequency;
+    return _songData[MAX_SONG_LENGTH - 1] != EMPTY_NOTE.frequency;
 }
-
-void Song::add_note(uint16_t note) {
-    if (Song::is_song_full() || note == EMPTY_NOTE.frequency) return;
+template<> void Song<MAX_SONG_LENGTH>::add_note(uint16_t note) {
+    if (is_song_full() || note == EMPTY_NOTE.frequency) return;
     _songData[get_size()] = note;
     _currSize++;
 }
-
-void Song::add_pause() {
+template<> void Song<MAX_SONG_LENGTH>::add_pause() {
     add_note(PAUSE_NOTE.frequency);
 }
-
-void Song::remove_note() {
+template<> void Song<MAX_SONG_LENGTH>::remove_note() {
     _songData[get_size() - 1] = EMPTY_NOTE.frequency;
     _currSize--;
 }
-
-void Song::play_song() {
+template<> void Song<MAX_SONG_LENGTH>::play_song() {
+    
     song_size_t songIndex = 0;
-    const song_size_t size = get_size();
     // While the song index is not empty and does not equal the maximum length allowed.
-    while (songIndex != size) {
+    while (songIndex != get_size()) {
         if (_songData[songIndex] == PAUSE_NOTE.frequency) {
             delay_ms(PAUSE_DELAY); // Delay the song from continuing for a certain amount of time.
             songIndex++; // Go to the next index of the song.
@@ -91,28 +77,20 @@ void Song::play_song() {
         songIndex++;
     }
 }
-
-void Song::clear() {
-    for (song_size_t i = this->_maxLength; i > 0; i--) {
-            _songData[i] = EMPTY_NOTE.frequency;
-    }
+template<> void Song<MAX_SONG_LENGTH>::clear() {
+    memset(_songData, EMPTY_NOTE.frequency, sizeof(_songData));
     _currSize = 0;
 }
 
-uint16_t Song::get_note(song_size_t index) {
+template<> uint16_t Song<MAX_SONG_LENGTH>::get_note(song_size_t index) {
     return _songData[index];
 }
 
-bool Song::is_empty() {
+template<> bool Song<MAX_SONG_LENGTH>::is_empty() {
     return _songData[0] == EMPTY_NOTE.frequency;
 }
 
-
-song_size_t Song::get_size() {
-    return _currSize;
-}
-
-void Song::set_attributes(uint8_t noteLength, uint16_t noteDelay) {
+template<> void Song<MAX_SONG_LENGTH>::set_attributes(uint8_t noteLength, uint16_t noteDelay) {
     _noteLength = noteLength;
     _noteDelay = noteDelay;
 #if DEBUG == true
@@ -121,10 +99,10 @@ void Song::set_attributes(uint8_t noteLength, uint16_t noteDelay) {
 #endif
 }
 
-uint8_t Song::get_note_length() {
+template<> uint8_t Song<MAX_SONG_LENGTH>::get_note_length() {
     return _noteLength;
 }
 
-uint16_t Song::get_note_delay() {
+template<> uint16_t Song<MAX_SONG_LENGTH>::get_note_delay() {
     return _noteDelay;
 }

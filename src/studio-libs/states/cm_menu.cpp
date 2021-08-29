@@ -33,9 +33,16 @@ void CreatorModeMenu::loop() {
     "Save the song by pressing OPTION+SELECT button.\n"
     "Delete the current song (exit) by pressing OPTION+DEL.\n"
     "Play current track by pressing OPTION+GREEN TUNE.\n"
+    #if PRGM_MODE != 0
     "Scroll through the track by pressing OPTION twice."
+    #else
+    "Scroll through the track by pressing OPTION twice.\n"
+    "Check out my GitHub for detail on how notes and pitches work."
+    #endif
+    
+    
   ));
-
+#if PRGM_MODE != 0
   lcd.clear();
   delay_ms(500);
   lcd.setCursor(3, 1);
@@ -52,12 +59,12 @@ void CreatorModeMenu::loop() {
   ));
 
   delay_ms(500);
-  lcd.setCursor(0, 0);
-  lcd.print(F("The possible"));
+  lcd.clear();
   lcd.setCursor(0, 1);
-  lcd.print(F("frequency ranges:"));
+  lcd.print(F("Freq. Ranges:"));
   delay_ms(500);
   print_scrolling(F("GREEN: B0 (31hz) to DS2 (78hz), BLUE: E2 (82hz) to GS3 (208hz), RED: A3 (220hz) to CS5 (554hz), YELLOW: D5 (587hz) to FS6 (1480hz), WHITE: G6 (1568hz) to B7 (3951hz)"), 2, 150);
+  #endif
   delay_ms(1250);
   lcd.clear();
   delay_ms(500);
