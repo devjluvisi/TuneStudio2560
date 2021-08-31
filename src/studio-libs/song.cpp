@@ -28,7 +28,7 @@ template <> Song<MAX_SONG_LENGTH>::Song(uint8_t pin, uint8_t noteLength, uint16_
     _songData[MAX_SONG_LENGTH] = {EMPTY_NOTE.frequency};
 }
 
-template<> uint8_t Song<MAX_SONG_LENGTH>::get_size() {
+template<> song_size_t Song<MAX_SONG_LENGTH>::get_size() {
     return _currSize;
 }
 

@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Jacob LuVisi
  * @brief The main class for TuneStudio2560.
- * @version 1.2.0-Release 3
+ * @version 1.2.1-Release 3
  * @date 2021-06-27 <-> 2021-08-12 (+)
  *
  * @copyright Copyright (c) 2021
@@ -28,18 +28,21 @@
  * To view how to create TuneStudio2560 along with the schematics, parts, and wiring view
  * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It
  * 
+ * To view release changelogs and MakerStudio2560 view
+ * ~ https://devjluvisi.github.io/TuneStudio2560/
+ * 
  * All documentation to method functionality is in header files. Hover over methods to view information.
+ * 
+ * TODO: Add function to print multiple lines to an lcd with cursors. (Have the method take a struct)
+ * TODO: Add lower case filename support with new sd library.
  * 
  * LICENSE - MIT
  */
 
 #include <studio-libs/tune_studio.h>
-
 #include <studio-libs/states/states.h>
-
-#include <SD.h>
-
 #include <SPI.h>
+#include <SdFat.h>
 
 #if PERF_METRICS == true
 #include <debug/debug.h>
@@ -64,6 +67,8 @@ LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
 SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
 // The main program song.
 Song<MAX_SONG_LENGTH> prgmSong(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
+
+static SdFat SD;
 
 //////////////////////////////
 //// INTERRUPTS & DELAYS ////
@@ -102,17 +107,18 @@ void delay_ms(const unsigned long milliseconds) {
  * @brief Keeps track of the current state of the program.
  * Read more about program states in the state.h class.
  */
+
+
 static ProgramState * prgmState;
 
 void setup() {
-
   #if DEBUG == true
   // Create serial monitor.
   Serial.begin(9600);
   while (!Serial) {
     ;
   }
-
+ 
   // Print welcome message to Serial monitor.
   Serial.println(F("--------------------------------------"));
   Serial.println(F("> TuneStudio2560 has been initialized."));
@@ -248,6 +254,7 @@ void setup() {
   Serial.println(F(" segment display has been initalized."));
   #endif
 
+
   // Setup SD Card
   if (!SD.begin(SD_CS_PIN)) {
     #if DEBUG == true
@@ -361,7 +368,7 @@ uint8_t get_selected_song() {
 }
 const char* pgm_pcpyr(uint8_t btnIndex, uint8_t noteIndex) {
   // Create a static buffer to hold the value of any pitch the program wants to use.
-  static char pitchBuff[5];
+  static char pitchBuff[4];
   // Copy the PROGMEM pointer data to pitchBuff.
   strcpy_P(pitchBuff, (PGM_P)pgm_read_word(&(PROGRAM_NOTES[btnIndex].notes[noteIndex].pitch)));
   return pitchBuff;
@@ -437,6 +444,8 @@ note_t get_current_tone(uint8_t toneButton) {
 uint16_t get_current_freq() {
   return analogRead(TONE_FREQ);
 }
+
+
 
 ////////////////////////
 //// LCD FUNCTIONS ////
@@ -525,8 +534,11 @@ void update_state(StateID state) {
     return;
   }
   
+  // Free the memory that the previous program state.
   delete prgmState;
   prgmSong.clear();
+  // Reset the songs attributes in case they were changed.
+  prgmSong.set_attributes(DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
   #if DEBUG == true
   Serial.print(get_active_time());
@@ -602,10 +614,9 @@ bool is_pressed(const uint8_t buttonPin) {
 //// SD CARD FUNCTIONS ////
 //////////////////////////
 
-void sd_save_song(char * fileName, Song<MAX_SONG_LENGTH> song) {
+void sd_save_song(const char * const fileName, Song<MAX_SONG_LENGTH> song) {
   // Delete the previous song if the name already exists.
   sd_rem(fileName);
-  
   // Create a song object to be saved
   File songFile = SD.open(fileName, FILE_WRITE);
 
@@ -632,11 +643,11 @@ void sd_save_song(char * fileName, Song<MAX_SONG_LENGTH> song) {
   Serial.print(get_active_time());
   Serial.println(F(" Finished writing with SD Card."));
   #endif
+  return;
 }
 
 void sd_rem(const char * const fileName) {
-  char * name = (char * ) fileName;
-  if (SD.exists(name)) {
+  if (SD.exists(fileName)) {
     #if DEBUG == true
     Serial.print(get_active_time());
     Serial.print(F(" "));
@@ -644,53 +655,56 @@ void sd_rem(const char * const fileName) {
     Serial.println(F(" HAS BEEN DELETED FROM SD CARD."));
     #endif
     // Delete the old file.
-    SD.remove(name);
+    SD.remove(fileName);
   }
+  return;
 }
 
 const char * sd_get_file(uint8_t index) {
-  // "static" Fixes Heap Frag Errors.
-  static File entry;
   File baseDir = SD.open(ROOT_DIR);
   baseDir.rewindDirectory();
+  // The current amount of song files we have opened.
   uint8_t count = 0;
+  static char name[14];
   while (true) {
-    entry = baseDir.openNextFile();
-    // If the entry does not exist return an empty string.
-    if (!entry) {
-      baseDir.close();
-      entry.close();
-      return "";
-    }
+    File entry = baseDir.openNextFile();
 
-    // Skip if directory, README file, or if the file does not have a .txt extension.
-    if (entry.isDirectory() || !strcasestr(entry.name(), FILE_TXT_EXTENSION) || strcmp(entry.name(), README_FILE) == 0) {
-      entry.close();
+    // Copies the name of the SD file onto the static name buffer.
+    entry.getName(name, sizeof(name));
+
+    const bool isValid = entry && !entry.isDirectory() && strcasestr(name, FILE_TXT_EXTENSION) && strcmp(name, README_FILE) != 0;
+    entry.close();
+
+    if(!isValid) {
+      // Check to see if the file we are trying to open does not even exist.
+      if(name[0] == '\0') {
+        break;
+      }
+      // File is not a valid song but it does exist.
       continue;
     }
-    
-    // Entry matches.
-    if (count == index) {
-      baseDir.close();
-      entry.close();
-      return entry.name();
+
+    if(count == index) {
+      break; // We have gotten to our number. Now we break out and return.
     }
-    entry.close();
     count++;
   }
-  return "";
+  // Close the root directory we were editing.
+  baseDir.close();
+  return name;
 }
 
 bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
-  
-  File entry = SD.open(fileName);
-  bool isToneDelay = true;
 
   // If the file does not exist.
-  if (!entry) {
-    entry.close();
+  if (!SD.exists(fileName)) {
     return false;
   }
+
+  // Open a new file to read from.
+  File entry = SD.open(fileName);
+  // Track if the current '=' sign being read is for the tone delay or for the tone length.
+  bool isToneDelay = true;
   // Remove all data from song
   song.clear();
 
@@ -698,7 +712,7 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
   uint8_t noteDelay = DEFAULT_NOTE_DELAY;
   uint16_t noteLength = DEFAULT_NOTE_LENGTH;
 
-  uint64_t songSize = 0;
+  unsigned int songSize = 0;
 
   // As long as their are avaliable characters in the file.
   while (entry.available()) {
@@ -826,12 +840,10 @@ const char * get_active_time() {
   return buffer;
 }
 #endif
+
 void sd_make_readme() {
 
-  File readMe;
-
-  if (SD.exists((char * ) README_FILE)) {
-    readMe.close();
+  if (SD.exists(README_FILE)) {
     return;
   }
 
@@ -868,13 +880,10 @@ void sd_make_readme() {
   "\n"
   "I hope you enjoy!";
   #endif
-  static PROGMEM const char * const README_PTR = README_TEXT;
 
-  readMe = SD.open(README_FILE, FILE_WRITE);
-  for (uint16_t i = 0; i < strlen_P(README_TEXT); i++) {
-    readMe.print((char) pgm_read_byte_near( & README_PTR[i]));
-  }
-
+  File readMe = SD.open(README_FILE, FILE_WRITE);
+  readMe.print((__FlashStringHelper*)README_TEXT);
   readMe.close();
+
 
 }

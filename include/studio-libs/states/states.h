@@ -16,20 +16,22 @@
 #include <studio-libs/tune_studio.h>
 
 class MainMenu: public ProgramState {
-  private: void init() override;
+  private: 
+  void init() override;
   void loop() override;
   public: MainMenu();~MainMenu();
 };
 
 class ListeningModePlayingSong: public ProgramState {
-  private: void init() override;
+  #define LM_BOTTOM_TEXT_DELAY_INTERVAL 5000
+  private: 
+  void init() override;
   void loop() override;
   unsigned long lastTextUpdate; // Tracks the last time that text was updated on the bottom line of the LCD.
   uint8_t bottomTextMode; // Tracks what to display on the bottom line of the LCD.
-  const uint16_t bottomTextDelayInterval = 5000;
   bool invalidSong; // Track if the song is invalid and does not work.
   bool isPaused;
-  bool confirmDelete;
+  bool requestedDelete;
   // For tracking the song.
   unsigned long lastTonePlay;
   song_size_t currentSongNote; // Track the current note of the song we are playing.
@@ -41,7 +43,8 @@ class ListeningModePlayingSong: public ProgramState {
 };
 
 class ListeningModeMenu: public ProgramState {
-  private: void init() override;
+  private: 
+  void init() override;
   void loop() override;
   uint8_t previousSong;
 
@@ -50,22 +53,22 @@ class ListeningModeMenu: public ProgramState {
 };
 
 class CreatorModeMenu: public ProgramState {
-  private: void init() override;
+  private: 
+  void init() override;
   void loop() override;
   public: CreatorModeMenu();~CreatorModeMenu();
 };
 
 class CreatorModeCreateNew: public ProgramState {
 
-  private: void init() override;
+  private: 
+  void init() override;
   void loop() override;
   unsigned long previousUpdate; // The last time text was updated.
   uint8_t lastButtonPress; // The last button which was pressed.
   bool optionWaiting; // If the option button has been pressed.
   bool playSound; // If the loop should play a sound on the next iteration.
   uint8_t scrolledLines; // The amount of lines scrolled on the lcd.
-  char fileName[9];
-
   /**
    * @brief Prints the current song to the LCD and accounts for scrolling.
    */
@@ -85,7 +88,7 @@ class CreatorModeCreateNew: public ProgramState {
    *
    * @return The name the user has decided on.
    */
-  void set_save_name();
+  void set_save_name(char fileName[9]);
 
   /**
    * @brief Gets a character from the alphabet depending on the current reading

@@ -115,7 +115,7 @@ class Song {
    *
    * @return Size of the song.
    */
-  uint8_t get_size();
+  song_size_t get_size();
 
   /**
    * @brief Set the attributes of the song.

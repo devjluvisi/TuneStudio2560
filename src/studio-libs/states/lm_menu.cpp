@@ -15,8 +15,9 @@ ListeningModeMenu::ListeningModeMenu(): ProgramState::ProgramState(LM_MENU) {}
 ListeningModeMenu::~ListeningModeMenu() {}
 
 void ListeningModeMenu::loop() {
-  const char * name = sd_get_file(get_selected_song() - 1);
+  
   if (previousSong != get_selected_song()) {
+    const char * name = sd_get_file(get_selected_song() - 1);
     lcd_clear_row(1);
     lcd.print(F(">> Name: "));
     lcd.setCursor(8, 1);

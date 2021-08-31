@@ -99,9 +99,10 @@ void CreatorModeCreateNew::loop() {
         print_song_lcd();
         return;
       }
+      char fileName[9];
 
       // Update the fileName variable.
-      set_save_name();
+      set_save_name(fileName);
 
       #if DEBUG == true
       Serial.print(get_active_time());
@@ -115,15 +116,22 @@ void CreatorModeCreateNew::loop() {
       }
       const uint8_t fileNameLength = strlen(fileName);
       const uint8_t fileExtensionLength = strlen(FILE_TXT_EXTENSION);
-
+      
       // Create a buffer to store both the file name as well as the new file extension.
       char buffer[fileNameLength + fileExtensionLength];
       // Copy the file name to the buffer.
       strncpy(buffer, fileName, fileNameLength);
       // Copy the file extension to the buffer starting at the next memory address past file name + 1 because the ending null character.
       strncpy(buffer + fileNameLength, FILE_TXT_EXTENSION, fileExtensionLength + 1);
+      
       // Save the song.
-      sd_save_song(buffer, prgmSong);
+
+      // NOTE: Prevents memory pointer corruption.
+      char tempBuff[14];
+      memcpy(tempBuff, buffer, sizeof(tempBuff));
+
+      sd_save_song(tempBuff, prgmSong);
+
       #if DEBUG == true
       Serial.print(get_active_time());
       Serial.println(F(" Saved song from creator mode."));
@@ -131,10 +139,8 @@ void CreatorModeCreateNew::loop() {
       lcd.clear();
       lcd.setCursor(0, 1);
       lcd.print(F("Song Saved."));
-      #if PRGM_MODE != 0
       lcd.setCursor(0, 2);
       lcd.print(F("Returning to Song."));
-      #endif
       delay_ms(1500);
       print_song_lcd();
       return;
@@ -173,7 +179,14 @@ void CreatorModeCreateNew::loop() {
 }
 
 void CreatorModeCreateNew::init() {
-  lcd.print(F("[SONG]"));
+  if(MAX_SONG_LENGTH >= 1000) {
+    lcd.print(F("["));
+    lcd.write((byte)MUSIC_NOTE_SYMBOL);
+    lcd.print(F("]"));
+  }else{
+    lcd.print(F("[SONG]"));
+  }
+  
   segDisplay.setBrightness(-100);
 
   previousUpdate = 0;
@@ -203,7 +216,15 @@ void CreatorModeCreateNew::print_song_lcd() {
   */
 
   lcd.clear();
-  lcd.print(F("[SONG] (["));
+  // Attempt to prevent character overflowing by changing [SONG] to [x] if there are two many detected characters.
+  if(MAX_SONG_LENGTH >= 1000 || (songSize >= 100 && scrolledLines >= 10)) {
+    lcd.print(F("["));
+    lcd.write((byte)MUSIC_NOTE_SYMBOL);
+    lcd.print(F("] (["));
+  }else{
+    lcd.print(F("[SONG] (["));
+  }
+  
   lcd.print((scrolledLines+1));
   lcd.print(F("] "));
   lcd.print(songSize);
@@ -272,8 +293,7 @@ uint8_t CreatorModeCreateNew::get_lcd_required_rows() {
  * Modifies the "fileName" global variable to hold the new value.
  *
  */
-void CreatorModeCreateNew::set_save_name() {
-
+void CreatorModeCreateNew::set_save_name(char fileName[9]) {
   // Keep track of the index to add to name.
   uint8_t index = 0;
   // The name the user is choosing.

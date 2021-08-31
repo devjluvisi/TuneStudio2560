@@ -1,4 +1,4 @@
-This directory contains all of the current libraries used for TuneStudio2560.
+This directory contains all of the external libraries which are used for TuneStudio2560.
 All libaries are open-source and free to use.
 Please check hardware compatiblity before using libraries if your hardware is different
 then that on the official repo README.

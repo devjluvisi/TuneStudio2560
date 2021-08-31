@@ -1,7 +1,7 @@
 # TuneStudio2560
 *For ATMega2560 microcontroller.*
 
-![v1.0.0-R1](https://github.com/ntkme/github-buttons/workflows/build/badge.svg)
+![v1.2.1-R3](https://github.com/ntkme/github-buttons/workflows/build/badge.svg)
 [watch this repo](https://github.com/devjluvisi/TuneStudio2560/subscription)
 
 TuneStudio2560 is a song creation and playback device made for the Arduino Mega 2560 microcontroller. The program and hardware allow users to add tunes in succession in order to make a simple song. Once created, users can playback their songs via microSD as well as edit, create, and delete songs right on their personal computer!
@@ -28,6 +28,7 @@ The type of the tune is determined by both which "tune button" is pressed and ho
 |   V1.0.5-R1    | 1689 Bytes (20.6%)  | 34346 Bytes (13.5%) |
 | **V1.1.0-R2**  | 1664 Bytes (20.3%)  | 32386 Bytes (12.8%) |
 | **V1.2.0-R3**  | 1511 Bytes (18.4%)  | 29906 Bytes (11.8%) |
+|   V1.2.1-R3    | 1300 Bytes (15.9%)  | 29974 Bytes (11.8%) |
 
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.

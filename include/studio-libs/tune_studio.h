@@ -2,8 +2,8 @@
  * @file tune_studio.h
  * @author Jacob LuVisi
  * @brief The main header file for the application. Includes important variables and methods that are shared between all TuneStudio files.
- * Note that method definitions described in this file are for main.cpp methods.
- * @version 1.2.0-R3
+ * Note that method definitions described in this file are declerations for main.cpp methods only.
+ * @version 1.2.1-R3
  * @date 2021-07-26
  *
  * @copyright Copyright (c) 2021
@@ -23,10 +23,12 @@
 #include <studio-libs/pitches.h>
 #include <studio-libs/song.h>
 
+
 /**
  * Enable/Disable the DEBUG functionallity of TuneStudio2560.
  * Enabling this will: Enable Serial Monitor, prints debugging messages indicating when sections of the code are reached.
  */
+
 #define DEBUG false
  /**
   * Enable/Disable performance metrics for TuneStudio2560.
@@ -65,7 +67,6 @@
 //////////////////////////////
 // Below are various different constant definitions for the compiler to use.
 
-
 /**
  * The current version of the Program.
  * How the versions work:
@@ -73,7 +74,7 @@
  * Minor Updates refer to updates which fix bugs or do optimizations. Sometimes minor updates may add function as well.
  * Minor Code Updates occur when enough minor updates have been made to justify a new release.
  */
-const char VERSION_ID[] PROGMEM = "1.2.0-R3";
+const char VERSION_ID[] PROGMEM = "1.2.1-R3";
 
 /*
 ************************
@@ -150,7 +151,7 @@ constexpr uint16_t DEBOUNCE_RATE = 500;
 // Maximum number of notes in a song.
 // Note! Adjusting requires the editing of the song_size_t typedef in "song.h"
 #if PRGM_MODE == 0
-constexpr uint8_t MAX_SONG_LENGTH = 64;
+constexpr song_size_t MAX_SONG_LENGTH = 64;
 #elif PRGM_MODE == 2
 constexpr song_size_t MAX_SONG_LENGTH = 512;
 #else
@@ -268,7 +269,7 @@ const note_t EMPTY_NOTE = { "0000", (const uint16_t)0 };
 */
 
 const char ROOT_DIR[] = "/";
-const char PROGRESS_LABEL[] = "PROGRESS:";
+const char PROGRESS_LABEL[] PROGMEM = "PROGRESS:";
 const char FILE_TXT_EXTENSION[] = ".txt";
 const char README_FILE[] = "README.TXT";
 const char OPTIONAL_NAMING_CHARACTERS[] PROGMEM = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '0','1','2','3','4','5','6','7','8','9', '_' };
@@ -295,6 +296,18 @@ extern SevSegShift segDisplay;
  * 
  */
 extern Song<MAX_SONG_LENGTH> prgmSong;
+
+// Try max SPI clock for an SD. Reduce SPI_CLOCK if errors occur.
+#define SPI_CLOCK SD_SCK_MHZ(1)
+
+// Try to select the best SD card configuration.
+#if HAS_SDIO_CLASS
+#define SD_CONFIG SdioConfig(FIFO_SDIO)
+#elif  ENABLE_DEDICATED_SPI
+#define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SPI_CLOCK)
+#else  // HAS_SDIO_CLASS
+#define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SPI_CLOCK)
+#endif  // HAS_SDIO_CLASS
 
 /**
  * @return If the interrupt flag is true.
@@ -403,6 +416,7 @@ uint8_t get_selected_song();
  */
 uint16_t get_current_freq();
 
+
 /**
  * @param toneButton The button which was pressed.
  * @return A note struct from the toneButton that was pressed. Finds the note by copying information from PROGMEM.
@@ -437,7 +451,7 @@ SD CARD FUNCTIONS
  * @param fileName The name to save the song as.
  * @param song The song to save.
  */
-void sd_save_song(char * fileName, Song<MAX_SONG_LENGTH> song);
+void sd_save_song(const char * const fileName, Song<MAX_SONG_LENGTH> song);
 
 /**
  * @brief Gets a file name from the SD card in descending order according to a specified index. For example index "0" would be the file at the top of the SD card.
@@ -465,11 +479,13 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName);
  */
 void sd_rem(const char* const fileName);
 
+
 /**
  * @brief Generates a README file in the SD card.
  *
  */
 void sd_make_readme();
+
 
 /**
  * Method Naming Logic:

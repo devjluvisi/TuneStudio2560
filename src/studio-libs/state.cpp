@@ -32,8 +32,8 @@ void ProgramState::execute() {
         
         // Execute these instructions before every initalization
 
+        segDisplay.blank();
         lcd.clear(); // Remove all information from the previous state.
-        segDisplay.blank(); // Clear the 7 segment display.
 
         this->init();
         this->_hasInitalized = true;

@@ -29,11 +29,35 @@ void ListeningModePlayingSong::loop() {
     return;
   }
 
+  // Check if the user is trying to delete their song.
+  if(requestedDelete) {
+    if(digitalReadFast(BTN_ADD_SELECT) == LOW) {
+      // User has confirmed. Delete the file from the SD card.
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print(F("Deleted."));
+      lcd.setCursor(0, 2);
+      lcd.print(sd_get_file(get_selected_song() - 1));
+      delay_ms(2000);
+      sd_rem(sd_get_file(get_selected_song() - 1));
+      update_state(MAIN_MENU);
+      delay_ms(500);
+      return;
+    }else if(digitalReadFast(BTN_DEL_CANCEL) == LOW) {
+      delay_ms(850);
+      lcd.clear();
+      delay_ms(850);
+      // User cancelled so we must run init() to regenerate the information on the display.
+      init();
+      return;
+    }
+    return;
+  }
+
   // Update the bottom row of the LCD to display different controls.
   // Timed on an interval.
-  if (millis() - lastTextUpdate > bottomTextDelayInterval) {
+  if (millis() - lastTextUpdate > LM_BOTTOM_TEXT_DELAY_INTERVAL) {
     lcd_clear_row(3);
-
     switch (bottomTextMode) {
     case 0:
       lcd.print(F("Song Size: "));
@@ -109,7 +133,7 @@ void ListeningModePlayingSong::loop() {
         delay_ms(100);
         // NOTE: The progress bar needs to be reset because the instructions to update the progress bar usually do not 
         // account for a reduction in the block size. Therefore we need to regenerate the block size from zero.
-        lcd.setCursor(strlen(PROGRESS_LABEL) + 1, 2);
+        lcd.setCursor(strlen_P(PROGRESS_LABEL) + 1, 2);
         blockSize = blockRequirement;
         for (uint8_t i = 0; i < 8; i++) {
           if (currentSongNote >= blockSize) {
@@ -130,40 +154,28 @@ void ListeningModePlayingSong::loop() {
 
   // Deleting the song
   if (digitalReadFast(BTN_DEL_CANCEL) == LOW && digitalReadFast(BTN_OPTION) == LOW) {
-    lcd.clear();
-    lcd.print(F("DELETING:"));
-    lcd.setCursor(0, 1);
-    lcd.print(F(">> "));
-    lcd.print(sd_get_file(get_selected_song() - 1));
-    lcd.setCursor(0, 2);
-    lcd.print(F("ARE YOU SURE? (Y/N)"));
-    lcd.setCursor(0, 3);
-    lcd.print(F("SELECT=Y, CANCEL=N"));
-    delay_ms(1000);
-
-    while (true) {
-      if (digitalReadFast(BTN_ADD_SELECT) == LOW) {
-        // Remove the file from SD.
-        sd_rem(sd_get_file(get_selected_song() - 1));
-        lcd.clear();
-        lcd.setCursor(0, 1);
-        lcd.print(F("Deleted."));
-        delay_ms(2000);
-        update_state(MAIN_MENU);
-        delay_ms(500);
-
-        return;
-      }
-      if (digitalReadFast(BTN_DEL_CANCEL) == LOW) {
-        delay_ms(850);
-        break;
-      }
+    if(!requestedDelete) {
+      #if DEBUG == true
+      Serial.print(get_active_time());
+      Serial.println(F(" User has requested to delete the current song."));
+      #endif
+      lcd.clear();
+      lcd.print(F("DELETING:"));
+      lcd.setCursor(0, 1);
+      lcd.print(F(">> "));
+      lcd.print(sd_get_file(get_selected_song() - 1));
+      lcd.setCursor(0, 2);
+      lcd.print(F("ARE YOU SURE? (Y/N)"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("SELECT=Y, CANCEL=N"));
+      delay_ms(1000);
+      // Now that the LCD has text set to it, we set requestedDelete to true so when we return to the 
+      // first part of the loop we know that we should be awaiting user input on whether or not to delete the song.
+      requestedDelete = true;
+      return;
     }
-    lcd.clear();
-    delay_ms(850);
-    init();
   }
-  // Return to main menu.
+  // User pressed Cancel but not option; Return to listening mode menu.
   else if (digitalReadFast(BTN_DEL_CANCEL) == LOW) {
     delay_ms(1000);
     update_state(LM_MENU);
@@ -205,7 +217,7 @@ void ListeningModePlayingSong::loop() {
     // If the current song note is past the requirement for the next block.
     if (currentSongNote >= blockSize) {
       // Set the cursor to a point on the LCD where the next block is to be inserted.
-      lcd.setCursor(strlen(PROGRESS_LABEL) + (blockSize / blockRequirement < MIN_SONG_LENGTH ? blockSize / blockRequirement : MIN_SONG_LENGTH), 2);
+      lcd.setCursor(strlen_P(PROGRESS_LABEL) + (blockSize / blockRequirement < MIN_SONG_LENGTH ? blockSize / blockRequirement : MIN_SONG_LENGTH), 2);
       // Set the new requirement.
       blockSize += blockRequirement;
       // Add a block to the progress.
@@ -225,7 +237,7 @@ void ListeningModePlayingSong::init() {
   isPaused = false;
   invalidSong = false;
   lastTonePlay = 0;
-  confirmDelete = false;
+  requestedDelete = false;
 
   const char * name = sd_get_file(get_selected_song() - 1);
 

@@ -1,0 +1,5 @@
+The /docs directory contains all of the code for the GitHub pages website https://github.com/devjluvisi/TuneStudio2560
+This directory may also contain other documentation file such as PDF documents, C++ documents, etc.
+
+Along with the index.html, /docs also contains MakerStudio2560, a GUI tool which can be used to create and edit songs in a web browser without
+having to open each individual file in a text editor like Notepad.
