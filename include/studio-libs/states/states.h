@@ -2,7 +2,10 @@
  * @file states.h
  * @author Jacob LuVisi
  * @brief Represents every different type of state in TuneStudio2560. Read more about states in the state.h class.
+ * 
  * Note that created variables in each of the states are global to that state only and are deleted upon changing states.
+ * Individual states are allowed to have their own methods.
+ * 
  * @version 0.1
  * @date 2021-07-26
  *
@@ -27,17 +30,26 @@ class ListeningModePlayingSong: public ProgramState {
   private: 
   void init() override;
   void loop() override;
-  unsigned long lastTextUpdate; // Tracks the last time that text was updated on the bottom line of the LCD.
-  uint8_t bottomTextMode; // Tracks what to display on the bottom line of the LCD.
-  bool invalidSong; // Track if the song is invalid and does not work.
+  /** @brief Tracks the last time that the information text was updated on the bottom of the lcd. */
+  unsigned long lastTextUpdate;
+  /** @brief Tracks a number which represents what text should be displayed on the bottom row of the lcd (information text). */
+  uint8_t bottomTextMode;
+  /** @brief If the song which has been copied is invalid and cannot be played. */
+  bool invalidSong;
+  /** @brief If the song is paused. */
   bool isPaused;
+  /** @brief If the user has requested to delete their song. */
   bool requestedDelete;
-  // For tracking the song.
+  /** @brief The last time a tone was played. */
   unsigned long lastTonePlay;
-  song_size_t currentSongNote; // Track the current note of the song we are playing.
-  song_size_t currentSongSize; // The size of the current song.
-  uint8_t blockRequirement; // Tracks how many notes are needed for each individual "block" in the "PROGRESS" label.
-  song_size_t blockSize; // Tracks the current requirement for the next "block" in the PROGRESS label.
+  /** @brief The current note of the song that we are on. */
+  song_size_t currentSongNote;
+  /** @brief The size of the current song. */
+  song_size_t currentSongSize;
+  /** @brief Tracks how many notes need to pass before a progress block is filled in. */
+  uint8_t blockRequirement; 
+  /** @brief Tracks the total amount of notes that need to be played before the next progress block gets filled in. */
+  song_size_t blockSize;
   public: ListeningModePlayingSong();~ListeningModePlayingSong();
 
 };
@@ -46,6 +58,7 @@ class ListeningModeMenu: public ProgramState {
   private: 
   void init() override;
   void loop() override;
+  /** @brief The previous song that the method has read the user selected. Used for knowing when to update the lcd with new information. */
   uint8_t previousSong;
 
   public: ListeningModeMenu();~ListeningModeMenu();
@@ -64,20 +77,26 @@ class CreatorModeCreateNew: public ProgramState {
   private: 
   void init() override;
   void loop() override;
-  unsigned long previousUpdate; // The last time text was updated.
-  uint8_t lastButtonPress; // The last button which was pressed.
-  bool optionWaiting; // If the option button has been pressed.
-  bool playSound; // If the loop should play a sound on the next iteration.
-  uint8_t scrolledLines; // The amount of lines scrolled on the lcd.
+  /** @brief The last time the information text was updated. */
+  unsigned long previousUpdate; 
+  /** @brief The last time a button was pressed. */
+  uint8_t lastButtonPress;
+  /** @brief If the user has pressed the option button and is waiting for an additonal command. */
+  bool optionWaiting;
+  /** @brief If the loop should play a sound on the next iteration (user has pressed a button). */
+  bool playSound;
+  /** @brief The amount of lines the user has scrolled on the lcd. Needed for determining what notes to show. */
+  uint8_t scrolledLines;
+  
   /**
    * @brief Prints the current song to the LCD and accounts for scrolling.
    */
   void print_song_lcd();
 
   /**
-   * @brief Get the amount of pages that the song should habe.
+   * @brief Get the amount of pages that the song should have.
    *
-   * @return uint8_t
+   * @return The number of rows required to store the current amount of notes the user has added to the song.
    *
    */
   uint8_t get_lcd_required_rows();

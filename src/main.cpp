@@ -2,13 +2,13 @@
  * @file main.cpp
  * @author Jacob LuVisi
  * @brief The main class for TuneStudio2560.
- * @version 1.2.1-Release 3
- * @date 2021-06-27 <-> 2021-08-12 (+)
+ * @version 1.2.2-Release 4
+ * @date 2021-06-27 <-> 2021-9-11 (+)
  *
  * @copyright Copyright (c) 2021
  *
- * TuneStudio2560
- * Open source song playback and creation tool made for the Arduino Mega 2560 and compatible.
+ * <h1>TuneStudio2560</h1>
+ * <h3>Open source song playback and creation tool made for the Arduino Mega 2560 and compatible.</h3>
  *
  * ████████ ██    ██ ███    ██ ███████ ███████ ████████ ██    ██ ██████  ██  ██████  ██████  ███████  ██████   ██████
  *    ██    ██    ██ ████   ██ ██      ██         ██    ██    ██ ██   ██ ██ ██    ██      ██ ██      ██       ██  ████
@@ -16,7 +16,8 @@
  *    ██    ██    ██ ██  ██ ██ ██           ██    ██    ██    ██ ██   ██ ██ ██    ██ ██           ██ ██    ██ ████  ██
  *    ██     ██████  ██   ████ ███████ ███████    ██     ██████  ██████  ██  ██████  ███████ ███████  ██████   ██████
  *
- * TuneStudio2560 was developed using PlatformIO on Visual Studio Code and it is highly reccomended to modify
+ *
+ * TuneStudio2560 was developed using PlatformIO on Visual Studio Code and it is highly recommended to modify
  * this project using that framework.
  *
  * To view documentation on how the software for TuneStudio2560 operates please check out
@@ -28,13 +29,12 @@
  * To view how to create TuneStudio2560 along with the schematics, parts, and wiring view
  * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It
  * 
- * To view release changelogs and MakerStudio2560 view
+ * To view release changelogs, MakerStudio2560, future todo, and doxygen documentation view
  * ~ https://devjluvisi.github.io/TuneStudio2560/
  * 
- * All documentation to method functionality is in header files. Hover over methods to view information.
- * 
- * TODO: Add function to print multiple lines to an lcd with cursors. (Have the method take a struct)
- * TODO: Add lower case filename support with new sd library.
+ * All documentation to method functionality is in header files.
+ * Hover over methods to view information.
+ * It is highly recommended to use the online Doxygen documentation to view information about methods and variables. 
  * 
  * LICENSE - MIT
  */
@@ -50,24 +50,55 @@
 
 /**
 Indicates whether or not an immediate interrupt should be called.
-Almost all loops in TuneStudio2560 have another condition to check for this interrupt.
+Almost all loops in TuneStudio2560 main class have another condition to check for this interrupt.
 If this flag is set to true then the current execution loop halts and attempts to return back
 to the main loop() function as fast as possible.
 
 The delay_ms(ms) function in this program also makes use of this variable.
 */
 static volatile bool immediateInterrupt = false;
-static volatile unsigned long lastButtonPress = 0; // The last time a button was pressed that the main class registered.
-static volatile uint8_t selectedSong = 1; // The current song which is selected in any circumstance. (STARTS AT 1)
-static volatile uint8_t selectedPage = 1; // The current page of songs which is selected. Each page is a group of 5 songs. (microSD only) (STARTS AT 1)
+/** @brief The last time a button was pressed that the main class registered through is_pressed. */
+static volatile unsigned long lastButtonPress = 0;
+/** @brief The current index of the selected. */
+static volatile uint8_t selectedSong = 1;
+/** @brief The current selected page of the program. @remark Each page contains 5 different songs on the SD card. */
+static volatile uint8_t selectedPage = 1;
 
-// The LCD of TuneStudio2560.
+/**
+ * @brief Represents a global instance of the Liquid Crystal display used for TuneStudio2560.
+ * @brief
+ * The Liquid Crystal display uses the I2C protocol and is responsible for direct user feedback on using the program.<br />
+ * The display should be the recommended <b>20 columns and 4 rows</b>.<br />
+ * <br />
+ * Editing TuneStudio2560 to accomidate smaller displays is possible by adjusting the LCD_COLS and LCD_ROWS but some changes to setCursor(x, x) methods would
+ * need to be done.
+ */
 LiquidCrystal_I2C lcd(0x27, LCD_COLS, LCD_ROWS);
-// The 4 Digit 7 Segment Display.
+
+/**
+ * @brief Represents the 4-digit-wide 7-segment display used in TuneStudio2560.
+ * @brief
+ * The segment display is reponsible for showing the current note in Creator Mode. <br />
+ * The display is wired using the SevSegShift library by being connected to <b>2x 74HC595N Shift Registers</b>.
+ */
 SevSegShift segDisplay(SHIFT_PIN_DS, SHIFT_PIN_SHCP, SHIFT_PIN_STCP);
-// The main program song.
+
+/**
+ * @brief Represents the global song object to be used in the program when managing songs.
+ * 
+ * This song object is used between program states and can be accessed at any time.
+ * When a new song wants to be used by the application, the song is cleared using .clear() and notes are re-added.
+ * 
+ * @since v1.2.0-R3
+ * Songs are no longer pointers and are no longer dynamically allocated.
+ * Any song the program is going to use is now accessible by the "prgmSong" global variable.
+ */
 Song<MAX_SONG_LENGTH> prgmSong(SPEAKER_1, DEFAULT_NOTE_LENGTH, DEFAULT_NOTE_DELAY);
 
+/**
+ * @brief A main-class-scoped global variable that represents the SD card on the Arduino.
+ * @since v1.2.2-R4
+ */
 static SdFat SD;
 
 //////////////////////////////
@@ -92,6 +123,7 @@ bool is_interrupt() {
   return immediateInterrupt;
 }
 
+
 void delay_ms(const unsigned long milliseconds) {
   const unsigned long waitTime = milliseconds + millis();
   while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
@@ -104,13 +136,37 @@ void delay_ms(const unsigned long milliseconds) {
 ////////////////////////////////
 
 /**
- * @brief Keeps track of the current state of the program.
- * Read more about program states in the state.h class.
+ * @brief A global main-class-scoped variable which is a pointer to a ProgramState instance.
+ * 
+ * @paragraph A Brief Description
+ * The prgmState variable represents the current ProgramState the program is in on a global scale.
+ * <br />
+ * The prgmState is a pointer to a larger ProgramState object which was allocated on the heap.<br />
+ * Whenever we need to interact with the current user state we access the prgmState variable which is only scoped to the main class.<br />
+ * To change the prgmState from another class you either need to use an interrupt from a supporting ProgramState or use the update_state method.<br />
+ * The prgmState variable <b>SHOULD NEVER</b> be allocated with new() outside of update_state and the setup() method. <br />
+ * To learn more about program states view the state.h file.
+ * 
+ * @see state.h
+ * @see update_state(StateID state)
  */
-
-
 static ProgramState * prgmState;
 
+/**
+ * @brief Sets up TuneStudio2560 to be used on an infinite loop by initalizing hardware and checking for errors.
+ * 
+ * @par In Order:
+ * - [DEBUG ONLY] Initalize the Serial Monitor
+ * - Setup pinMode
+ * - Attach interrupts to select/cancel buttons.
+ * - Initalize the Liquid Crystal Display.
+ * - Add custom characters to the LCD.
+ * - Initalize and setup the 4-digit 7-Segment display.
+ * - Setup the SD card and check for errors.
+ * - Make the README.TXT file.
+ * - [PRGM_MODE==2] Enable Fast Analog Read
+ * - Set the prgmState variable to the Main Menu.
+ */
 void setup() {
   #if DEBUG == true
   // Create serial monitor.
@@ -298,10 +354,58 @@ void setup() {
   cbi(ADCSRA, ADPS0);
   #endif
 
+  // Blink LED according to Program Mode.
+  #if PRGM_MODE==0
+    digitalWriteFast(RGB_GREEN, HIGH);
+    delay(700);
+    digitalWriteFast(RGB_GREEN, LOW);
+  #elif PRGM_MODE==2
+  analogWrite(RGB_GREEN, RGB_BRIGHTNESS);
+  delay(700);
+  analogWrite(RGB_GREEN, LOW);
+  delay(700);
+  analogWrite(RGB_GREEN, RGB_BRIGHTNESS);
+  delay(700);
+  analogWrite(RGB_GREEN, LOW);
+  delay(700);
+  analogWrite(RGB_GREEN, RGB_BRIGHTNESS);
+  delay(700);
+  analogWrite(RGB_GREEN, LOW);
+  #else
+  analogWrite(RGB_GREEN, RGB_BRIGHTNESS);
+  delay(700);
+  analogWrite(RGB_GREEN, LOW);
+  delay(700);
+  analogWrite(RGB_GREEN, RGB_BRIGHTNESS);
+  delay(700);
+  analogWrite(RGB_GREEN, LOW);
+  #endif
+
+    
+
+
   // Set the user to the main menu.
   prgmState = new MainMenu();
 }
 
+/**
+ * @brief The primary loop() method of the Arduino is responsible for managing the programState and resetting interrupts.
+ * @paragraph What it does
+ * The loop() method will first call the execute() function for the prgmState variable.
+ * The execute() function will handle the initalization and looping for the Program State.
+ * <br />
+ * After, the immediateInterrupt variable is set to "false" just in case the loop was reset due to an interrupt.
+ * <br /><br />
+ * <i>For PERF_METRICS & DEBUG Only:</i><br />
+ * Prints out performance statistics to the Serial monitor.
+ * The performance statistics which are displayed are:
+ * - Time the loop took to complete (in microseconds)
+ * - The RAM usage of the program.
+ * - The current (%) of RAM the program is utilizing.
+ * - The number of clock cycles which have passed since the previous iteration.
+ * - The "IPS" or "Iterations Per Second" of the loop which describes how many times the loop can run PER SECOND if the number of clock cycles is counted accurately.
+ * 
+ */
 void loop() {
   #if PERF_METRICS // For testing the iteration speed of the programState loop() function. Results will be off for functions who use blocking delays.
   unsigned long startingMicros = micros();
@@ -384,8 +488,10 @@ note_t get_note_from_freq(const uint16_t frequency) {
   for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
     for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
       if (pgm_read_word( & PROGRAM_NOTES[i].notes[j].frequency) == frequency) {
+
+        // Get a pointer to the current note we want.
         const char * pitch = pgm_pcpyr(i, j);
-        //uint16_t freq = (uint16_t)pgm_read_word(&toneButtons[i].notes[j].frequency);
+
         return note_t {
           pitch,
           frequency
@@ -409,12 +515,13 @@ note_t get_note_from_pitch(const char *
     return PAUSE_NOTE;
   }
 
-  // 5 tune buttons, 17 pitches each
+  // Go through every tune button and find a match.
   for (uint8_t i = 0; i < TONE_BUTTON_AMOUNT; i++) {
     for (uint8_t j = 0; j < TONES_PER_BUTTON; j++) {
       if (strcmp(pgm_pcpyr(i, j), pitch) == 0) {
-        //char* pitch = (char*)pgm_read_word(&toneButtons[i].notes[j].pitch);
+
         uint16_t freq = (uint16_t) pgm_read_word( & PROGRAM_NOTES[i].notes[j].frequency);
+
         return note_t {
           pitch,
           freq
@@ -444,8 +551,6 @@ note_t get_current_tone(uint8_t toneButton) {
 uint16_t get_current_freq() {
   return analogRead(TONE_FREQ);
 }
-
-
 
 ////////////////////////
 //// LCD FUNCTIONS ////
@@ -499,6 +604,7 @@ void print_scrolling(const __FlashStringHelper * text, uint8_t cursorY, uint8_t 
   // If the inital char delay should be waited.
   bool flag = false;
 
+  // Increment the address of the pointer and get the next character for as long as the pointer address is not a string terminating character.
   while (pgm_read_byte_near(p + (LCD_COLS - 1)) != '\0') {
     if (is_interrupt()) return;
     lcd.setCursor(0, cursorY); {

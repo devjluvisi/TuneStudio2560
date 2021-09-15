@@ -3,14 +3,14 @@
  * @author Jacob LuVisi
  * @brief A complete fill containing all of the human readable pitches available in TuneStudio2560.
  *  
- *  This header file was created to store constants for every char string (c-string) pitch which has a respective frequency.
- *  This is preferable for microcontrollers with low RAM due to the fact that the previous method:
-    const buttonFrequencies_t PROGRAM_NOTES[TONE_BUTTON_AMOUNT] PROGMEM{
-        {BTN_TONE_1, {{"B0", 31}, ...}},
-    };
-    Stored the pointers for the pitches in PROGMEM but the pitch data was still stored in SRAM causing over 357 of SRAM bytes to be used.
-    This header file is dedicated to making sure the pitch data and the pitch pointers remain and are retrieved from PROGMEM.
-
+ *  This header file was created to store constants for every char string (c-string) pitch which has a respective frequency.<br />
+ *  This is preferable for microcontrollers with low RAM due to the fact that the previous method:<br />
+    const buttonFrequencies_t PROGRAM_NOTES[TONE_BUTTON_AMOUNT] PROGMEM{<br />
+        {BTN_TONE_1, {{"B0", 31}, ...}},<br />
+    };<br />
+    Stored the pointers for the pitches in PROGMEM but the pitch data was still stored in SRAM causing over 357 of SRAM bytes to be used. <br />
+    This header file is dedicated to making sure the pitch data and the pitch pointers remain and are retrieved from PROGMEM. <br />
+    <br />
     ** Used Since v1.2.0-R3 **
  *  
  * @version 1.2.0-R3

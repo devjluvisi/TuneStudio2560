@@ -172,8 +172,11 @@ TuneStudio2560 would not be possible without the open source libraries that have
 > [**Liquid Crystal I2C**](https://github.com/johnrickman/LiquidCrystal_I2C?utm_source=platformio&utm_medium=piohome)
 Used for communication directly with the 20x4 LCD.  
 
-> [**SD** by Adafruit](https://github.com/adafruit/SD?utm_source=platformio&utm_medium=piohome)
+> ~~[**SD** by Adafruit](https://github.com/adafruit/SD?utm_source=platformio&utm_medium=piohome)~~ (DEPRECATED)
 Allows easy direct communication with the SD.
+
+> [**SdFat** by greiman](https://github.com/greiman/SdFat)
+Allows a more modern and fast interaction with a microSD card module.
 
 > [**SevSegShift** by Dean Reading & Jens Breidenstien](https://github.com/bridystone/SevSegShift?utm_source=platformio&utm_medium=piohome)
 A well documented useful library for communicating with Common Cathode or Common Anode 7 segment displays using Shift Registers.  

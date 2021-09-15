@@ -34,17 +34,29 @@
 
  /**
   * @brief Allows the identification of individual states.
+  * Useful as it prevents having to compare state objects to each other.
   *
   */
 enum StateID {
     MAIN_MENU, CM_MENU, LM_MENU, LM_PLAYING_SONG, CM_CREATE_NEW
 };
 
+/**
+ * @brief A class which controls how to handle the controls, what to loop, and what to display on the lcd.
+ * The ProgramState can be thought of as a "container" where different parts of the program work seperately but use
+ * the same global data.
+ * 
+ * @see state.h
+ */
 class ProgramState {
 private:
-    bool _hasInitalized = false; // If the state has initalized.
-    StateID _stateId; // The corresponding ID which goes with every state to allow fast comparison between states without having to compare objects.
+    /** @brief If the state has already initalized (ran the init() method) */
+    bool _hasInitalized = false;
+    /** @brief The corresponding StateID which goes with each state object. */
+    StateID _stateId; 
+    /** @brief The method to be run when the program state first loads. */
     virtual void init() = 0;
+    /** @brief A method to be run on an infinite loop after the init() method is run. */
     virtual void loop() = 0;
 public:
     explicit ProgramState(const StateID stateId);
@@ -67,6 +79,7 @@ public:
      */
     bool has_initalized();
 
+    /** @brief Deconstructor. */
     virtual ~ProgramState();
 };
 
