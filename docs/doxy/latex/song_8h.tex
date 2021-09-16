@@ -1,0 +1,74 @@
+\hypertarget{song_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/song.h File Reference}
+\label{song_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/song.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/song.h}}
+
+
+The song header file used for defining the methods for a song object. Songs can be added to, removed from, played, and saved to permanent storage like an SD Card. There are important notes about using the song class which should be read below.  
+
+
+{\ttfamily \#include $<$New\+Tone.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_song}{Song$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$}}
+\begin{DoxyCompactList}\small\item\em A \mbox{\hyperlink{class_song}{Song}} object. Initalized with a $<$\+MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ template to describe how large the songs are allowed to be in the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint8\+\_\+t \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em A variable type which can be either uint8\+\_\+t or uint16\+\_\+t depending on song size and PRGM\+\_\+\+MODE. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr uint16\+\_\+t \mbox{\hyperlink{song_8h_a23fcef524940ce4e61885302fc1d37bf}{PAUSE\+\_\+\+DELAY}} = 500
+\begin{DoxyCompactList}\small\item\em The global delay that should be used when a PAUSE\+\_\+\+NOTE is encountered. Default\+: 500ms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The song header file used for defining the methods for a song object. Songs can be added to, removed from, played, and saved to permanent storage like an SD Card. There are important notes about using the song class which should be read below. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi
+\end{DoxyAuthor}
+Note that songs do not use the \char`\"{}note\char`\"{} struct defined in \mbox{\hyperlink{tune__studio_8h}{tune\+\_\+studio.\+h}} to store notes. Instead a basic 16-\/bit unsigned integer array stores the frequencies of each of the individual notes. In order to get the respective \char`\"{}pitch\char`\"{} of the current note the frequency must be passed into the \mbox{\hyperlink{main_8cpp_acf0f9b68e6df821a93f361d78f31d066}{get\+\_\+note\+\_\+from\+\_\+freq(const uint16\+\_\+t frequency)}} method in the main class.
+
+{\bfseries{\mbox{[}OUTDATED\mbox{]} R1 \& R2\+:}} X // The array which stores the frequencies for the song is dynamically allocated initally depending on the \+\_\+max\+Length value but it cannot X // be reallocated once it is set in the constructor. When a song pointer has finished its use it should be removed via delete.
+
+{\bfseries{R3 \& NEWER}}\+: The array for the song class is set automatically by PRGM\+\_\+\+MODE and the MAX\+\_\+\+SONG\+\_\+\+LENGTH constant in \mbox{\hyperlink{tune__studio_8h}{tune\+\_\+studio.\+h}} Only one song object in Tune\+Studio is created and that is the global \char`\"{}prgm\+Song\char`\"{} object which can be used by different states at any time during the programming cycle. (Songs are no longer created/freed on the heap as of v1.\+2.\+0-\/R3)
+
+The size of the song is dependent on the PRGM\+\_\+\+MODE (\char`\"{}\+Program Mode\char`\"{}). This allows any user who edits Tune\+Studio2560 to change the max length of the song to their own desire. A special song\+\_\+size\+\_\+t datatype is used to keep track of which unsigned integer datatype to use depending on the Program Mode for maximum efficiency.
+
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/07-\/16
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{song_8h_ac519eeb8110c1d9f3f61d52b51510917}\label{song_8h_ac519eeb8110c1d9f3f61d52b51510917}} 
+\index{song.h@{song.h}!song\_size\_t@{song\_size\_t}}
+\index{song\_size\_t@{song\_size\_t}!song.h@{song.h}}
+\doxysubsubsection{\texorpdfstring{song\_size\_t}{song\_size\_t}}
+{\footnotesize\ttfamily typedef uint8\+\_\+t \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}}}
+
+
+
+A variable type which can be either uint8\+\_\+t or uint16\+\_\+t depending on song size and PRGM\+\_\+\+MODE. 
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{song_8h_a23fcef524940ce4e61885302fc1d37bf}\label{song_8h_a23fcef524940ce4e61885302fc1d37bf}} 
+\index{song.h@{song.h}!PAUSE\_DELAY@{PAUSE\_DELAY}}
+\index{PAUSE\_DELAY@{PAUSE\_DELAY}!song.h@{song.h}}
+\doxysubsubsection{\texorpdfstring{PAUSE\_DELAY}{PAUSE\_DELAY}}
+{\footnotesize\ttfamily constexpr uint16\+\_\+t PAUSE\+\_\+\+DELAY = 500\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The global delay that should be used when a PAUSE\+\_\+\+NOTE is encountered. Default\+: 500ms. 
+

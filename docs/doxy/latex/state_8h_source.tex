@@ -1,0 +1,33 @@
+\hypertarget{state_8h_source}{}\doxysection{state.\+h}
+\label{state_8h_source}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/state.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/state.h}}
+\mbox{\hyperlink{state_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#ifndef state\_h}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define state\_h}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{40 \textcolor{keyword}{enum} \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{StateID}} \{}
+\DoxyCodeLine{41     \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6ac22743f1fc74de09544ecc9bab74a17b}{MAIN\_MENU}}, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6aaec8c5e4aafb4dde2d0e4c813d0202db}{CM\_MENU}}, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a207b99f5ee018d355f462a48790a0f8c}{LM\_MENU}}, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a04f42b76ac4f3bdcefac10c76ca80f3b}{LM\_PLAYING\_SONG}}, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a01d2a1ca2dbced2ebed68d9b682584dc}{CM\_CREATE\_NEW}}}
+\DoxyCodeLine{42 \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{51 \textcolor{keyword}{class }\mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{52 \textcolor{keyword}{private}:}
+\DoxyCodeLine{54     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_program_state_a9e83a2e68917ea9e07f057db64d13120}{\_hasInitalized}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{56     \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{StateID}} \mbox{\hyperlink{class_program_state_a9dcd4d2068cd216c1777171b28bcab3a}{\_stateId}}; }
+\DoxyCodeLine{58     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init}}() = 0;}
+\DoxyCodeLine{60     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{loop}}() = 0;}
+\DoxyCodeLine{61 \textcolor{keyword}{public}:}
+\DoxyCodeLine{62     \textcolor{keyword}{explicit} \mbox{\hyperlink{class_program_state_a017115c924ae8f51296942f65cedc839}{ProgramState}}(\textcolor{keyword}{const} \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{StateID}} stateId);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{70     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_program_state_a2898ccf0aae3d61898667c343e9a0c41}{execute}}();}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{75     \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{StateID}} \mbox{\hyperlink{class_program_state_aa7fca1d2ec86ea577534389e0fa0e820}{get\_state}}();}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_program_state_ac5a25269e6f35f648c93d8cc167f25cd}{has\_initalized}}();}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{83     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_program_state_acbdf8fc4b0ea2609edf544ccf53792d6}{\string~ProgramState}}();}
+\DoxyCodeLine{84 \};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,114 @@
+\hypertarget{debug_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/debug/debug.h File Reference}
+\label{debug_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/debug.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/debug.h}}
+
+
+Basic debug and performance metric functions. This header file does not have a seperate class all possible functions are inlined.  
+
+
+{\ttfamily \#include $<$studio-\/libs/tune\+\_\+studio.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structblock__t}{block\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{debug_8h_aca10938ec1c69e493636582772633036}{free\+Memory}} ()
+\item 
+static size\+\_\+t \mbox{\hyperlink{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}{get\+Block\+Size}} (struct \mbox{\hyperlink{structblock__t}{block\+\_\+t}} $\ast$block)
+\item 
+static size\+\_\+t \mbox{\hyperlink{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}{get\+Unused\+Bytes}} ()
+\item 
+size\+\_\+t \mbox{\hyperlink{debug_8h_ab6ebaa52204d9b70b98b3a8ca0e0e686}{get\+Total\+Available\+Memory}} ()
+\item 
+size\+\_\+t \mbox{\hyperlink{debug_8h_ab15f63635b7fd8a8ceae386dbcbd0dd4}{get\+Largest\+Available\+Block}} ()
+\item 
+float \mbox{\hyperlink{debug_8h_afc2c83722ad322b593bbaa100bda4e27}{get\+Fragmentation}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\+\_\+\+\_\+brkval}}
+\item 
+struct \mbox{\hyperlink{structblock__t}{block\+\_\+t}} $\ast$ \mbox{\hyperlink{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}{\+\_\+\+\_\+flp}}
+\item 
+char $\ast$ \mbox{\hyperlink{debug_8h_a9310042b3956282440c091d20cb98c5f}{\+\_\+\+\_\+malloc\+\_\+heap\+\_\+start}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Basic debug and performance metric functions. This header file does not have a seperate class all possible functions are inlined. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/07-\/26
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{debug_8h_aca10938ec1c69e493636582772633036}\label{debug_8h_aca10938ec1c69e493636582772633036}} 
+\index{debug.h@{debug.h}!freeMemory@{freeMemory}}
+\index{freeMemory@{freeMemory}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{freeMemory()}{freeMemory()}}
+{\footnotesize\ttfamily unsigned int free\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}\label{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}} 
+\index{debug.h@{debug.h}!getBlockSize@{getBlockSize}}
+\index{getBlockSize@{getBlockSize}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{getBlockSize()}{getBlockSize()}}
+{\footnotesize\ttfamily static size\+\_\+t get\+Block\+Size (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structblock__t}{block\+\_\+t}} $\ast$}]{block }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{debug_8h_afc2c83722ad322b593bbaa100bda4e27}\label{debug_8h_afc2c83722ad322b593bbaa100bda4e27}} 
+\index{debug.h@{debug.h}!getFragmentation@{getFragmentation}}
+\index{getFragmentation@{getFragmentation}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{getFragmentation()}{getFragmentation()}}
+{\footnotesize\ttfamily float get\+Fragmentation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{debug_8h_ab15f63635b7fd8a8ceae386dbcbd0dd4}\label{debug_8h_ab15f63635b7fd8a8ceae386dbcbd0dd4}} 
+\index{debug.h@{debug.h}!getLargestAvailableBlock@{getLargestAvailableBlock}}
+\index{getLargestAvailableBlock@{getLargestAvailableBlock}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{getLargestAvailableBlock()}{getLargestAvailableBlock()}}
+{\footnotesize\ttfamily size\+\_\+t get\+Largest\+Available\+Block (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{debug_8h_ab6ebaa52204d9b70b98b3a8ca0e0e686}\label{debug_8h_ab6ebaa52204d9b70b98b3a8ca0e0e686}} 
+\index{debug.h@{debug.h}!getTotalAvailableMemory@{getTotalAvailableMemory}}
+\index{getTotalAvailableMemory@{getTotalAvailableMemory}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{getTotalAvailableMemory()}{getTotalAvailableMemory()}}
+{\footnotesize\ttfamily size\+\_\+t get\+Total\+Available\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}\label{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}} 
+\index{debug.h@{debug.h}!getUnusedBytes@{getUnusedBytes}}
+\index{getUnusedBytes@{getUnusedBytes}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{getUnusedBytes()}{getUnusedBytes()}}
+{\footnotesize\ttfamily static size\+\_\+t get\+Unused\+Bytes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{debug_8h_ad2ff777f15209dcbc47f56c686521c28}\label{debug_8h_ad2ff777f15209dcbc47f56c686521c28}} 
+\index{debug.h@{debug.h}!\_\_brkval@{\_\_brkval}}
+\index{\_\_brkval@{\_\_brkval}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{\_\_brkval}{\_\_brkval}}
+{\footnotesize\ttfamily char $\ast$ \+\_\+\+\_\+brkval\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}\label{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}} 
+\index{debug.h@{debug.h}!\_\_flp@{\_\_flp}}
+\index{\_\_flp@{\_\_flp}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{\_\_flp}{\_\_flp}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structblock__t}{block\+\_\+t}}$\ast$ \+\_\+\+\_\+flp\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{debug_8h_a9310042b3956282440c091d20cb98c5f}\label{debug_8h_a9310042b3956282440c091d20cb98c5f}} 
+\index{debug.h@{debug.h}!\_\_malloc\_heap\_start@{\_\_malloc\_heap\_start}}
+\index{\_\_malloc\_heap\_start@{\_\_malloc\_heap\_start}!debug.h@{debug.h}}
+\doxysubsubsection{\texorpdfstring{\_\_malloc\_heap\_start}{\_\_malloc\_heap\_start}}
+{\footnotesize\ttfamily char$\ast$ \+\_\+\+\_\+malloc\+\_\+heap\+\_\+start\hspace{0.3cm}{\ttfamily [extern]}}
+

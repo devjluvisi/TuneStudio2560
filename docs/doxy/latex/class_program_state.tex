@@ -1,0 +1,159 @@
+\hypertarget{class_program_state}{}\doxysection{Program\+State Class Reference}
+\label{class_program_state}\index{ProgramState@{ProgramState}}
+
+
+A class which controls how to handle the controls, what to loop, and what to display on the lcd. The \mbox{\hyperlink{class_program_state}{Program\+State}} can be thought of as a \char`\"{}container\char`\"{} where different parts of the program work seperately but use the same global data.  
+
+
+
+
+{\ttfamily \#include $<$state.\+h$>$}
+
+Inheritance diagram for Program\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.294798cm]{class_program_state}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_program_state_a017115c924ae8f51296942f65cedc839}{Program\+State}} (const \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} state\+Id)
+\item 
+void \mbox{\hyperlink{class_program_state_a2898ccf0aae3d61898667c343e9a0c41}{execute}} ()
+\begin{DoxyCompactList}\small\item\em Executes the states functionality. Runs the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} function once and then runs the \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{loop()}} until the program is terminated or the class is deleted. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} \mbox{\hyperlink{class_program_state_aa7fca1d2ec86ea577534389e0fa0e820}{get\+\_\+state}} ()
+\item 
+bool \mbox{\hyperlink{class_program_state_ac5a25269e6f35f648c93d8cc167f25cd}{has\+\_\+initalized}} ()
+\item 
+virtual \mbox{\hyperlink{class_program_state_acbdf8fc4b0ea2609edf544ccf53792d6}{$\sim$\+Program\+State}} ()
+\begin{DoxyCompactList}\small\item\em Deconstructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init}} ()=0
+\begin{DoxyCompactList}\small\item\em The method to be run when the program state first loads. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{loop}} ()=0
+\begin{DoxyCompactList}\small\item\em A method to be run on an infinite loop after the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} method is run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_program_state_a9e83a2e68917ea9e07f057db64d13120}{\+\_\+has\+Initalized}} = false
+\begin{DoxyCompactList}\small\item\em If the state has already initalized (ran the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} method) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} \mbox{\hyperlink{class_program_state_a9dcd4d2068cd216c1777171b28bcab3a}{\+\_\+state\+Id}}
+\begin{DoxyCompactList}\small\item\em The corresponding State\+ID which goes with each state object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class which controls how to handle the controls, what to loop, and what to display on the lcd. The \mbox{\hyperlink{class_program_state}{Program\+State}} can be thought of as a \char`\"{}container\char`\"{} where different parts of the program work seperately but use the same global data. 
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{state_8h}{state.\+h}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_program_state_a017115c924ae8f51296942f65cedc839}\label{class_program_state_a017115c924ae8f51296942f65cedc839}} 
+\index{ProgramState@{ProgramState}!ProgramState@{ProgramState}}
+\index{ProgramState@{ProgramState}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{ProgramState()}{ProgramState()}}
+{\footnotesize\ttfamily Program\+State\+::\+Program\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}}}]{state\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{class_program_state_acbdf8fc4b0ea2609edf544ccf53792d6}\label{class_program_state_acbdf8fc4b0ea2609edf544ccf53792d6}} 
+\index{ProgramState@{ProgramState}!````~ProgramState@{$\sim$ProgramState}}
+\index{````~ProgramState@{$\sim$ProgramState}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{$\sim$ProgramState()}{~ProgramState()}}
+{\footnotesize\ttfamily Program\+State\+::$\sim$\+Program\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Deconstructor. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_program_state_a2898ccf0aae3d61898667c343e9a0c41}\label{class_program_state_a2898ccf0aae3d61898667c343e9a0c41}} 
+\index{ProgramState@{ProgramState}!execute@{execute}}
+\index{execute@{execute}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily void Program\+State\+::execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Executes the states functionality. Runs the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} function once and then runs the \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{loop()}} until the program is terminated or the class is deleted. 
+
+\mbox{\Hypertarget{class_program_state_aa7fca1d2ec86ea577534389e0fa0e820}\label{class_program_state_aa7fca1d2ec86ea577534389e0fa0e820}} 
+\index{ProgramState@{ProgramState}!get\_state@{get\_state}}
+\index{get\_state@{get\_state}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{get\_state()}{get\_state()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} Program\+State\+::get\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+State\+ID enum for the current program. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_program_state_ac5a25269e6f35f648c93d8cc167f25cd}\label{class_program_state_ac5a25269e6f35f648c93d8cc167f25cd}} 
+\index{ProgramState@{ProgramState}!has\_initalized@{has\_initalized}}
+\index{has\_initalized@{has\_initalized}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{has\_initalized()}{has\_initalized()}}
+{\footnotesize\ttfamily bool Program\+State\+::has\+\_\+initalized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+If the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} method has been run for the current instance of \mbox{\hyperlink{class_program_state}{Program\+State}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}\label{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}} 
+\index{ProgramState@{ProgramState}!init@{init}}
+\index{init@{init}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void Program\+State\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+The method to be run when the program state first loads. 
+
+
+
+Implemented in \mbox{\hyperlink{class_main_menu_a340d84023f931683f4f80c9a1d5d127f}{Main\+Menu}}, \mbox{\hyperlink{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}{Listening\+Mode\+Playing\+Song}}, \mbox{\hyperlink{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}{Listening\+Mode\+Menu}}, \mbox{\hyperlink{class_creator_mode_menu_aa0a87f15970cf1abcc71415e5a9853e6}{Creator\+Mode\+Menu}}, and \mbox{\hyperlink{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}{Creator\+Mode\+Create\+New}}.
+
+\mbox{\Hypertarget{class_program_state_a45b3101edd602afcaf8dad541204201f}\label{class_program_state_a45b3101edd602afcaf8dad541204201f}} 
+\index{ProgramState@{ProgramState}!loop@{loop}}
+\index{loop@{loop}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily virtual void Program\+State\+::loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+A method to be run on an infinite loop after the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} method is run. 
+
+
+
+Implemented in \mbox{\hyperlink{class_main_menu_a196924464cf822b25b11ba41293291a8}{Main\+Menu}}, \mbox{\hyperlink{class_listening_mode_playing_song_af0cc918be22249b663307937f711c5fa}{Listening\+Mode\+Playing\+Song}}, \mbox{\hyperlink{class_listening_mode_menu_aaffaeaf571a72750c030d0c44a88df3c}{Listening\+Mode\+Menu}}, \mbox{\hyperlink{class_creator_mode_menu_ae1d35562edccc7d5cac004202130f22c}{Creator\+Mode\+Menu}}, and \mbox{\hyperlink{class_creator_mode_create_new_a158a7ff6826c93af01ea467135b4b7f7}{Creator\+Mode\+Create\+New}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_program_state_a9e83a2e68917ea9e07f057db64d13120}\label{class_program_state_a9e83a2e68917ea9e07f057db64d13120}} 
+\index{ProgramState@{ProgramState}!\_hasInitalized@{\_hasInitalized}}
+\index{\_hasInitalized@{\_hasInitalized}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{\_hasInitalized}{\_hasInitalized}}
+{\footnotesize\ttfamily bool Program\+State\+::\+\_\+has\+Initalized = false\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the state has already initalized (ran the \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{init()}} method) 
+
+\mbox{\Hypertarget{class_program_state_a9dcd4d2068cd216c1777171b28bcab3a}\label{class_program_state_a9dcd4d2068cd216c1777171b28bcab3a}} 
+\index{ProgramState@{ProgramState}!\_stateId@{\_stateId}}
+\index{\_stateId@{\_stateId}!ProgramState@{ProgramState}}
+\doxysubsubsection{\texorpdfstring{\_stateId}{\_stateId}}
+{\footnotesize\ttfamily \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} Program\+State\+::\+\_\+state\+Id\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The corresponding State\+ID which goes with each state object. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/\mbox{\hyperlink{state_8h}{state.\+h}}\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/src/studio-\/libs/\mbox{\hyperlink{state_8cpp}{state.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,1240 @@
+\hypertarget{tune__studio_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/tune\+\_\+studio.h File Reference}
+\label{tune__studio_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/tune\_studio.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/tune\_studio.h}}
+
+
+The main header file for the application. Includes important variables and methods that are shared between all Tune\+Studio files. ~\newline
+ Note that method definitions described in this file are declerations for \mbox{\hyperlink{main_8cpp}{main.\+cpp}} methods only.  
+
+
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include $<$Sev\+Seg\+Shift.\+h$>$}\newline
+{\ttfamily \#include $<$studio-\/libs/song.\+h$>$}\newline
+{\ttfamily \#include $<$studio-\/libs/state.\+h$>$}\newline
+{\ttfamily \#include $<$lib/digital\+Write\+Fast.\+h$>$}\newline
+{\ttfamily \#include $<$studio-\/libs/pitches.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnote}{note}}
+\begin{DoxyCompactList}\small\item\em Represents a structure of a \char`\"{}note\char`\"{} in the program. {\itshape (Used as note\+\_\+t)} \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbutton_frequencies}{button\+Frequencies}}
+\begin{DoxyCompactList}\small\item\em Represents a structure for each different tune button in the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tune__studio_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}~false
+\begin{DoxyCompactList}\small\item\em Enable/\+Disable the DEBUG functionallity of Tune\+Studio2560.~\newline
+ Enabling this will\+: Enable Serial Monitor, prints debugging messages indicating when sections of the code are reached. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tune__studio_8h_afb0ae3b364df397ab37c9a9684069431}{PERF\+\_\+\+METRICS}}~false
+\begin{DoxyCompactList}\small\item\em Enable/\+Disable performance metrics for Tune\+Studio2560.~\newline
+ Enabling this will\+: Enable serial console prints on the current Ram Usage, Stack Size, and Heap Fragmentation, as well as provide metrics on how fast certain functions are executing in micro and milliseconds as well as the change since last execute.~\newline
+~\newline
+ \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tune__studio_8h_a51d994d5a2d416de3628c6102b9567d7}{PRGM\+\_\+\+MODE}}~1
+\begin{DoxyCompactList}\small\item\em Select a mode for the program to run in. ~\newline
+ Tune\+Studio2560 allows the program to run in different \char`\"{}performance modes\char`\"{}. ~\newline
+ Mode 0 = Small Code Size ~\newline
+ Mode 1 = Balanced ~\newline
+ Mode 2 = High Features, Larger Songs ~\newline
+ \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tune__studio_8h_a9182faeca3d42aa7bf4dc92762ae827e}{FAST\+\_\+\+ADC}}~(\mbox{\hyperlink{tune__studio_8h_a51d994d5a2d416de3628c6102b9567d7}{PRGM\+\_\+\+MODE}} == 2 ? true \+: false)
+\begin{DoxyCompactList}\small\item\em A macro for defining if fast analog read should be used. ~\newline
+ Faster Analog Read takes up around 30-\/40 more bytes of flash but allows much faster analog read. ~\newline
+ Increases the iterations per second (IPS) of creator mode by around 300-\/400. ~\newline
+~\newline
+ {\itshape Automatically enabled in PRGM\+\_\+\+MODE == 2} \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tune__studio_8h_a2088ee4b3ab36cfe1ad2c379fcbf871a}{SPI\+\_\+\+CLOCK}}~SD\+\_\+\+SCK\+\_\+\+MHZ(1)
+\begin{DoxyCompactList}\small\item\em The SPI\+\_\+\+CLOCK as defined by the Sd\+Fat library. Set to 1MHz for maximum compatiblity (can go up to 20MHz for good modules and sd cards). \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tune__studio_8h_a0584f45d96c62d7d203d272b99af6fa1}{SD\+\_\+\+CONFIG}}~Sd\+Spi\+Config(\mbox{\hyperlink{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}{SD\+\_\+\+CS\+\_\+\+PIN}}, SHARED\+\_\+\+SPI, \mbox{\hyperlink{tune__studio_8h_a2088ee4b3ab36cfe1ad2c379fcbf871a}{SPI\+\_\+\+CLOCK}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structnote}{note}} \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Represents a structure of a \char`\"{}note\char`\"{} in the program. {\itshape (Used as note\+\_\+t)} \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structbutton_frequencies}{button\+Frequencies}} \mbox{\hyperlink{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}{button\+Frequencies\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Represents a structure for each different tune button in the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_aeab6b4c397f22df9226d5d173ee2db3a}{BTN\+\_\+\+TO\+\_\+\+INDEX}} (uint8\+\_\+t x)
+\item 
+bool \mbox{\hyperlink{tune__studio_8h_a7da257a468bb931002f0ed9b79d90305}{is\+\_\+interrupt}} ()
+\item 
+void \mbox{\hyperlink{tune__studio_8h_a5c8c46147c22df1bbea1dafd0137d9a8}{delay\+\_\+ms}} (const unsigned long milliseconds)
+\begin{DoxyCompactList}\small\item\em A custom (blocking) delay function which checks if an immediate interrupt is occuring. Works the same as the normal arduino delay(ms) function just with a custom handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a7e2ece690821267d286ff4821e025939}{isr\+\_\+btn\+\_\+handle}} ()
+\begin{DoxyCompactList}\small\item\em Handles any interrupts which could be generated by the add/select or del/cancel buttons. Whether or not the immediate\+Interrupt variable should be toggled on depends on the current \mbox{\hyperlink{class_program_state}{Program\+State}} and how it wants to handle interrupts. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a898ace50e0bb46c6ade75cdfd315dd3d}{update\+\_\+state}} (\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} state)
+\begin{DoxyCompactList}\small\item\em Forcefully update the current state. This method call should be the last one during a states \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} iteration and no code should come after this function call. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{tune__studio_8h_a751b1071ae1dc089835601e0aca8358d}{is\+\_\+pressed}} (const uint8\+\_\+t button\+Pin)
+\begin{DoxyCompactList}\small\item\em Checks for button presses \& updates Debounce rate. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a9386d65ad053df2a1adf6903f75a8792}{print\+\_\+lcd}} (const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$text, uint8\+\_\+t char\+Delay=150)
+\begin{DoxyCompactList}\small\item\em Prints text to the lcd and wraps text automatically. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a5a978cd011bc94902689b04925ca6754}{print\+\_\+scrolling}} (const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$text, uint8\+\_\+t cursorY, uint8\+\_\+t char\+Delay)
+\begin{DoxyCompactList}\small\item\em Prints a single line of scrolling text on the lcd. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a0b054358c6ee471e4be199b22ddca445}{lcd\+\_\+clear\+\_\+row}} (uint8\+\_\+t row)
+\begin{DoxyCompactList}\small\item\em Clears a row on the LCD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_af1ea9647da2198982b72c4e825120eb5}{set\+\_\+selected\+\_\+page}} (uint8\+\_\+t page)
+\begin{DoxyCompactList}\small\item\em Set the selected page for selecting a song. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_adb814100fc443252753e7c6ae379eaf6}{get\+\_\+selected\+\_\+page}} ()
+\item 
+void \mbox{\hyperlink{tune__studio_8h_a4c29562acdad606a577408dd8abc25c2}{set\+\_\+selected\+\_\+song}} (uint8\+\_\+t song)
+\begin{DoxyCompactList}\small\item\em Set a new song to be selected. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a7efb8415d72df1cd92f12b7998fe75a0}{get\+\_\+selected\+\_\+song}} ()
+\begin{DoxyCompactList}\small\item\em Get the current index of the selected song. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{tune__studio_8h_a26f66aac20632e8caaaa2f797d19023f}{get\+\_\+current\+\_\+freq}} ()
+\begin{DoxyCompactList}\small\item\em Get the current frequency from the potentiometer. Whatever tune button was pressed previously is not accounted for. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a0a05e82ad1b207c0c95881c6a4774028}{get\+\_\+current\+\_\+tone}} (uint8\+\_\+t tone\+Button)
+\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_acf0f9b68e6df821a93f361d78f31d066}{get\+\_\+note\+\_\+from\+\_\+freq}} (const uint16\+\_\+t frequency)
+\begin{DoxyCompactList}\small\item\em Retrieve a note object that matches a specified frequency. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a4c38b2cc661404b6e33159c8f7c24ec4}{get\+\_\+note\+\_\+from\+\_\+pitch}} (const char $\ast$const pitch)
+\begin{DoxyCompactList}\small\item\em Retrieve a note object from a specified pitch. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_ae3bc360cfa9682139e87c79973fcded9}{sd\+\_\+save\+\_\+song}} (const char $\ast$const file\+Name, \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ song)
+\begin{DoxyCompactList}\small\item\em Saves a song class to the SD card by using the SD.\+h library and writing all of the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot be longer then 8 characters and should include a .TXT extension. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{tune__studio_8h_aa84dbe6e60ec0541e7d39983e4e528f0}{sd\+\_\+get\+\_\+file}} (uint8\+\_\+t index)
+\begin{DoxyCompactList}\small\item\em Gets a file name from the SD card in descending order according to a specified index. For example index \char`\"{}0\char`\"{} would be the file at the top of the SD card. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{tune__studio_8h_af4fc318f751ef7ab7cb146c553f7bc72}{sd\+\_\+songcpy}} (\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \&song, const char $\ast$const file\+Name)
+\begin{DoxyCompactList}\small\item\em Copies and parses song data from a .txt file onto the global song object. The file must be in the correct format to work properly. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a48d42d6622c1973cc66e5ce6fff4dd21}{sd\+\_\+rem}} (const char $\ast$const file\+Name)
+\begin{DoxyCompactList}\small\item\em Delete a file from the micro\+SD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tune__studio_8h_a29ed6f6a625e942c0fea91a7c081070b}{sd\+\_\+make\+\_\+readme}} ()
+\begin{DoxyCompactList}\small\item\em Generates a README file in the SD card. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{tune__studio_8h_ac93f9e7f2f690936d955d0bad29bb254}{pgm\+\_\+pcpyr}} (uint8\+\_\+t btn\+Index, uint8\+\_\+t note\+Index)
+\begin{DoxyCompactList}\small\item\em Copies the string data from a index on PROGRAM\+\_\+\+NOTES PROGMEM and then returns the string data for that pointer. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{tune__studio_8h_a70897c02b858c8c0f08518d19a5b71da}{get\+\_\+active\+\_\+time}} ()
+\begin{DoxyCompactList}\small\item\em Get the current time that the arduino has been running in hours, minutes, and seconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char VERSION\+\_\+\+ID\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} = \char`\"{}1.\+2.\+2-\/R4\char`\"{}
+\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}{SHIFT\+\_\+\+PIN\+\_\+\+DS}} = 5
+\begin{DoxyCompactList}\small\item\em DS pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}{SHIFT\+\_\+\+PIN\+\_\+\+STCP}} = 6
+\begin{DoxyCompactList}\small\item\em STCP pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a1c796f73e188890598417c3a75699db9}{SHIFT\+\_\+\+PIN\+\_\+\+SHCP}} = 7
+\begin{DoxyCompactList}\small\item\em SHCP pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}{SD\+\_\+\+CS\+\_\+\+PIN}} = 53
+\begin{DoxyCompactList}\small\item\em Pin connected to the \char`\"{}\+CS\char`\"{} pin on the SD Card Module. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_aee5f9b19e744edee38a9cc45647d3ffc}{RGB\+\_\+\+BRIGHTNESS}} = 200
+\begin{DoxyCompactList}\small\item\em A brightness indicator for how bright the RGB Led should light up. ~\newline
+Irrelevant for PRGM\+\_\+\+MODE == 0 because digital\+Write is used instead of analog. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ab57134a9d394425eff6f34639e6faf6b}{RGB\+\_\+\+RED}} = 9
+\begin{DoxyCompactList}\small\item\em Pin for the \char`\"{}\+RED\char`\"{} pin on the RGB Led. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a94288e106ee873072b3b5584c0b34c9c}{RGB\+\_\+\+GREEN}} = 10
+\begin{DoxyCompactList}\small\item\em Pin for the \char`\"{}\+GREEN\char`\"{} pin on the RGB Led. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_acbf8c647a8c409ee1287cff36d78ab94}{RGB\+\_\+\+BLUE}} = 11
+\begin{DoxyCompactList}\small\item\em Pin for the \char`\"{}\+BLUE\char`\"{} pin on the RGB Led. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}{BTN\+\_\+\+TONE\+\_\+1}} = 27
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Green LED (First Tone Button) (Lowest Pitch) \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}{BTN\+\_\+\+TONE\+\_\+2}} = 25
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Blue LED (Second Tone Button) \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}{BTN\+\_\+\+TONE\+\_\+3}} = 28
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Red LED (Third Tone Button) \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}{BTN\+\_\+\+TONE\+\_\+4}} = 26
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Yellow LED (Fourth Tone Button) \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}{BTN\+\_\+\+TONE\+\_\+5}} = 24
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the White LED (Fifth Tone Button) (Highest Pitch) \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a4b5cadefa46f275080ab7dd1fa8f541e}{BTN\+\_\+\+ADD\+\_\+\+SELECT}} = 2
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Add/\+Select button. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a520116d70512af5147acb8b3d8176f39}{BTN\+\_\+\+DEL\+\_\+\+CANCEL}} = 3
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Del/\+Cancel button. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_adfee3aec37c8289c5862da6ef6206d99}{BTN\+\_\+\+OPTION}} = 4
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the Option button. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a38404a5e3be507a76699bc8b03769a74}{TONE\+\_\+\+FREQ}} = PIN\+\_\+\+A7
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the potentiometer / tone frequency adjuster. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}{SPEAKER\+\_\+1}} = 34
+\begin{DoxyCompactList}\small\item\em The pin which is connected to the primary passive speaker. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}{LCD\+\_\+\+COLS}} = 20
+\begin{DoxyCompactList}\small\item\em How many columns the connected I2C LCD has. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}{LCD\+\_\+\+ROWS}} = 4
+\begin{DoxyCompactList}\small\item\em How many rows the connected I2C LCD has. \end{DoxyCompactList}\item 
+constexpr uint16\+\_\+t \mbox{\hyperlink{tune__studio_8h_af5f30789080613c982b635a628438b5a}{DEBOUNCE\+\_\+\+RATE}} = 500
+\begin{DoxyCompactList}\small\item\em The delay between when button presses should be read by the program. \end{DoxyCompactList}\item 
+constexpr \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} = 255
+\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a509cd23c352fcf0c7c1c8bcd657ac2eb}{MIN\+\_\+\+SONG\+\_\+\+LENGTH}} = 8
+\begin{DoxyCompactList}\small\item\em Minimum allowed number of notes in a song for playback and saving. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a016b23e0049b75b843b8308435b76e69}{MAX\+\_\+\+SONG\+\_\+\+AMOUNT}} = 255
+\begin{DoxyCompactList}\small\item\em Maximum allowed number of songs on the SD card. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} byte \mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\+\_\+\+LCD\+\_\+\+CHARS}} \mbox{[}6\mbox{]}\mbox{[}8\mbox{]}
+\begin{DoxyCompactList}\small\item\em A PROGMEM list of bytes that represent custom characters which should be loaded into the LCD. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ae56cba5b79efe301a7fa89742805f4d0}{CUSTOM\+\_\+\+CHAR\+\_\+\+AMOUNT}} = sizeof(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\+\_\+\+LCD\+\_\+\+CHARS}})/sizeof(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\+\_\+\+LCD\+\_\+\+CHARS}}\mbox{[}0\mbox{]})
+\begin{DoxyCompactList}\small\item\em The amount of custom characters that we want to load onto the LCD. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a096bbf44639829ab8764bdc1b99dd5c2}{MUSIC\+\_\+\+NOTE\+\_\+\+SYMBOL}} = 0x00
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the music note symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_ad2e0a56fd8a62a2a209fea8c049ca73f}{PLAYING\+\_\+\+SONG\+\_\+\+SYMBOL}} = 0x01
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the playing song symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a66b44d668d0d66bee44cf1fa5ba23a4e}{PAUSE\+\_\+\+SONG\+\_\+\+SYMBOL}} = 0x02
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the pause song symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a50a4cb21d76d401f8a8b5b2d0df2b586}{PROGRESS\+\_\+\+BLOCK\+\_\+\+SYMBOL}} = 0x03
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the progress block symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_af4c04bb39fe93bdf9742af5ed1f2861a}{FINISHED\+\_\+\+SONG\+\_\+\+SYMBOL}} = 0x04
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the finished song symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_aef417c7854c7baa3f87c1f85329d05d7}{PROGRESS\+\_\+\+BLOCK\+\_\+\+UNFILLED\+\_\+\+SYMBOL}} = 0x05
+\begin{DoxyCompactList}\small\item\em The hex integer which represents the unfilled progress block symbol on the lcd. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}{TONE\+\_\+\+BUTTON\+\_\+\+AMOUNT}} = 5
+\begin{DoxyCompactList}\small\item\em The amount of tone buttons the program has. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a109d7ea1e23a45e34028db39be6a6d17}{TONES\+\_\+\+PER\+\_\+\+BUTTON}} = 17
+\begin{DoxyCompactList}\small\item\em The amount of tones that each button has. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}{DEFAULT\+\_\+\+NOTE\+\_\+\+DELAY}} = 80
+\begin{DoxyCompactList}\small\item\em The default note delay in the program. \end{DoxyCompactList}\item 
+constexpr uint8\+\_\+t \mbox{\hyperlink{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}{DEFAULT\+\_\+\+NOTE\+\_\+\+LENGTH}} = 50
+\begin{DoxyCompactList}\small\item\em The default note length in the program. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}{button\+Frequencies\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} \mbox{\hyperlink{tune__studio_8h_a1831015283358fdc0d1c7216d88210bd}{PROGRAM\+\_\+\+NOTES}} \mbox{[}\mbox{\hyperlink{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}{TONE\+\_\+\+BUTTON\+\_\+\+AMOUNT}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em An array of all possible tones which can be played. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a8c0494dcf9e2d76031d1872fea492aef}{PAUSE\+\_\+\+NOTE}} = \{ \char`\"{}PS\char`\"{}, (const uint16\+\_\+t)1 \}
+\begin{DoxyCompactList}\small\item\em A note which defines a pause. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a9f62d506cb115ad03404613a5d2f4b6c}{EMPTY\+\_\+\+NOTE}} = \{ \char`\"{}0000\char`\"{}, (const uint16\+\_\+t)0 \}
+\begin{DoxyCompactList}\small\item\em A note which defines an empty space, usually representing the end of the song. \end{DoxyCompactList}\item 
+const char \mbox{\hyperlink{tune__studio_8h_a733327e75d327c2b033dee3cafacdff5}{ROOT\+\_\+\+DIR}} \mbox{[}$\,$\mbox{]} = \char`\"{}/\char`\"{}
+\begin{DoxyCompactList}\small\item\em Root Directory of the SD Card (Non-\/\+PROGMEM) \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} char \mbox{\hyperlink{tune__studio_8h_aab10c2755d1db4b098e0ef1a5b9430d8}{PROGRESS\+\_\+\+LABEL}} \mbox{[}$\,$\mbox{]} = \char`\"{}PROGRESS\+:\char`\"{}
+\begin{DoxyCompactList}\small\item\em A string representing \char`\"{}\+PROGRESS\+:\char`\"{}. Used for listening mode. \end{DoxyCompactList}\item 
+const char \mbox{\hyperlink{tune__studio_8h_a4b679425a1c685eed5ca06b4d82ae5a0}{FILE\+\_\+\+TXT\+\_\+\+EXTENSION}} \mbox{[}$\,$\mbox{]} = \char`\"{}.txt\char`\"{}
+\begin{DoxyCompactList}\small\item\em A string representing the .txt file extension, the primary extension used for storing songs (Non-\/\+PROGMEM). \end{DoxyCompactList}\item 
+const char \mbox{\hyperlink{tune__studio_8h_a84a64bcd6e0a1a4d8e99270f219c8ad6}{README\+\_\+\+FILE}} \mbox{[}$\,$\mbox{]} = \char`\"{}README.\+TXT\char`\"{}
+\begin{DoxyCompactList}\small\item\em A string representing the README file (Non-\/\+PROGMEM). \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} char \mbox{\hyperlink{tune__studio_8h_a983fbfb6eaf83047e286754b0488caa6}{OPTIONAL\+\_\+\+NAMING\+\_\+\+CHARACTERS}} \mbox{[}$\,$\mbox{]} = \{ \textquotesingle{}A\textquotesingle{},\textquotesingle{}B\textquotesingle{},\textquotesingle{}C\textquotesingle{},\textquotesingle{}D\textquotesingle{},\textquotesingle{}E\textquotesingle{},\textquotesingle{}F\textquotesingle{},\textquotesingle{}G\textquotesingle{},\textquotesingle{}H\textquotesingle{},\textquotesingle{}I\textquotesingle{},\textquotesingle{}J\textquotesingle{},\textquotesingle{}K\textquotesingle{},\textquotesingle{}L\textquotesingle{},\textquotesingle{}M\textquotesingle{},\textquotesingle{}N\textquotesingle{},\textquotesingle{}O\textquotesingle{},\textquotesingle{}P\textquotesingle{},\textquotesingle{}Q\textquotesingle{},\textquotesingle{}R\textquotesingle{},\textquotesingle{}S\textquotesingle{},\textquotesingle{}T\textquotesingle{},\textquotesingle{}U\textquotesingle{},\textquotesingle{}V\textquotesingle{},\textquotesingle{}W\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}Y\textquotesingle{},\textquotesingle{}Z\textquotesingle{}, \textquotesingle{}0\textquotesingle{},\textquotesingle{}1\textquotesingle{},\textquotesingle{}2\textquotesingle{},\textquotesingle{}3\textquotesingle{},\textquotesingle{}4\textquotesingle{},\textquotesingle{}5\textquotesingle{},\textquotesingle{}6\textquotesingle{},\textquotesingle{}7\textquotesingle{},\textquotesingle{}8\textquotesingle{},\textquotesingle{}9\textquotesingle{}, \textquotesingle{}\+\_\+\textquotesingle{} \}
+\begin{DoxyCompactList}\small\item\em A char array of all possible characters which can be used when naming a song. \end{DoxyCompactList}\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{tune__studio_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}{lcd}}
+\begin{DoxyCompactList}\small\item\em Represents a global instance of the Liquid Crystal display used for Tune\+Studio2560. \end{DoxyCompactList}\item 
+Sev\+Seg\+Shift \mbox{\hyperlink{tune__studio_8h_a7967ed4f18105d53aefe34e96d8e13ce}{seg\+Display}}
+\begin{DoxyCompactList}\small\item\em Represents the 4-\/digit-\/wide 7-\/segment display used in Tune\+Studio2560. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \mbox{\hyperlink{tune__studio_8h_a28afc8e6d990f11741be48e710ace49f}{prgm\+Song}}
+\begin{DoxyCompactList}\small\item\em Represents the global song object to be used in the program when managing songs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The main header file for the application. Includes important variables and methods that are shared between all Tune\+Studio files. ~\newline
+ Note that method definitions described in this file are declerations for \mbox{\hyperlink{main_8cpp}{main.\+cpp}} methods only. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+2.\+2-\/R4 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/07-\/26
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tune__studio_8h_ad72dbcf6d0153db1b8d8a58001feed83}\label{tune__studio_8h_ad72dbcf6d0153db1b8d8a58001feed83}} 
+\index{tune\_studio.h@{tune\_studio.h}!DEBUG@{DEBUG}}
+\index{DEBUG@{DEBUG}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{DEBUG}{DEBUG}}
+{\footnotesize\ttfamily \#define DEBUG~false}
+
+
+
+Enable/\+Disable the DEBUG functionallity of Tune\+Studio2560.~\newline
+ Enabling this will\+: Enable Serial Monitor, prints debugging messages indicating when sections of the code are reached. 
+
+\mbox{\Hypertarget{tune__studio_8h_a9182faeca3d42aa7bf4dc92762ae827e}\label{tune__studio_8h_a9182faeca3d42aa7bf4dc92762ae827e}} 
+\index{tune\_studio.h@{tune\_studio.h}!FAST\_ADC@{FAST\_ADC}}
+\index{FAST\_ADC@{FAST\_ADC}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{FAST\_ADC}{FAST\_ADC}}
+{\footnotesize\ttfamily \#define FAST\+\_\+\+ADC~(\mbox{\hyperlink{tune__studio_8h_a51d994d5a2d416de3628c6102b9567d7}{PRGM\+\_\+\+MODE}} == 2 ? true \+: false)}
+
+
+
+A macro for defining if fast analog read should be used. ~\newline
+ Faster Analog Read takes up around 30-\/40 more bytes of flash but allows much faster analog read. ~\newline
+ Increases the iterations per second (IPS) of creator mode by around 300-\/400. ~\newline
+~\newline
+ {\itshape Automatically enabled in PRGM\+\_\+\+MODE == 2} 
+
+\mbox{\Hypertarget{tune__studio_8h_afb0ae3b364df397ab37c9a9684069431}\label{tune__studio_8h_afb0ae3b364df397ab37c9a9684069431}} 
+\index{tune\_studio.h@{tune\_studio.h}!PERF\_METRICS@{PERF\_METRICS}}
+\index{PERF\_METRICS@{PERF\_METRICS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PERF\_METRICS}{PERF\_METRICS}}
+{\footnotesize\ttfamily \#define PERF\+\_\+\+METRICS~false}
+
+
+
+Enable/\+Disable performance metrics for Tune\+Studio2560.~\newline
+ Enabling this will\+: Enable serial console prints on the current Ram Usage, Stack Size, and Heap Fragmentation, as well as provide metrics on how fast certain functions are executing in micro and milliseconds as well as the change since last execute.~\newline
+~\newline
+ 
+
+{\bfseries{NOTE\+:}} Enabling performance metrics REQUIRES debug to be true. \mbox{\Hypertarget{tune__studio_8h_a51d994d5a2d416de3628c6102b9567d7}\label{tune__studio_8h_a51d994d5a2d416de3628c6102b9567d7}} 
+\index{tune\_studio.h@{tune\_studio.h}!PRGM\_MODE@{PRGM\_MODE}}
+\index{PRGM\_MODE@{PRGM\_MODE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PRGM\_MODE}{PRGM\_MODE}}
+{\footnotesize\ttfamily \#define PRGM\+\_\+\+MODE~1}
+
+
+
+Select a mode for the program to run in. ~\newline
+ Tune\+Studio2560 allows the program to run in different \char`\"{}performance modes\char`\"{}. ~\newline
+ Mode 0 = Small Code Size ~\newline
+ Mode 1 = Balanced ~\newline
+ Mode 2 = High Features, Larger Songs ~\newline
+ 
+
+\mbox{\Hypertarget{tune__studio_8h_a0584f45d96c62d7d203d272b99af6fa1}\label{tune__studio_8h_a0584f45d96c62d7d203d272b99af6fa1}} 
+\index{tune\_studio.h@{tune\_studio.h}!SD\_CONFIG@{SD\_CONFIG}}
+\index{SD\_CONFIG@{SD\_CONFIG}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SD\_CONFIG}{SD\_CONFIG}}
+{\footnotesize\ttfamily \#define SD\+\_\+\+CONFIG~Sd\+Spi\+Config(\mbox{\hyperlink{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}{SD\+\_\+\+CS\+\_\+\+PIN}}, SHARED\+\_\+\+SPI, \mbox{\hyperlink{tune__studio_8h_a2088ee4b3ab36cfe1ad2c379fcbf871a}{SPI\+\_\+\+CLOCK}})}
+
+\mbox{\Hypertarget{tune__studio_8h_a2088ee4b3ab36cfe1ad2c379fcbf871a}\label{tune__studio_8h_a2088ee4b3ab36cfe1ad2c379fcbf871a}} 
+\index{tune\_studio.h@{tune\_studio.h}!SPI\_CLOCK@{SPI\_CLOCK}}
+\index{SPI\_CLOCK@{SPI\_CLOCK}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_CLOCK}{SPI\_CLOCK}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+CLOCK~SD\+\_\+\+SCK\+\_\+\+MHZ(1)}
+
+
+
+The SPI\+\_\+\+CLOCK as defined by the Sd\+Fat library. Set to 1MHz for maximum compatiblity (can go up to 20MHz for good modules and sd cards). 
+
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}\label{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}} 
+\index{tune\_studio.h@{tune\_studio.h}!buttonFrequencies\_t@{buttonFrequencies\_t}}
+\index{buttonFrequencies\_t@{buttonFrequencies\_t}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{buttonFrequencies\_t}{buttonFrequencies\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structbutton_frequencies}{button\+Frequencies}} \mbox{\hyperlink{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}{button\+Frequencies\+\_\+t}}}
+
+
+
+Represents a structure for each different tune button in the program. 
+
+Each button\+Frequency has a \char`\"{}pin\char`\"{} describing the physical connection to the arduino, and an array of notes which stores all of the possible notes for that tune button. \mbox{\Hypertarget{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}\label{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}} 
+\index{tune\_studio.h@{tune\_studio.h}!note\_t@{note\_t}}
+\index{note\_t@{note\_t}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{note\_t}{note\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structnote}{note}} \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}}}
+
+
+
+Represents a structure of a \char`\"{}note\char`\"{} in the program. {\itshape (Used as note\+\_\+t)} 
+
+Notes are defined as having both a human readable (char string pointer) pitch and a 16-\/bit integer which represents the frequency of the note to be played by the passive buzzer.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{structbutton_frequencies}{button\+Frequencies}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tune__studio_8h_aeab6b4c397f22df9226d5d173ee2db3a}\label{tune__studio_8h_aeab6b4c397f22df9226d5d173ee2db3a}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TO\_INDEX@{BTN\_TO\_INDEX}}
+\index{BTN\_TO\_INDEX@{BTN\_TO\_INDEX}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TO\_INDEX()}{BTN\_TO\_INDEX()}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TO\+\_\+\+INDEX (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+Converts a button pin to a pin index. ~\newline
+ Ex\+: BTN\+\_\+\+TONE\+\_\+1 is pin 27 (by default) if it is passed then the macro will return 0. ~\newline
+ Unknown values are given 255. \mbox{\Hypertarget{tune__studio_8h_a5c8c46147c22df1bbea1dafd0137d9a8}\label{tune__studio_8h_a5c8c46147c22df1bbea1dafd0137d9a8}} 
+\index{tune\_studio.h@{tune\_studio.h}!delay\_ms@{delay\_ms}}
+\index{delay\_ms@{delay\_ms}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{delay\_ms()}{delay\_ms()}}
+{\footnotesize\ttfamily void delay\+\_\+ms (\begin{DoxyParamCaption}\item[{const unsigned long}]{milliseconds }\end{DoxyParamCaption})}
+
+
+
+A custom (blocking) delay function which checks if an immediate interrupt is occuring. Works the same as the normal arduino delay(ms) function just with a custom handler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em milliseconds} & The time to delay for. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_a70897c02b858c8c0f08518d19a5b71da}\label{tune__studio_8h_a70897c02b858c8c0f08518d19a5b71da}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_active\_time@{get\_active\_time}}
+\index{get\_active\_time@{get\_active\_time}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_active\_time()}{get\_active\_time()}}
+{\footnotesize\ttfamily const char $\ast$ get\+\_\+active\+\_\+time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current time that the arduino has been running in hours, minutes, and seconds. 
+
+\mbox{\Hypertarget{tune__studio_8h_a26f66aac20632e8caaaa2f797d19023f}\label{tune__studio_8h_a26f66aac20632e8caaaa2f797d19023f}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_current\_freq@{get\_current\_freq}}
+\index{get\_current\_freq@{get\_current\_freq}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_current\_freq()}{get\_current\_freq()}}
+{\footnotesize\ttfamily uint16\+\_\+t get\+\_\+current\+\_\+freq (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current frequency from the potentiometer. Whatever tune button was pressed previously is not accounted for. 
+
+\begin{DoxyRemark}{Remarks}
+This method does not deal with any tune buttons, rather it simply returns the current value as measured by the arduino. 
+
+This method\textquotesingle{}s speed increases drastically when PRGM\+\_\+\+MODE==2 or fast analog read is enabled.
+\end{DoxyRemark}
+\begin{DoxyReturn}{Returns}
+The current frequency read by the potentiometer. (0 and 1023) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a0a05e82ad1b207c0c95881c6a4774028}\label{tune__studio_8h_a0a05e82ad1b207c0c95881c6a4774028}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_current\_tone@{get\_current\_tone}}
+\index{get\_current\_tone@{get\_current\_tone}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_current\_tone()}{get\_current\_tone()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+current\+\_\+tone (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{tone\+Button }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em tone\+Button} & The button which was pressed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A note struct from the tone\+Button that was pressed. Finds the note by copying information from PROGMEM. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_acf0f9b68e6df821a93f361d78f31d066}\label{tune__studio_8h_acf0f9b68e6df821a93f361d78f31d066}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_note\_from\_freq@{get\_note\_from\_freq}}
+\index{get\_note\_from\_freq@{get\_note\_from\_freq}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_note\_from\_freq()}{get\_note\_from\_freq()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+note\+\_\+from\+\_\+freq (\begin{DoxyParamCaption}\item[{const uint16\+\_\+t}]{frequency }\end{DoxyParamCaption})}
+
+
+
+Retrieve a note object that matches a specified frequency. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frequency} & The frequency to search for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The note which has the frequency. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a4c38b2cc661404b6e33159c8f7c24ec4}\label{tune__studio_8h_a4c38b2cc661404b6e33159c8f7c24ec4}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_note\_from\_pitch@{get\_note\_from\_pitch}}
+\index{get\_note\_from\_pitch@{get\_note\_from\_pitch}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_note\_from\_pitch()}{get\_note\_from\_pitch()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+note\+\_\+from\+\_\+pitch (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{pitch }\end{DoxyParamCaption})}
+
+
+
+Retrieve a note object from a specified pitch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pitch} & The pitch string to search for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The note which matches the frequency. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_adb814100fc443252753e7c6ae379eaf6}\label{tune__studio_8h_adb814100fc443252753e7c6ae379eaf6}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_selected\_page@{get\_selected\_page}}
+\index{get\_selected\_page@{get\_selected\_page}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_selected\_page()}{get\_selected\_page()}}
+{\footnotesize\ttfamily uint8\+\_\+t get\+\_\+selected\+\_\+page (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+The value of the selected\+Page variable in the main method. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a7efb8415d72df1cd92f12b7998fe75a0}\label{tune__studio_8h_a7efb8415d72df1cd92f12b7998fe75a0}} 
+\index{tune\_studio.h@{tune\_studio.h}!get\_selected\_song@{get\_selected\_song}}
+\index{get\_selected\_song@{get\_selected\_song}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{get\_selected\_song()}{get\_selected\_song()}}
+{\footnotesize\ttfamily uint8\+\_\+t get\+\_\+selected\+\_\+song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current index of the selected song. 
+
+\begin{DoxyReturn}{Returns}
+The current selected song in the main class. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a7da257a468bb931002f0ed9b79d90305}\label{tune__studio_8h_a7da257a468bb931002f0ed9b79d90305}} 
+\index{tune\_studio.h@{tune\_studio.h}!is\_interrupt@{is\_interrupt}}
+\index{is\_interrupt@{is\_interrupt}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{is\_interrupt()}{is\_interrupt()}}
+{\footnotesize\ttfamily bool is\+\_\+interrupt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+If the interrupt flag is true. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a751b1071ae1dc089835601e0aca8358d}\label{tune__studio_8h_a751b1071ae1dc089835601e0aca8358d}} 
+\index{tune\_studio.h@{tune\_studio.h}!is\_pressed@{is\_pressed}}
+\index{is\_pressed@{is\_pressed}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{is\_pressed()}{is\_pressed()}}
+{\footnotesize\ttfamily bool is\+\_\+pressed (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{button\+Pin }\end{DoxyParamCaption})}
+
+
+
+Checks for button presses \& updates Debounce rate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em button\+Pin} & The pin of the button to check for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the button is being pressed. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a7e2ece690821267d286ff4821e025939}\label{tune__studio_8h_a7e2ece690821267d286ff4821e025939}} 
+\index{tune\_studio.h@{tune\_studio.h}!isr\_btn\_handle@{isr\_btn\_handle}}
+\index{isr\_btn\_handle@{isr\_btn\_handle}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{isr\_btn\_handle()}{isr\_btn\_handle()}}
+{\footnotesize\ttfamily void isr\+\_\+btn\+\_\+handle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handles any interrupts which could be generated by the add/select or del/cancel buttons. Whether or not the immediate\+Interrupt variable should be toggled on depends on the current \mbox{\hyperlink{class_program_state}{Program\+State}} and how it wants to handle interrupts. 
+
+\mbox{\Hypertarget{tune__studio_8h_a0b054358c6ee471e4be199b22ddca445}\label{tune__studio_8h_a0b054358c6ee471e4be199b22ddca445}} 
+\index{tune\_studio.h@{tune\_studio.h}!lcd\_clear\_row@{lcd\_clear\_row}}
+\index{lcd\_clear\_row@{lcd\_clear\_row}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{lcd\_clear\_row()}{lcd\_clear\_row()}}
+{\footnotesize\ttfamily void lcd\+\_\+clear\+\_\+row (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row }\end{DoxyParamCaption})}
+
+
+
+Clears a row on the LCD. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & The row to clear. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_ac93f9e7f2f690936d955d0bad29bb254}\label{tune__studio_8h_ac93f9e7f2f690936d955d0bad29bb254}} 
+\index{tune\_studio.h@{tune\_studio.h}!pgm\_pcpyr@{pgm\_pcpyr}}
+\index{pgm\_pcpyr@{pgm\_pcpyr}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{pgm\_pcpyr()}{pgm\_pcpyr()}}
+{\footnotesize\ttfamily const char $\ast$ pgm\+\_\+pcpyr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{btn\+Index,  }\item[{uint8\+\_\+t}]{note\+Index }\end{DoxyParamCaption})}
+
+
+
+Copies the string data from a index on PROGRAM\+\_\+\+NOTES PROGMEM and then returns the string data for that pointer. 
+
+After the pointer is retrieved from PROGMEM the value is stored in a private static buffer array which can be used by other methods. ~\newline
+ Ex\+: pgm\+\_\+pcpyr(0, 0) -\/\texorpdfstring{$>$}{>} \char`\"{}\+B0\char`\"{}
+
+\begin{DoxySince}{Since}
+v1.\+2.\+0-\/R3
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em btn\+Index} & The button to get in the PROGRAM\+\_\+\+NOTES array. \\
+\hline
+{\em note\+Index} & The note to get for that button. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The data which was copied from the pointer. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a9386d65ad053df2a1adf6903f75a8792}\label{tune__studio_8h_a9386d65ad053df2a1adf6903f75a8792}} 
+\index{tune\_studio.h@{tune\_studio.h}!print\_lcd@{print\_lcd}}
+\index{print\_lcd@{print\_lcd}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{print\_lcd()}{print\_lcd()}}
+{\footnotesize\ttfamily void print\+\_\+lcd (\begin{DoxyParamCaption}\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$}]{text,  }\item[{uint8\+\_\+t}]{char\+Delay = {\ttfamily 150} }\end{DoxyParamCaption})}
+
+
+
+Prints text to the lcd and wraps text automatically. 
+
+Will clear the screen on a \textbackslash{}n character encounter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print. \\
+\hline
+{\em char\+Delay} & The delay before each character. (150 default) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_a5a978cd011bc94902689b04925ca6754}\label{tune__studio_8h_a5a978cd011bc94902689b04925ca6754}} 
+\index{tune\_studio.h@{tune\_studio.h}!print\_scrolling@{print\_scrolling}}
+\index{print\_scrolling@{print\_scrolling}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{print\_scrolling()}{print\_scrolling()}}
+{\footnotesize\ttfamily void print\+\_\+scrolling (\begin{DoxyParamCaption}\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$}]{text,  }\item[{uint8\+\_\+t}]{cursorY,  }\item[{uint8\+\_\+t}]{char\+Delay }\end{DoxyParamCaption})}
+
+
+
+Prints a single line of scrolling text on the lcd. 
+
+\begin{DoxyRemark}{Remarks}
+This method does not clear the screen before executing.
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print. \\
+\hline
+{\em cursorY} & Where the cursor should start printing on the Y-\/\+Axis (row). \\
+\hline
+{\em char\+Delay} & Delay between the scroll. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_aa84dbe6e60ec0541e7d39983e4e528f0}\label{tune__studio_8h_aa84dbe6e60ec0541e7d39983e4e528f0}} 
+\index{tune\_studio.h@{tune\_studio.h}!sd\_get\_file@{sd\_get\_file}}
+\index{sd\_get\_file@{sd\_get\_file}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{sd\_get\_file()}{sd\_get\_file()}}
+{\footnotesize\ttfamily const char $\ast$ sd\+\_\+get\+\_\+file (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{index }\end{DoxyParamCaption})}
+
+
+
+Gets a file name from the SD card in descending order according to a specified index. For example index \char`\"{}0\char`\"{} would be the file at the top of the SD card. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & The index of the file to get. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The name of the file (includes the file extension) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_a29ed6f6a625e942c0fea91a7c081070b}\label{tune__studio_8h_a29ed6f6a625e942c0fea91a7c081070b}} 
+\index{tune\_studio.h@{tune\_studio.h}!sd\_make\_readme@{sd\_make\_readme}}
+\index{sd\_make\_readme@{sd\_make\_readme}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{sd\_make\_readme()}{sd\_make\_readme()}}
+{\footnotesize\ttfamily void sd\+\_\+make\+\_\+readme (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generates a README file in the SD card. 
+
+\begin{DoxyRemark}{Remarks}
+Will not generate a README if a README.\+TXT file exists on the SD card root. 
+\end{DoxyRemark}
+\mbox{\Hypertarget{tune__studio_8h_a48d42d6622c1973cc66e5ce6fff4dd21}\label{tune__studio_8h_a48d42d6622c1973cc66e5ce6fff4dd21}} 
+\index{tune\_studio.h@{tune\_studio.h}!sd\_rem@{sd\_rem}}
+\index{sd\_rem@{sd\_rem}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{sd\_rem()}{sd\_rem()}}
+{\footnotesize\ttfamily void sd\+\_\+rem (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Delete a file from the micro\+SD. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The file to delete. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_ae3bc360cfa9682139e87c79973fcded9}\label{tune__studio_8h_ae3bc360cfa9682139e87c79973fcded9}} 
+\index{tune\_studio.h@{tune\_studio.h}!sd\_save\_song@{sd\_save\_song}}
+\index{sd\_save\_song@{sd\_save\_song}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{sd\_save\_song()}{sd\_save\_song()}}
+{\footnotesize\ttfamily void sd\+\_\+save\+\_\+song (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{file\+Name,  }\item[{\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$}]{song }\end{DoxyParamCaption})}
+
+
+
+Saves a song class to the SD card by using the SD.\+h library and writing all of the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot be longer then 8 characters and should include a .TXT extension. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The name to save the song as. Must be between 1 and 8 characters, A-\/Z, 0-\/9 and underscores only. \\
+\hline
+{\em song} & The song instance to save. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_af4fc318f751ef7ab7cb146c553f7bc72}\label{tune__studio_8h_af4fc318f751ef7ab7cb146c553f7bc72}} 
+\index{tune\_studio.h@{tune\_studio.h}!sd\_songcpy@{sd\_songcpy}}
+\index{sd\_songcpy@{sd\_songcpy}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{sd\_songcpy()}{sd\_songcpy()}}
+{\footnotesize\ttfamily bool sd\+\_\+songcpy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \&}]{song,  }\item[{const char $\ast$const}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Copies and parses song data from a .txt file onto the global song object. The file must be in the correct format to work properly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em song} & A reference of a song to copy to. \\
+\hline
+{\em file\+Name} & The path in the SD card.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the song was able to be successfully copied. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tune__studio_8h_af1ea9647da2198982b72c4e825120eb5}\label{tune__studio_8h_af1ea9647da2198982b72c4e825120eb5}} 
+\index{tune\_studio.h@{tune\_studio.h}!set\_selected\_page@{set\_selected\_page}}
+\index{set\_selected\_page@{set\_selected\_page}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{set\_selected\_page()}{set\_selected\_page()}}
+{\footnotesize\ttfamily void set\+\_\+selected\+\_\+page (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{page }\end{DoxyParamCaption})}
+
+
+
+Set the selected page for selecting a song. 
+
+Each page selection represents a jump of 5. ~\newline
+ EX\+: Page 1 (Songs 1-\/5) ~\newline
+ Page 2 (Songs 6-\/10) ~\newline
+ ~\newline
+ There can only be a absolute maximum of 51 pages because 255/5 is 51 and there are 255 maximum allowed songs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em page} & The new page to set. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_a4c29562acdad606a577408dd8abc25c2}\label{tune__studio_8h_a4c29562acdad606a577408dd8abc25c2}} 
+\index{tune\_studio.h@{tune\_studio.h}!set\_selected\_song@{set\_selected\_song}}
+\index{set\_selected\_song@{set\_selected\_song}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{set\_selected\_song()}{set\_selected\_song()}}
+{\footnotesize\ttfamily void set\+\_\+selected\+\_\+song (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{song }\end{DoxyParamCaption})}
+
+
+
+Set a new song to be selected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em song} & The numerical index of the song to set. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tune__studio_8h_a898ace50e0bb46c6ade75cdfd315dd3d}\label{tune__studio_8h_a898ace50e0bb46c6ade75cdfd315dd3d}} 
+\index{tune\_studio.h@{tune\_studio.h}!update\_state@{update\_state}}
+\index{update\_state@{update\_state}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{update\_state()}{update\_state()}}
+{\footnotesize\ttfamily void update\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}}}]{state }\end{DoxyParamCaption})}
+
+
+
+Forcefully update the current state. This method call should be the last one during a states \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} iteration and no code should come after this function call. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+State} & The new state to set the application to. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{tune__studio_8h_a4b5cadefa46f275080ab7dd1fa8f541e}\label{tune__studio_8h_a4b5cadefa46f275080ab7dd1fa8f541e}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_ADD\_SELECT@{BTN\_ADD\_SELECT}}
+\index{BTN\_ADD\_SELECT@{BTN\_ADD\_SELECT}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_ADD\_SELECT}{BTN\_ADD\_SELECT}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+ADD\+\_\+\+SELECT = 2\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Add/\+Select button. 
+
+\mbox{\Hypertarget{tune__studio_8h_a520116d70512af5147acb8b3d8176f39}\label{tune__studio_8h_a520116d70512af5147acb8b3d8176f39}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_DEL\_CANCEL@{BTN\_DEL\_CANCEL}}
+\index{BTN\_DEL\_CANCEL@{BTN\_DEL\_CANCEL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_DEL\_CANCEL}{BTN\_DEL\_CANCEL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+DEL\+\_\+\+CANCEL = 3\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Del/\+Cancel button. 
+
+\mbox{\Hypertarget{tune__studio_8h_adfee3aec37c8289c5862da6ef6206d99}\label{tune__studio_8h_adfee3aec37c8289c5862da6ef6206d99}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_OPTION@{BTN\_OPTION}}
+\index{BTN\_OPTION@{BTN\_OPTION}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_OPTION}{BTN\_OPTION}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+OPTION = 4\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Option button. 
+
+\mbox{\Hypertarget{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}\label{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TONE\_1@{BTN\_TONE\_1}}
+\index{BTN\_TONE\_1@{BTN\_TONE\_1}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TONE\_1}{BTN\_TONE\_1}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TONE\+\_\+1 = 27\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Green LED (First Tone Button) (Lowest Pitch) 
+
+\mbox{\Hypertarget{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}\label{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TONE\_2@{BTN\_TONE\_2}}
+\index{BTN\_TONE\_2@{BTN\_TONE\_2}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TONE\_2}{BTN\_TONE\_2}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TONE\+\_\+2 = 25\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Blue LED (Second Tone Button) 
+
+\mbox{\Hypertarget{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}\label{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TONE\_3@{BTN\_TONE\_3}}
+\index{BTN\_TONE\_3@{BTN\_TONE\_3}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TONE\_3}{BTN\_TONE\_3}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TONE\+\_\+3 = 28\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Red LED (Third Tone Button) 
+
+\mbox{\Hypertarget{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}\label{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TONE\_4@{BTN\_TONE\_4}}
+\index{BTN\_TONE\_4@{BTN\_TONE\_4}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TONE\_4}{BTN\_TONE\_4}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TONE\+\_\+4 = 26\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the Yellow LED (Fourth Tone Button) 
+
+\mbox{\Hypertarget{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}\label{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}} 
+\index{tune\_studio.h@{tune\_studio.h}!BTN\_TONE\_5@{BTN\_TONE\_5}}
+\index{BTN\_TONE\_5@{BTN\_TONE\_5}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{BTN\_TONE\_5}{BTN\_TONE\_5}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t BTN\+\_\+\+TONE\+\_\+5 = 24\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the White LED (Fifth Tone Button) (Highest Pitch) 
+
+\mbox{\Hypertarget{tune__studio_8h_ae56cba5b79efe301a7fa89742805f4d0}\label{tune__studio_8h_ae56cba5b79efe301a7fa89742805f4d0}} 
+\index{tune\_studio.h@{tune\_studio.h}!CUSTOM\_CHAR\_AMOUNT@{CUSTOM\_CHAR\_AMOUNT}}
+\index{CUSTOM\_CHAR\_AMOUNT@{CUSTOM\_CHAR\_AMOUNT}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{CUSTOM\_CHAR\_AMOUNT}{CUSTOM\_CHAR\_AMOUNT}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t CUSTOM\+\_\+\+CHAR\+\_\+\+AMOUNT = sizeof(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\+\_\+\+LCD\+\_\+\+CHARS}})/sizeof(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\+\_\+\+LCD\+\_\+\+CHARS}}\mbox{[}0\mbox{]})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The amount of custom characters that we want to load onto the LCD. 
+
+\mbox{\Hypertarget{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}\label{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}} 
+\index{tune\_studio.h@{tune\_studio.h}!CUSTOM\_LCD\_CHARS@{CUSTOM\_LCD\_CHARS}}
+\index{CUSTOM\_LCD\_CHARS@{CUSTOM\_LCD\_CHARS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{CUSTOM\_LCD\_CHARS}{CUSTOM\_LCD\_CHARS}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} byte CUSTOM\+\_\+\+LCD\+\_\+\+CHARS\mbox{[}6\mbox{]}\mbox{[}8\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{\{0x04, 0x06, 0x05, 0x04, 0x04, 0x0C, 0x1C, 0x0C\},}
+\DoxyCodeLine{\{0x10, 0x18, 0x1C, 0x1E, 0x1E, 0x1C, 0x18, 0x10\},}
+\DoxyCodeLine{\{0x00, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x00\},}
+\DoxyCodeLine{\{0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F\},}
+\DoxyCodeLine{\{0x1F, 0x1F, 0x1F, 0x10, 0x10, 0x10, 0x10, 0x10\},}
+\DoxyCodeLine{\{0x1F, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1F\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+A PROGMEM list of bytes that represent custom characters which should be loaded into the LCD. 
+
+\begin{DoxySince}{Since}
+\mbox{[}v1.\+1.\+0-\/R2\mbox{]} 
+\end{DoxySince}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{tune__studio_8h_af5f30789080613c982b635a628438b5a}\label{tune__studio_8h_af5f30789080613c982b635a628438b5a}} 
+\index{tune\_studio.h@{tune\_studio.h}!DEBOUNCE\_RATE@{DEBOUNCE\_RATE}}
+\index{DEBOUNCE\_RATE@{DEBOUNCE\_RATE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{DEBOUNCE\_RATE}{DEBOUNCE\_RATE}}
+{\footnotesize\ttfamily constexpr uint16\+\_\+t DEBOUNCE\+\_\+\+RATE = 500\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The delay between when button presses should be read by the program. 
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{tune__studio_8h_a751b1071ae1dc089835601e0aca8358d}{is\+\_\+pressed}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}\label{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}} 
+\index{tune\_studio.h@{tune\_studio.h}!DEFAULT\_NOTE\_DELAY@{DEFAULT\_NOTE\_DELAY}}
+\index{DEFAULT\_NOTE\_DELAY@{DEFAULT\_NOTE\_DELAY}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_NOTE\_DELAY}{DEFAULT\_NOTE\_DELAY}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t DEFAULT\+\_\+\+NOTE\+\_\+\+DELAY = 80\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The default note delay in the program. 
+
+\mbox{\Hypertarget{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}\label{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}} 
+\index{tune\_studio.h@{tune\_studio.h}!DEFAULT\_NOTE\_LENGTH@{DEFAULT\_NOTE\_LENGTH}}
+\index{DEFAULT\_NOTE\_LENGTH@{DEFAULT\_NOTE\_LENGTH}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_NOTE\_LENGTH}{DEFAULT\_NOTE\_LENGTH}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t DEFAULT\+\_\+\+NOTE\+\_\+\+LENGTH = 50\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The default note length in the program. 
+
+\mbox{\Hypertarget{tune__studio_8h_a9f62d506cb115ad03404613a5d2f4b6c}\label{tune__studio_8h_a9f62d506cb115ad03404613a5d2f4b6c}} 
+\index{tune\_studio.h@{tune\_studio.h}!EMPTY\_NOTE@{EMPTY\_NOTE}}
+\index{EMPTY\_NOTE@{EMPTY\_NOTE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{EMPTY\_NOTE}{EMPTY\_NOTE}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} EMPTY\+\_\+\+NOTE = \{ \char`\"{}0000\char`\"{}, (const uint16\+\_\+t)0 \}}
+
+
+
+A note which defines an empty space, usually representing the end of the song. 
+
+Pitch\+: \char`\"{}0000\char`\"{} ~\newline
+ Frequency\+: 0hz (Arbitrary as the frequency does not matter as long as it does not play a sound) \mbox{\Hypertarget{tune__studio_8h_a4b679425a1c685eed5ca06b4d82ae5a0}\label{tune__studio_8h_a4b679425a1c685eed5ca06b4d82ae5a0}} 
+\index{tune\_studio.h@{tune\_studio.h}!FILE\_TXT\_EXTENSION@{FILE\_TXT\_EXTENSION}}
+\index{FILE\_TXT\_EXTENSION@{FILE\_TXT\_EXTENSION}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{FILE\_TXT\_EXTENSION}{FILE\_TXT\_EXTENSION}}
+{\footnotesize\ttfamily const char FILE\+\_\+\+TXT\+\_\+\+EXTENSION\mbox{[}$\,$\mbox{]} = \char`\"{}.txt\char`\"{}}
+
+
+
+A string representing the .txt file extension, the primary extension used for storing songs (Non-\/\+PROGMEM). 
+
+\mbox{\Hypertarget{tune__studio_8h_af4c04bb39fe93bdf9742af5ed1f2861a}\label{tune__studio_8h_af4c04bb39fe93bdf9742af5ed1f2861a}} 
+\index{tune\_studio.h@{tune\_studio.h}!FINISHED\_SONG\_SYMBOL@{FINISHED\_SONG\_SYMBOL}}
+\index{FINISHED\_SONG\_SYMBOL@{FINISHED\_SONG\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{FINISHED\_SONG\_SYMBOL}{FINISHED\_SONG\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t FINISHED\+\_\+\+SONG\+\_\+\+SYMBOL = 0x04\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the finished song symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}\label{tune__studio_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}} 
+\index{tune\_studio.h@{tune\_studio.h}!lcd@{lcd}}
+\index{lcd@{lcd}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{lcd}{lcd}}
+{\footnotesize\ttfamily Liquid\+Crystal\+\_\+\+I2C lcd\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Represents a global instance of the Liquid Crystal display used for Tune\+Studio2560. 
+
+The Liquid Crystal display uses the I2C protocol and is responsible for direct user feedback on using the program.~\newline
+ The display should be the recommended {\bfseries{20 columns and 4 rows}}.~\newline
+ ~\newline
+ Editing Tune\+Studio2560 to accomidate smaller displays is possible by adjusting the LCD\+\_\+\+COLS and LCD\+\_\+\+ROWS but some changes to set\+Cursor(x, x) methods would need to be done. \mbox{\Hypertarget{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}\label{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}} 
+\index{tune\_studio.h@{tune\_studio.h}!LCD\_COLS@{LCD\_COLS}}
+\index{LCD\_COLS@{LCD\_COLS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_COLS}{LCD\_COLS}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t LCD\+\_\+\+COLS = 20\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+How many columns the connected I2C LCD has. 
+
+\mbox{\Hypertarget{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}\label{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}} 
+\index{tune\_studio.h@{tune\_studio.h}!LCD\_ROWS@{LCD\_ROWS}}
+\index{LCD\_ROWS@{LCD\_ROWS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_ROWS}{LCD\_ROWS}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t LCD\+\_\+\+ROWS = 4\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+How many rows the connected I2C LCD has. 
+
+\mbox{\Hypertarget{tune__studio_8h_a016b23e0049b75b843b8308435b76e69}\label{tune__studio_8h_a016b23e0049b75b843b8308435b76e69}} 
+\index{tune\_studio.h@{tune\_studio.h}!MAX\_SONG\_AMOUNT@{MAX\_SONG\_AMOUNT}}
+\index{MAX\_SONG\_AMOUNT@{MAX\_SONG\_AMOUNT}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_SONG\_AMOUNT}{MAX\_SONG\_AMOUNT}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t MAX\+\_\+\+SONG\+\_\+\+AMOUNT = 255\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Maximum allowed number of songs on the SD card. 
+
+\mbox{\Hypertarget{tune__studio_8h_a562deb06370e5987656b70139ae83426}\label{tune__studio_8h_a562deb06370e5987656b70139ae83426}} 
+\index{tune\_studio.h@{tune\_studio.h}!MAX\_SONG\_LENGTH@{MAX\_SONG\_LENGTH}}
+\index{MAX\_SONG\_LENGTH@{MAX\_SONG\_LENGTH}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_SONG\_LENGTH}{MAX\_SONG\_LENGTH}}
+{\footnotesize\ttfamily constexpr \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+LENGTH = 255\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{tune__studio_8h_a509cd23c352fcf0c7c1c8bcd657ac2eb}\label{tune__studio_8h_a509cd23c352fcf0c7c1c8bcd657ac2eb}} 
+\index{tune\_studio.h@{tune\_studio.h}!MIN\_SONG\_LENGTH@{MIN\_SONG\_LENGTH}}
+\index{MIN\_SONG\_LENGTH@{MIN\_SONG\_LENGTH}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{MIN\_SONG\_LENGTH}{MIN\_SONG\_LENGTH}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t MIN\+\_\+\+SONG\+\_\+\+LENGTH = 8\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Minimum allowed number of notes in a song for playback and saving. 
+
+\mbox{\Hypertarget{tune__studio_8h_a096bbf44639829ab8764bdc1b99dd5c2}\label{tune__studio_8h_a096bbf44639829ab8764bdc1b99dd5c2}} 
+\index{tune\_studio.h@{tune\_studio.h}!MUSIC\_NOTE\_SYMBOL@{MUSIC\_NOTE\_SYMBOL}}
+\index{MUSIC\_NOTE\_SYMBOL@{MUSIC\_NOTE\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{MUSIC\_NOTE\_SYMBOL}{MUSIC\_NOTE\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t MUSIC\+\_\+\+NOTE\+\_\+\+SYMBOL = 0x00\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the music note symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_a983fbfb6eaf83047e286754b0488caa6}\label{tune__studio_8h_a983fbfb6eaf83047e286754b0488caa6}} 
+\index{tune\_studio.h@{tune\_studio.h}!OPTIONAL\_NAMING\_CHARACTERS@{OPTIONAL\_NAMING\_CHARACTERS}}
+\index{OPTIONAL\_NAMING\_CHARACTERS@{OPTIONAL\_NAMING\_CHARACTERS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{OPTIONAL\_NAMING\_CHARACTERS}{OPTIONAL\_NAMING\_CHARACTERS}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} char OPTIONAL\+\_\+\+NAMING\+\_\+\+CHARACTERS\mbox{[}$\,$\mbox{]} = \{ \textquotesingle{}A\textquotesingle{},\textquotesingle{}B\textquotesingle{},\textquotesingle{}C\textquotesingle{},\textquotesingle{}D\textquotesingle{},\textquotesingle{}E\textquotesingle{},\textquotesingle{}F\textquotesingle{},\textquotesingle{}G\textquotesingle{},\textquotesingle{}H\textquotesingle{},\textquotesingle{}I\textquotesingle{},\textquotesingle{}J\textquotesingle{},\textquotesingle{}K\textquotesingle{},\textquotesingle{}L\textquotesingle{},\textquotesingle{}M\textquotesingle{},\textquotesingle{}N\textquotesingle{},\textquotesingle{}O\textquotesingle{},\textquotesingle{}P\textquotesingle{},\textquotesingle{}Q\textquotesingle{},\textquotesingle{}R\textquotesingle{},\textquotesingle{}S\textquotesingle{},\textquotesingle{}T\textquotesingle{},\textquotesingle{}U\textquotesingle{},\textquotesingle{}V\textquotesingle{},\textquotesingle{}W\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}Y\textquotesingle{},\textquotesingle{}Z\textquotesingle{}, \textquotesingle{}0\textquotesingle{},\textquotesingle{}1\textquotesingle{},\textquotesingle{}2\textquotesingle{},\textquotesingle{}3\textquotesingle{},\textquotesingle{}4\textquotesingle{},\textquotesingle{}5\textquotesingle{},\textquotesingle{}6\textquotesingle{},\textquotesingle{}7\textquotesingle{},\textquotesingle{}8\textquotesingle{},\textquotesingle{}9\textquotesingle{}, \textquotesingle{}\+\_\+\textquotesingle{} \}}
+
+
+
+A char array of all possible characters which can be used when naming a song. 
+
+{\bfseries{Valid Characters are\+:}}
+\begin{DoxyItemize}
+\item A-\/Z~\newline
+
+\item 0-\/9~\newline
+
+\item Underscores (\+\_\+) 
+\end{DoxyItemize}\mbox{\Hypertarget{tune__studio_8h_a8c0494dcf9e2d76031d1872fea492aef}\label{tune__studio_8h_a8c0494dcf9e2d76031d1872fea492aef}} 
+\index{tune\_studio.h@{tune\_studio.h}!PAUSE\_NOTE@{PAUSE\_NOTE}}
+\index{PAUSE\_NOTE@{PAUSE\_NOTE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PAUSE\_NOTE}{PAUSE\_NOTE}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} PAUSE\+\_\+\+NOTE = \{ \char`\"{}PS\char`\"{}, (const uint16\+\_\+t)1 \}}
+
+
+
+A note which defines a pause. 
+
+Pitch\+: \char`\"{}\+PS\char`\"{} ~\newline
+ Frequency\+: 1hz (Arbitrary as the frequency does not matter as long as it does not play a sound) \mbox{\Hypertarget{tune__studio_8h_a66b44d668d0d66bee44cf1fa5ba23a4e}\label{tune__studio_8h_a66b44d668d0d66bee44cf1fa5ba23a4e}} 
+\index{tune\_studio.h@{tune\_studio.h}!PAUSE\_SONG\_SYMBOL@{PAUSE\_SONG\_SYMBOL}}
+\index{PAUSE\_SONG\_SYMBOL@{PAUSE\_SONG\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PAUSE\_SONG\_SYMBOL}{PAUSE\_SONG\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t PAUSE\+\_\+\+SONG\+\_\+\+SYMBOL = 0x02\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the pause song symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_ad2e0a56fd8a62a2a209fea8c049ca73f}\label{tune__studio_8h_ad2e0a56fd8a62a2a209fea8c049ca73f}} 
+\index{tune\_studio.h@{tune\_studio.h}!PLAYING\_SONG\_SYMBOL@{PLAYING\_SONG\_SYMBOL}}
+\index{PLAYING\_SONG\_SYMBOL@{PLAYING\_SONG\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PLAYING\_SONG\_SYMBOL}{PLAYING\_SONG\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t PLAYING\+\_\+\+SONG\+\_\+\+SYMBOL = 0x01\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the playing song symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_a28afc8e6d990f11741be48e710ace49f}\label{tune__studio_8h_a28afc8e6d990f11741be48e710ace49f}} 
+\index{tune\_studio.h@{tune\_studio.h}!prgmSong@{prgmSong}}
+\index{prgmSong@{prgmSong}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{prgmSong}{prgmSong}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_song}{Song}}$<$\mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}}$>$ prgm\+Song\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Represents the global song object to be used in the program when managing songs. 
+
+This song object is used between program states and can be accessed at any time. ~\newline
+ When a new song wants to be used by the application, the song is cleared using .clear() and notes are re-\/added.
+
+\begin{DoxySince}{Since}
+v1.\+2.\+0-\/R3 Songs are no longer pointers and are no longer dynamically allocated. Any song the program is going to use is now accessible by the \char`\"{}prgm\+Song\char`\"{} global variable. 
+\end{DoxySince}
+\mbox{\Hypertarget{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}\label{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}} 
+\index{tune\_studio.h@{tune\_studio.h}!PROGMEM@{PROGMEM}}
+\index{PROGMEM@{PROGMEM}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PROGMEM}{PROGMEM}}
+{\footnotesize\ttfamily const char VERSION\+\_\+\+ID \mbox{[}$\,$\mbox{]} PROGMEM = \char`\"{}1.\+2.\+2-\/R4\char`\"{}}
+
+Represents the current version of the program. ~\newline
+ (Major Version Release).(Minor Code Updates since last release).(Minor Updates)-\/R(\+Release Number) ~\newline
+ Minor Updates refer to updates which fix bugs or do optimizations. Sometimes minor updates may add function as well. ~\newline
+ Minor Code Updates occur when enough minor updates have been made to justify a new release. ~\newline
+ \mbox{\Hypertarget{tune__studio_8h_a1831015283358fdc0d1c7216d88210bd}\label{tune__studio_8h_a1831015283358fdc0d1c7216d88210bd}} 
+\index{tune\_studio.h@{tune\_studio.h}!PROGRAM\_NOTES@{PROGRAM\_NOTES}}
+\index{PROGRAM\_NOTES@{PROGRAM\_NOTES}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PROGRAM\_NOTES}{PROGRAM\_NOTES}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}{button\+Frequencies\+\_\+t}} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} PROGRAM\+\_\+\+NOTES\mbox{[}\mbox{\hyperlink{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}{TONE\+\_\+\+BUTTON\+\_\+\+AMOUNT}}\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \{\mbox{\hyperlink{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}{BTN\_TONE\_1}}, \{\{pitch\_b0, 31\}, \{pitch\_c1, 33\}, \{pitch\_cs1, 35\}, \{pitch\_d1, 37\}, \{pitch\_ds1, 39\}, \{pitch\_e1, 41\}, \{pitch\_f1, 44\}, \{pitch\_fs1, 46\}, \{pitch\_g1, 49\}, \{pitch\_gs1, 52\}, \{pitch\_a1, 55\}, \{pitch\_as1, 58\}, \{pitch\_b1, 62\}, \{pitch\_c2, 65\}, \{pitch\_cs2, 69\}, \{pitch\_d2, 73\}, \{pitch\_ds2, 78\}\}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}{BTN\_TONE\_2}}, \{\{pitch\_e2, 82\}, \{pitch\_f2, 87\}, \{pitch\_fs2, 93\}, \{pitch\_g2, 98\}, \{pitch\_gs2, 104\}, \{pitch\_a2, 110\}, \{pitch\_as2, 117\}, \{pitch\_b2, 123\}, \{pitch\_c3, 131\}, \{pitch\_cs3, 139\}, \{pitch\_d3, 147\}, \{pitch\_ds3, 156\}, \{pitch\_e3, 165\}, \{pitch\_f3, 175\}, \{pitch\_fs3, 185\}, \{pitch\_g3, 196\}, \{pitch\_gs3, 208\}\}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}{BTN\_TONE\_3}}, \{\{pitch\_a3, 220\}, \{pitch\_as3, 233\}, \{pitch\_b3, 247\}, \{pitch\_c4, 262\}, \{pitch\_cs4, 277\}, \{pitch\_d4, 294\}, \{pitch\_ds4, 311\}, \{pitch\_e4, 330\}, \{pitch\_f4, 349\}, \{pitch\_fs4, 370\}, \{pitch\_g4, 392\}, \{pitch\_gs4, 415\}, \{pitch\_a4, 440\}, \{pitch\_as4, 466\}, \{pitch\_b4, 494\}, \{pitch\_c5, 523\}, \{pitch\_cs5, 554\}\}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}{BTN\_TONE\_4}}, \{\{pitch\_d5, 587\}, \{pitch\_ds5, 622\}, \{pitch\_e5, 659\}, \{pitch\_f5, 698\}, \{pitch\_fs5, 740\}, \{pitch\_g5, 784\}, \{pitch\_gs5, 831\}, \{pitch\_a5, 880\}, \{pitch\_as5, 932\}, \{pitch\_b5, 988\}, \{pitch\_c6, 1047\}, \{pitch\_cs6, 1109\}, \{pitch\_d6, 1175\}, \{pitch\_ds6, 1245\}, \{pitch\_e6, 1319\}, \{pitch\_f6, 1397\}, \{pitch\_fs6, 1480\}\}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}{BTN\_TONE\_5}}, \{\{pitch\_g6, 1568\}, \{pitch\_gs6, 1661\}, \{pitch\_a6, 1760\}, \{pitch\_as6, 1865\}, \{pitch\_b6, 1976\}, \{pitch\_c7, 2093\}, \{pitch\_cs7, 2217\}, \{pitch\_d7, 2349\}, \{pitch\_ds7, 2489\}, \{pitch\_e7, 2637\}, \{pitch\_f7, 2794\}, \{pitch\_fs7, 2960\}, \{pitch\_g7, 3136\}, \{pitch\_gs7, 3322\}, \{pitch\_a7, 3520\}, \{pitch\_as7, 3729\}, \{pitch\_b7, 3951\}\}\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+An array of all possible tones which can be played. 
+
+85 total tones, 17 per button, 5 buttons.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{pitches_8h}{pitches.\+h}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{tune__studio_8h_a50a4cb21d76d401f8a8b5b2d0df2b586}\label{tune__studio_8h_a50a4cb21d76d401f8a8b5b2d0df2b586}} 
+\index{tune\_studio.h@{tune\_studio.h}!PROGRESS\_BLOCK\_SYMBOL@{PROGRESS\_BLOCK\_SYMBOL}}
+\index{PROGRESS\_BLOCK\_SYMBOL@{PROGRESS\_BLOCK\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PROGRESS\_BLOCK\_SYMBOL}{PROGRESS\_BLOCK\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t PROGRESS\+\_\+\+BLOCK\+\_\+\+SYMBOL = 0x03\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the progress block symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_aef417c7854c7baa3f87c1f85329d05d7}\label{tune__studio_8h_aef417c7854c7baa3f87c1f85329d05d7}} 
+\index{tune\_studio.h@{tune\_studio.h}!PROGRESS\_BLOCK\_UNFILLED\_SYMBOL@{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL}}
+\index{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL@{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL}{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t PROGRESS\+\_\+\+BLOCK\+\_\+\+UNFILLED\+\_\+\+SYMBOL = 0x05\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The hex integer which represents the unfilled progress block symbol on the lcd. 
+
+\mbox{\Hypertarget{tune__studio_8h_aab10c2755d1db4b098e0ef1a5b9430d8}\label{tune__studio_8h_aab10c2755d1db4b098e0ef1a5b9430d8}} 
+\index{tune\_studio.h@{tune\_studio.h}!PROGRESS\_LABEL@{PROGRESS\_LABEL}}
+\index{PROGRESS\_LABEL@{PROGRESS\_LABEL}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{PROGRESS\_LABEL}{PROGRESS\_LABEL}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} char PROGRESS\+\_\+\+LABEL\mbox{[}$\,$\mbox{]} = \char`\"{}PROGRESS\+:\char`\"{}}
+
+
+
+A string representing \char`\"{}\+PROGRESS\+:\char`\"{}. Used for listening mode. 
+
+\mbox{\Hypertarget{tune__studio_8h_a84a64bcd6e0a1a4d8e99270f219c8ad6}\label{tune__studio_8h_a84a64bcd6e0a1a4d8e99270f219c8ad6}} 
+\index{tune\_studio.h@{tune\_studio.h}!README\_FILE@{README\_FILE}}
+\index{README\_FILE@{README\_FILE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{README\_FILE}{README\_FILE}}
+{\footnotesize\ttfamily const char README\+\_\+\+FILE\mbox{[}$\,$\mbox{]} = \char`\"{}README.\+TXT\char`\"{}}
+
+
+
+A string representing the README file (Non-\/\+PROGMEM). 
+
+\mbox{\Hypertarget{tune__studio_8h_acbf8c647a8c409ee1287cff36d78ab94}\label{tune__studio_8h_acbf8c647a8c409ee1287cff36d78ab94}} 
+\index{tune\_studio.h@{tune\_studio.h}!RGB\_BLUE@{RGB\_BLUE}}
+\index{RGB\_BLUE@{RGB\_BLUE}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{RGB\_BLUE}{RGB\_BLUE}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t RGB\+\_\+\+BLUE = 11\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Pin for the \char`\"{}\+BLUE\char`\"{} pin on the RGB Led. 
+
+\mbox{\Hypertarget{tune__studio_8h_aee5f9b19e744edee38a9cc45647d3ffc}\label{tune__studio_8h_aee5f9b19e744edee38a9cc45647d3ffc}} 
+\index{tune\_studio.h@{tune\_studio.h}!RGB\_BRIGHTNESS@{RGB\_BRIGHTNESS}}
+\index{RGB\_BRIGHTNESS@{RGB\_BRIGHTNESS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{RGB\_BRIGHTNESS}{RGB\_BRIGHTNESS}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t RGB\+\_\+\+BRIGHTNESS = 200\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+A brightness indicator for how bright the RGB Led should light up. ~\newline
+Irrelevant for PRGM\+\_\+\+MODE == 0 because digital\+Write is used instead of analog. 
+
+\mbox{\Hypertarget{tune__studio_8h_a94288e106ee873072b3b5584c0b34c9c}\label{tune__studio_8h_a94288e106ee873072b3b5584c0b34c9c}} 
+\index{tune\_studio.h@{tune\_studio.h}!RGB\_GREEN@{RGB\_GREEN}}
+\index{RGB\_GREEN@{RGB\_GREEN}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{RGB\_GREEN}{RGB\_GREEN}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t RGB\+\_\+\+GREEN = 10\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Pin for the \char`\"{}\+GREEN\char`\"{} pin on the RGB Led. 
+
+\mbox{\Hypertarget{tune__studio_8h_ab57134a9d394425eff6f34639e6faf6b}\label{tune__studio_8h_ab57134a9d394425eff6f34639e6faf6b}} 
+\index{tune\_studio.h@{tune\_studio.h}!RGB\_RED@{RGB\_RED}}
+\index{RGB\_RED@{RGB\_RED}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{RGB\_RED}{RGB\_RED}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t RGB\+\_\+\+RED = 9\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Pin for the \char`\"{}\+RED\char`\"{} pin on the RGB Led. 
+
+\mbox{\Hypertarget{tune__studio_8h_a733327e75d327c2b033dee3cafacdff5}\label{tune__studio_8h_a733327e75d327c2b033dee3cafacdff5}} 
+\index{tune\_studio.h@{tune\_studio.h}!ROOT\_DIR@{ROOT\_DIR}}
+\index{ROOT\_DIR@{ROOT\_DIR}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{ROOT\_DIR}{ROOT\_DIR}}
+{\footnotesize\ttfamily const char ROOT\+\_\+\+DIR\mbox{[}$\,$\mbox{]} = \char`\"{}/\char`\"{}}
+
+
+
+Root Directory of the SD Card (Non-\/\+PROGMEM) 
+
+\mbox{\Hypertarget{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}\label{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}} 
+\index{tune\_studio.h@{tune\_studio.h}!SD\_CS\_PIN@{SD\_CS\_PIN}}
+\index{SD\_CS\_PIN@{SD\_CS\_PIN}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SD\_CS\_PIN}{SD\_CS\_PIN}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t SD\+\_\+\+CS\+\_\+\+PIN = 53\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Pin connected to the \char`\"{}\+CS\char`\"{} pin on the SD Card Module. 
+
+\mbox{\Hypertarget{tune__studio_8h_a7967ed4f18105d53aefe34e96d8e13ce}\label{tune__studio_8h_a7967ed4f18105d53aefe34e96d8e13ce}} 
+\index{tune\_studio.h@{tune\_studio.h}!segDisplay@{segDisplay}}
+\index{segDisplay@{segDisplay}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{segDisplay}{segDisplay}}
+{\footnotesize\ttfamily Sev\+Seg\+Shift seg\+Display\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Represents the 4-\/digit-\/wide 7-\/segment display used in Tune\+Studio2560. 
+
+The segment display is reponsible for showing the current note in Creator Mode. ~\newline
+ The display is wired using the Sev\+Seg\+Shift library by being connected to {\bfseries{2x 74HC595N Shift Registers}}. \mbox{\Hypertarget{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}\label{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}} 
+\index{tune\_studio.h@{tune\_studio.h}!SHIFT\_PIN\_DS@{SHIFT\_PIN\_DS}}
+\index{SHIFT\_PIN\_DS@{SHIFT\_PIN\_DS}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SHIFT\_PIN\_DS}{SHIFT\_PIN\_DS}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t SHIFT\+\_\+\+PIN\+\_\+\+DS = 5\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+DS pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. 
+
+\mbox{\Hypertarget{tune__studio_8h_a1c796f73e188890598417c3a75699db9}\label{tune__studio_8h_a1c796f73e188890598417c3a75699db9}} 
+\index{tune\_studio.h@{tune\_studio.h}!SHIFT\_PIN\_SHCP@{SHIFT\_PIN\_SHCP}}
+\index{SHIFT\_PIN\_SHCP@{SHIFT\_PIN\_SHCP}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SHIFT\_PIN\_SHCP}{SHIFT\_PIN\_SHCP}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t SHIFT\+\_\+\+PIN\+\_\+\+SHCP = 7\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+SHCP pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. 
+
+\mbox{\Hypertarget{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}\label{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}} 
+\index{tune\_studio.h@{tune\_studio.h}!SHIFT\_PIN\_STCP@{SHIFT\_PIN\_STCP}}
+\index{SHIFT\_PIN\_STCP@{SHIFT\_PIN\_STCP}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SHIFT\_PIN\_STCP}{SHIFT\_PIN\_STCP}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t SHIFT\+\_\+\+PIN\+\_\+\+STCP = 6\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+STCP pin for the Shift Register connected to the 4 Digit 7-\/Segment Display. 
+
+\mbox{\Hypertarget{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}\label{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}} 
+\index{tune\_studio.h@{tune\_studio.h}!SPEAKER\_1@{SPEAKER\_1}}
+\index{SPEAKER\_1@{SPEAKER\_1}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{SPEAKER\_1}{SPEAKER\_1}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t SPEAKER\+\_\+1 = 34\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the primary passive speaker. 
+
+\mbox{\Hypertarget{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}\label{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}} 
+\index{tune\_studio.h@{tune\_studio.h}!TONE\_BUTTON\_AMOUNT@{TONE\_BUTTON\_AMOUNT}}
+\index{TONE\_BUTTON\_AMOUNT@{TONE\_BUTTON\_AMOUNT}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{TONE\_BUTTON\_AMOUNT}{TONE\_BUTTON\_AMOUNT}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t TONE\+\_\+\+BUTTON\+\_\+\+AMOUNT = 5\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The amount of tone buttons the program has. 
+
+\mbox{\Hypertarget{tune__studio_8h_a38404a5e3be507a76699bc8b03769a74}\label{tune__studio_8h_a38404a5e3be507a76699bc8b03769a74}} 
+\index{tune\_studio.h@{tune\_studio.h}!TONE\_FREQ@{TONE\_FREQ}}
+\index{TONE\_FREQ@{TONE\_FREQ}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{TONE\_FREQ}{TONE\_FREQ}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t TONE\+\_\+\+FREQ = PIN\+\_\+\+A7\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The pin which is connected to the potentiometer / tone frequency adjuster. 
+
+\mbox{\Hypertarget{tune__studio_8h_a109d7ea1e23a45e34028db39be6a6d17}\label{tune__studio_8h_a109d7ea1e23a45e34028db39be6a6d17}} 
+\index{tune\_studio.h@{tune\_studio.h}!TONES\_PER\_BUTTON@{TONES\_PER\_BUTTON}}
+\index{TONES\_PER\_BUTTON@{TONES\_PER\_BUTTON}!tune\_studio.h@{tune\_studio.h}}
+\doxysubsubsection{\texorpdfstring{TONES\_PER\_BUTTON}{TONES\_PER\_BUTTON}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t TONES\+\_\+\+PER\+\_\+\+BUTTON = 17\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+The amount of tones that each button has. 
+

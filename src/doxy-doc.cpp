@@ -4,6 +4,10 @@
  * @section description Description
  * Welcome to the official Doxygen documentation for TuneStudio2560.<br />
  * This page describes the documentation for every method and global variable in TuneStudio2560
+ * 
+ * <b>Useful Links</b>
+ * Reference Website: https://devjluvisi.github.io/TuneStudio2560/
+ * Product Brief: https://devjluvisi.github.io/TuneStudio2560/content/TuneStudio2560%20Product%20Brief.pdf
  *
  * @section libraries External Libraries
  * - LiquidCrystal_I2C (https://github.com/johnrickman/LiquidCrystal_I2C?utm_source=platformio&utm_medium=piohome)

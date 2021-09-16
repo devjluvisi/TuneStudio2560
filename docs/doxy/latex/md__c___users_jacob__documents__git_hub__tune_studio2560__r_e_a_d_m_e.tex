@@ -1,0 +1,198 @@
+{\itshape For ATMega2560 microcontroller.}
+
+ \href{https://github.com/devjluvisi/TuneStudio2560/subscription}{\texttt{ watch this repo}}
+
+Tune\+Studio2560 is a song creation and playback device made for the Arduino Mega 2560 microcontroller. The program and hardware allow users to add tunes in succession in order to make a simple song. Once created, users can playback their songs via micro\+SD as well as edit, create, and delete songs right on their personal computer!
+
+The type of the tune is determined by both which \char`\"{}tune button\char`\"{} is pressed and how much a potentiometer is turned. Once a song has been saved, users can playback their songs in {\bfseries{Listening Mode}} which incorporates pausing, fast forwarding, and rewinding functionalities.
+
+\href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users}{\texttt{ User Guide}} ~\newline
+ \href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers}{\texttt{ Developer Guide}} ~\newline
+ \href{https://devjluvisi.github.io/TuneStudio2560/}{\texttt{ Reference Website}}
+
+{\bfseries{\href{https://drive.google.com/drive/folders/1CkPubvIi6yJfRg2Uyx3KxVqNjCzE9Wjo}{\texttt{ Check out the real life image library!}}}}\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md2}{}\doxysubsubsection{$<$em$>$\+For best compatibility it is recommended to open and upload the project using the $<$a href=\char`\"{}https\+://platformio.\+org/\char`\"{} $>$\+Platform\+IO$<$/a$>$ extension for $<$a href=\char`\"{}https\+://code.\+visualstudio.\+com/\char`\"{} $>$\+Visual Studio Code$<$/a$>$.$<$/em$>$}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md2}
+{\bfseries{Program Resource Utilization History}} ~\newline
+ {\itshape Percentages are based off of the Arduino Mega\textquotesingle{}s 8KB of SRAM and 256KB of flash memory using PRGM\+\_\+\+MODE=0} ~\newline
+ \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ BUILD   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ SRAM   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ FLASH    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ BUILD   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ SRAM   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ FLASH    }\\\cline{1-3}
+\endhead
+{\bfseries{V1.\+0.\+0-\/R1}}   &1705 Bytes (20.\+8\%)   &37436 Bytes (14.\+7\%)    \\\cline{1-3}
+V1.\+0.\+1-\/R1   &1705 Bytes (20.\+8\%)   &37272 Bytes (14.\+7\%)    \\\cline{1-3}
+V1.\+0.\+2-\/R1   &1689 Bytes (20.\+6\%)   &35446 Bytes (14.\+0\%)    \\\cline{1-3}
+V1.\+0.\+3-\/R1   &1689 Bytes (20.\+6\%)   &35046 Bytes (13.\+8\%)    \\\cline{1-3}
+V1.\+0.\+4-\/R1   &1689 Bytes (20.\+6\%)   &34468 Bytes (13.\+6\%)    \\\cline{1-3}
+V1.\+0.\+5-\/R1   &1689 Bytes (20.\+6\%)   &34346 Bytes (13.\+5\%)    \\\cline{1-3}
+{\bfseries{V1.\+1.\+0-\/R2}}   &1664 Bytes (20.\+3\%)   &32386 Bytes (12.\+8\%)    \\\cline{1-3}
+{\bfseries{V1.\+2.\+0-\/R3}}   &1511 Bytes (18.\+4\%)   &29906 Bytes (11.\+8\%)    \\\cline{1-3}
+V1.\+2.\+1-\/R3   &1300 Bytes (15.\+9\%)   &29974 Bytes (11.\+8\%)   \\\cline{1-3}
+\end{longtabu}
+\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md3}{}\doxysection{Features}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyItemize}
+\item Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
+\item Uses the standard chromatic scale to identify different tones/pitches for ease of use.
+\item \mbox{\hyperlink{class_song}{Song}} saving persistence using Micro SD Card.
+\item Play back previously saved songs which are saved in persistent storage.
+\item Ability to add songs, remove songs, add tunes in songs and remove tunes from songs.
+\item Delete all saved songs and start new.
+\item Play each tune separately in Creator Mode without having to add it.
+\item Edit saved music tune files on a computer with a Micro\+SD card adapter.
+\item Text feed back on an LCD.
+\item RGB Led status indicator.
+\item Custom file parsing with micro\+SD.
+\item Edit songs on your own PC using a text editor.
+\item Edit the tone delays and length of the tones on your PC.
+\item 4 Digit 7 Segment display tells which tune is currently being selected.
+\end{DoxyItemize}
+
+{\bfseries{\mbox{\hyperlink{class_song}{Song}} Storage \& Editing w/ Micro\+SD}} Tune\+Studio2560 uses a micro\+SD card module which can be added to the breadboard to allow seamless saving of songs and data. The micro\+SD card interfaces with the SD library to write songs and data to files as well as to read files. Of course, the micro\+SD is completely compatible with modern machines using FAT32 meaning that you can plug it right into your computer and edit the data of your songs. The library is aided by custom file parsing functions which convert the text in each of the song files to program code. The custom micro\+SD interface methods contain error checking and error correcting to ensure ease of use when modifying your own songs.\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md4}{}\doxysection{How it works}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md4}
+\texorpdfstring{$>$}{>}A hardware and software overview. \begin{quote}
+\end{quote}
+\#\#\# Controls \& Buttons \begin{quote}
+{\bfseries{Note\+:}} {\itshape Sometimes buttons may be used in together to perform certain actions. Ex\+: Hold Select+\+Option to save the song.} ~\newline
+ \end{quote}
+{\bfseries{Tune Buttons}}\+: Five buttons used for adding different ranges of tunes to the song. ~\newline
+ {\bfseries{Frequency Adjust (Potentiometer)}}\+: Used for adjusting the specific frequency of each of the five tune buttons. ~\newline
+ {\bfseries{Add/\+Select Button}}\+: Used for confirming prompts or adding tunes. ~\newline
+ {\bfseries{Delete/\+Cancel Button}}\+: Used for denying prompts, removing notes, or exiting the current menu. ~\newline
+ {\bfseries{Option Button}}\+: A button which is used with other buttons to do certain tasks. ~\newline
+ {\bfseries{Status RGB}}\+: Indicates the current status of the Arduino. Each color represents a different action (See color lookup table). ~\newline
+\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{Listening \& Creator Mode}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md5}
+There are two different modes in Tune\+Studio2560 which can be accessed from the \char`\"{}\+Home\char`\"{} screen. Different modes allow users to either create songs or listen to saved songs. Modes can be switched between at any time by pressing the DEL/\+CANCEL button. ~\newline
+
+
+{\bfseries{Listening Mode}} accesses the persistent storage and allows the user to listen to saved songs as well as delete old songs to make room for new ones. Also allows the user to pause and play through the song and has a song progress bar. ~\newline
+ {\bfseries{Creator Mode}} allows the user to create their own songs using the tune buttons and frequency adjuster. Creator mode allows the adding/removing of tunes, adding pauses to a song, listening to a song without saving, as well as saving the song. ~\newline
+\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{Tune Buttons \& Potentiometer}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md6}
+Each of the five tune buttons have their own LED\textquotesingle{}s which indicate if they are being pressed. The different tune buttons represent different ranges of frequency. A simple rule to remember is that the left-\/most tune button (Green) represents the lowest pitched tones and the right-\/most tune button (White) represents the highest pitched tones. ~\newline
+ However, five tones is not nearly enough to make a highly customized song. For this, there is a potentiometer known as the {\bfseries{frequency adjuster}} which allows the fine tuning of each of the tone buttons. Each tune button can play 17 distinct tones depending on the value of the frequency adjuster. ~\newline
+\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{Displays, Micro\+SD and Buzzer}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md7}
+{\bfseries{Liquid Crystal 20x4 Display}} A 20x4 Liquid Crystal display allows Tune\+Studio2560 to display messages and a simple text GUI to the user. The display tells the user messages on how to operate the device as well as lists of songs and other GUI functionality. The display communicates to the Arduino using the I2C bus.
+
+{\bfseries{4-\/Wide 7-\/Segment Display}} A four digit wide segment display allows the Arduino to display the value of the potentiometer to the Arduino. This is useful as someone may want to replicate a song but they may not know the exact values of the potentiometer. This display allows the precise adjustment of the potentiometer to achieve the desired frequency. The display is connected to the microcontroller by using two SN74\+HC595N shift registers. As a result, only three pins are needed to control the segment display. The library \href{https://github.com/bridystone/SevSegShift}{\texttt{ Sev\+Seg\+Shift}} is used for easy communication between the display and the Arduino.
+
+{\bfseries{Micro\+SD Card Reader Module}} \begin{quote}
+{\bfseries{Important}}\+: {\itshape The micro\+SD card in use must be formatted using FAT32 in order to function properly. Custom names for songs must not exceed 8 characters long.}
+
+\end{quote}
+A micro\+SD card reader which uses the SPI interface can be added to the project to allow the convenient storage of persistent data like songs. A micro\+SD card also allows a much larger storage space for songs then an EEPROM would. Micro\+SD also allows users to add custom names to songs, as well as the ability to edit the songs on your personal computer! \begin{quote}
+Tune\+Studio2560 utilizes the micro\+SD card for storing songs as well as indexing them. Songs are stored in the root directory and are stored using a \char`\"{}.\+txt\char`\"{} file extension. Custom names cannot be over 8 characters long due to limitations with the Arduino SD library. The \char`\"{}.\+txt\char`\"{} songs can be opened up using a text editor like Notepad++. When inside, they are user-\/readable which allows editing on a PC. This also means that you can share your songs with others or even create songs in the micro\+SD card without even having to touch the {\bfseries{Creator Mode}} on the Arduino! Make sure to view the {\bfseries{README.\+TXT}} file about important information. This file is automatically generated on your SD card at launch. \end{quote}
+{\bfseries{Piezo Active Buzzer}} An active piezo buzzer is used on the Arduino to playback songs and tunes. The speaker can only play one tune at a time but is quite good at 8 bit music. The speaker is fed frequency values stored in a lookup table in Tune\+Studio2560\textquotesingle{}s program code. Each frequency value the speaker plays is assigned to a specified human readable \char`\"{}pitch\char`\"{} (like FS2/F\#2).\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md8}{}\doxysection{Hardware \& Schematics}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md8}
+{\itshape Check out the wiki for a more in depth list of software libraries and hardware components.} \begin{quote}
+Parts \end{quote}
+-\/ 1x Arduino Mega 2560 $\ast$(or compatible)$\ast$ Microcontroller
+\begin{DoxyItemize}
+\item 1-\/2x Full Size Breadboard
+\item 1x Passive Buzzer
+\item 5x LEDS
+\begin{DoxyItemize}
+\item {\itshape Green, Blue, Red, Yellow, and White.}
+\end{DoxyItemize}
+\item 1x RGB LED
+\item 8x 220Ω Resistors
+\item 4x 330Ω Resistors
+\item 1x 10K Potentiometer
+\item 8x Standard Switch Buttons
+\item 1x 20x4 Liquid Crystal display $\ast$(I2C Protocol)$\ast$
+\item 1x Micro\+SD Card Adapter w/ SPI Interface
+\item 2x SN74\+HC595N $\ast$(or compatible)$\ast$ Shift Registers
+\item 1x 7-\/Segment Display (4 Wide) (Common-\/\+Cathode)
+\item A lot of wires. \begin{quote}
+Schematics \end{quote}
+-\/ Electrical Schematic \mbox{[}Still WIP\mbox{]}  ~\newline
+
+\item Fritizing Diagram 
+\end{DoxyItemize}
+
+{\bfseries{\href{https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It}{\texttt{ Have these parts? Click here to learn how to build your own Tune\+Studio2560!}}}} \hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md9}{}\doxysection{Quick Start \& Usage Tutorial}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md9}
+For a more comprehensive guide with all tips \& tricks check out \href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users}{\texttt{ this wiki page}} which contains literally everything you would want to know as a user! ~\newline
+
+
+
+\begin{DoxyEnumerate}
+\item Attach your Arduino Mega 2560 to the pins in the \href{https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It}{\texttt{ build guide}}.
+\item Plug a FAT32 formatted micro\+SD card into the SD Card module. It is fine to have extra files on the SD Card. However, .txt files should be in a seperate directory to prevent Tune\+Studio from attempting to read them.
+\item Clone this repository and open it using Platform\+IO.
+\item Upload the sketch to the Arduino. Ensure that the \mbox{\hyperlink{tune__studio_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}} and \mbox{\hyperlink{tune__studio_8h_afb0ae3b364df397ab37c9a9684069431}{PERF\+\_\+\+METRICS}} macros are \char`\"{}false\char`\"{} (find them in \mbox{\hyperlink{tune__studio_8h}{tune\+\_\+studio.\+h}}).
+\item Follow the instructions on screen to view controls or check the wiki page.
+\item If the RGB LED flashes RED then check the Serial output (change \mbox{\hyperlink{tune__studio_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}} to true) and troubleshoot your problems.
+\item (OPTIONAL) Run the test case to make sure your hardware is connected properly.
+\end{DoxyEnumerate}\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md10}{}\doxysection{Installation \& Modification using VS Code}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md10}
+Tune\+Studio2560 uses the \href{https://platformio.org/}{\texttt{ Platform\+IO}} with VS Code as its build environment. As such any editing and requests must be made using Platform\+IO and not other IDEs. ~\newline
+ For a complete tutorial and breakdown of the code as well as the design philosophy of Tune\+Studio2560, check out \href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers}{\texttt{ this wiki page}} which goes into detail on the concepts of Tune\+Studio2560 and will help developers understand how to work with the code. ~\newline
+ Libraries that Tune\+Studio2560 uses are automatically downloaded by Platform\+IO. In case they are not, libraries can also be viewed in the platform.\+ini file.\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md11}{}\doxysection{Issues \& Limitations}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md11}
+Tune\+Studio2560 is a very comprehensive program allowing users to create, listen, delete, and even edit songs. However there are still some limitations with Tune\+Studio2560.
+\begin{DoxyItemize}
+\item SD card file formatting limited to FAT16/\+FAT32 only.
+\item SD library used is archived. Library should be ported to Sd\+Fat for more modern features and performance.
+\item Code is currently not compact and efficient enough to operate on the Arduino Uno.
+\item Looping functions which require high performance to operate smoothly currently lag when using debugging features such as the Serial monitor. ~\newline
+
+\item Users cannot edit their songs in Tune\+Studio2560, editing songs requires a PC to plug the micro\+SD card into.
+\item The pause time is hardcoded and currently not configurable.
+\item Users cannot configure the Tone Delay or Tone Length variables in Songs while using Tune\+Studio, adjusting these variables requires an external PC to edit the song file on the micro\+SD.
+\end{DoxyItemize}
+
+As of currently time there are no known major bugs in Tune\+Studio2560. Any bugs can be posted on the Git\+Hub or through direct contact to me. \hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md12}{}\doxysection{Future Plans}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md12}
+None of the future plans for Tune\+Studio2560 have been finalized as the product is not finished and is still in development going under major changes in both hardware and software.
+
+However, there are potential ports to two microcontrollers.
+
+\begin{quote}
+{\bfseries{Arduino Uno R3}} ~\newline
+ \end{quote}
+If possible, a potential port to the ATMega328P microcontroller is being looked into when the project is finished for the current Mega2560. Due to the ATMega328P\textquotesingle{}s limited SRAM, EEPROM, and lack of IO pins it may be impossible to port a final version of Tune\+Studio2560 but a potential \char`\"{}lite\char`\"{} version could be ported with less features eventually.
+
+\begin{quote}
+{\bfseries{Raspberry Pi Pico}} ~\newline
+ \end{quote}
+Since I personally have a Raspberry Pi Pico on hand, a potential port to the RP2040 is possible but ARM compatible libraries will have to be found and used. Due to the RP2040\textquotesingle{}s larger SRAM and flash memory it will have the ability to store larger songs in memory but likely will not have any major additional features as it is just a port. However, due to a lack of EEPROM, any potential port to the RP2040 would be required to utilize the micro\+SD card module which is optional for the Mega/\+Uno.\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md13}{}\doxysection{Contributing \& Suggestions}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md13}
+Extending Tune\+Studio2560 to other microcontrollers is still in consideration. ~\newline
+ For any software requests then feel free to request a pull. For any hardware requests you can either fork your own or message me but further expansion of hardware is unlikely. ~\newline
+ {\itshape Possible future additions\+:} ~\newline
+
+\begin{DoxyItemize}
+\item Integrate potentiometer with pause button to allow varying lengths of pause time instead of a hard coded one.
+\item Allow users to edit the tone delays for their own songs.
+\item Port Tune\+Studio2560 to other microcontrollers.
+\item Attempt to fit the SD card library on the Arduino Uno\textquotesingle{}s limited SRAM and Flash. Currently, the SD library takes up far too much space to port the SD functionallity of Tune\+Studio2560. 
+\end{DoxyItemize}\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md14}{}\doxysection{Other Notes \& Credit}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md14}
+Check out \href{https://www.arduino.cc/}{\texttt{ Arduino}} to build your own fun prototyping projects. ~\newline
+ Check out \href{https://platformio.org/}{\texttt{ Platform\+IO}} which provides a convenient way to create new Arduino projects with VS Code. ~\newline
+
+
+Tune\+Studio2560 would not be possible without the open source libraries that have been made publicly available for users of Arduino.
+
+\begin{quote}
+\href{https://github.com/johnrickman/LiquidCrystal_I2C?utm_source=platformio&utm_medium=piohome}{\texttt{ {\bfseries{Liquid Crystal I2C}}}} \end{quote}
+Used for communication directly with the 20x4 LCD. ~\newline
+
+
+\begin{quote}
+\sout{\href{https://github.com/adafruit/SD?utm_source=platformio&utm_medium=piohome}{\texttt{ {\bfseries{SD}} by Adafruit}}} (DEPRECATED) \end{quote}
+Allows easy direct communication with the SD.
+
+\begin{quote}
+\href{https://github.com/greiman/SdFat}{\texttt{ {\bfseries{Sd\+Fat}} by greiman}} \end{quote}
+Allows a more modern and fast interaction with a micro\+SD card module.
+
+\begin{quote}
+\href{https://github.com/bridystone/SevSegShift?utm_source=platformio&utm_medium=piohome}{\texttt{ {\bfseries{Sev\+Seg\+Shift}} by Dean Reading \& Jens Breidenstien}} \end{quote}
+A well documented useful library for communicating with Common Cathode or Common Anode 7 segment displays using Shift Registers. ~\newline
+
+
+\begin{quote}
+\href{https://github.com/ThrowTheSwitch/Unity}{\texttt{ {\bfseries{Unity}} by Throw the Switch}} \end{quote}
+A very comprehensive test case library made for C.\hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md15}{}\doxysection{License}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md15}
+\href{https://choosealicense.com/licenses/mit/}{\texttt{ MIT}} {\itshape Yay for free open source software!} \hypertarget{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md16}{}\doxysubsection{Contact}\label{md__c___users_jacob__documents__git_hub__tune_studio2560__r_e_a_d_m_e_autotoc_md16}
+{\itshape Feel free to contact me with any questions. Email communication is preferred.} ~\newline
+ Email\+: \href{mailto:jluvisi2021@gmail.com}{\texttt{ jluvisi2021@gmail.\+com}} ~\newline
+ Phone\+: (+1) 310-\/465-\/8872 ~\newline
+ 

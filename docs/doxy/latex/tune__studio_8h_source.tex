@@ -1,0 +1,223 @@
+\hypertarget{tune__studio_8h_source}{}\doxysection{tune\+\_\+studio.\+h}
+\label{tune__studio_8h_source}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/tune\_studio.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/tune\_studio.h}}
+\mbox{\hyperlink{tune__studio_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{13  \textcolor{comment}{// Header Guard}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef tune\_studio\_h}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define tune\_studio\_h}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <LiquidCrystal\_I2C.h>} }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <SevSegShift.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{song_8h}{studio-\/libs/song.h}}>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{state_8h}{studio-\/libs/state.h}}>} }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{digital_write_fast_8h}{lib/digitalWriteFast.h}}>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{pitches_8h}{studio-\/libs/pitches.h}}>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{song_8h}{studio-\/libs/song.h}}>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define DEBUG false}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define PERF\_METRICS false}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define PRGM\_MODE 1}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define FAST\_ADC (PRGM\_MODE == 2 ? true : false)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#if FAST\_ADC}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#ifndef cbi}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define cbi(sfr, bit) (\_SFR\_BYTE(sfr) \&= \string~\_BV(bit))}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#ifndef sbi}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#define sbi(sfr, bit) (\_SFR\_BYTE(sfr) |= \_BV(bit))}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{75 \textcolor{comment}{// Below are various different constant definitions for the compiler to use.}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{84 \textcolor{keyword}{const} \textcolor{keywordtype}{char} VERSION\_ID[] \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} = \textcolor{stringliteral}{"{}1.2.2-\/R4"{}};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{87 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}{SHIFT\_PIN\_DS}} = 5;}
+\DoxyCodeLine{89 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}{SHIFT\_PIN\_STCP}} = 6;}
+\DoxyCodeLine{91 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a1c796f73e188890598417c3a75699db9}{SHIFT\_PIN\_SHCP}} = 7;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{94 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_aafc508d7a2df49fd453b2ad0fe9183a2}{SD\_CS\_PIN}} = 53;}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{97 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_aee5f9b19e744edee38a9cc45647d3ffc}{RGB\_BRIGHTNESS}} = 200;}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{100 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ab57134a9d394425eff6f34639e6faf6b}{RGB\_RED}} = 9;}
+\DoxyCodeLine{102 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a94288e106ee873072b3b5584c0b34c9c}{RGB\_GREEN}} = 10;}
+\DoxyCodeLine{104 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_acbf8c647a8c409ee1287cff36d78ab94}{RGB\_BLUE}} = 11;}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{108 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}{BTN\_TONE\_1}} = 27;}
+\DoxyCodeLine{110 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}{BTN\_TONE\_2}} = 25;}
+\DoxyCodeLine{112 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}{BTN\_TONE\_3}} = 28;}
+\DoxyCodeLine{114 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}{BTN\_TONE\_4}} = 26;}
+\DoxyCodeLine{116 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}{BTN\_TONE\_5}} = 24;}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{125 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_aeab6b4c397f22df9226d5d173ee2db3a}{BTN\_TO\_INDEX}}(uint8\_t x) \{ \textcolor{keywordflow}{return} x == \mbox{\hyperlink{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}{BTN\_TONE\_1}} ? 0 : x == \mbox{\hyperlink{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}{BTN\_TONE\_2}} ? 1 : x == \mbox{\hyperlink{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}{BTN\_TONE\_3}} ? 2 : x == \mbox{\hyperlink{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}{BTN\_TONE\_4}} ? 3 : x == \mbox{\hyperlink{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}{BTN\_TONE\_5}} ? 4 : UINT8\_MAX; \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{128 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a4b5cadefa46f275080ab7dd1fa8f541e}{BTN\_ADD\_SELECT}} = 2;}
+\DoxyCodeLine{130 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a520116d70512af5147acb8b3d8176f39}{BTN\_DEL\_CANCEL}} = 3;}
+\DoxyCodeLine{132 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_adfee3aec37c8289c5862da6ef6206d99}{BTN\_OPTION}} = 4;}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{135 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a38404a5e3be507a76699bc8b03769a74}{TONE\_FREQ}} = PIN\_A7;}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{138 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}{SPEAKER\_1}} = 34;}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{141 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}{LCD\_COLS}} = 20;}
+\DoxyCodeLine{143 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}{LCD\_ROWS}} = 4;}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{146 \textcolor{keyword}{constexpr} uint16\_t \mbox{\hyperlink{tune__studio_8h_af5f30789080613c982b635a628438b5a}{DEBOUNCE\_RATE}} = 500;}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{comment}{// Maximum number of notes in a song.}}
+\DoxyCodeLine{149 \textcolor{comment}{// Note! Adjusting requires the editing of the song\_size\_t typedef in "{}song.h"{}}}
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#if PRGM\_MODE == 0}}
+\DoxyCodeLine{151 \textcolor{keyword}{constexpr} \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\_SONG\_LENGTH}} = 64;}
+\DoxyCodeLine{152 \textcolor{preprocessor}{\#elif PRGM\_MODE == 2}}
+\DoxyCodeLine{153 \textcolor{keyword}{constexpr} \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\_SONG\_LENGTH}} = 512;}
+\DoxyCodeLine{154 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{155 \textcolor{keyword}{constexpr} \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\_SONG\_LENGTH}} = 255;}
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{159 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a509cd23c352fcf0c7c1c8bcd657ac2eb}{MIN\_SONG\_LENGTH}} = 8;}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{162 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a016b23e0049b75b843b8308435b76e69}{MAX\_SONG\_AMOUNT}} = 255;}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{169 \textcolor{keyword}{const} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} \textcolor{keywordtype}{byte} \mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\_LCD\_CHARS}}[6][8] = \{}
+\DoxyCodeLine{170 \{0x04, 0x06, 0x05, 0x04, 0x04, 0x0C, 0x1C, 0x0C\},}
+\DoxyCodeLine{171 \{0x10, 0x18, 0x1C, 0x1E, 0x1E, 0x1C, 0x18, 0x10\},}
+\DoxyCodeLine{172 \{0x00, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x1B, 0x00\},}
+\DoxyCodeLine{173 \{0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F\},}
+\DoxyCodeLine{174 \{0x1F, 0x1F, 0x1F, 0x10, 0x10, 0x10, 0x10, 0x10\},}
+\DoxyCodeLine{175 \{0x1F, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1F\}}
+\DoxyCodeLine{176 \};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{179 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ae56cba5b79efe301a7fa89742805f4d0}{CUSTOM\_CHAR\_AMOUNT}} = \textcolor{keyword}{sizeof}(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\_LCD\_CHARS}})/\textcolor{keyword}{sizeof}(\mbox{\hyperlink{tune__studio_8h_ab1dc73131a8afb527327734bc3a2c4f9}{CUSTOM\_LCD\_CHARS}}[0]);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{182 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a096bbf44639829ab8764bdc1b99dd5c2}{MUSIC\_NOTE\_SYMBOL}} = 0x00;}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{185 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_ad2e0a56fd8a62a2a209fea8c049ca73f}{PLAYING\_SONG\_SYMBOL}} = 0x01;}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{188 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a66b44d668d0d66bee44cf1fa5ba23a4e}{PAUSE\_SONG\_SYMBOL}} = 0x02;}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{191 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a50a4cb21d76d401f8a8b5b2d0df2b586}{PROGRESS\_BLOCK\_SYMBOL}} = 0x03;}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{194 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_af4c04bb39fe93bdf9742af5ed1f2861a}{FINISHED\_SONG\_SYMBOL}} = 0x04;}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{197 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_aef417c7854c7baa3f87c1f85329d05d7}{PROGRESS\_BLOCK\_UNFILLED\_SYMBOL}} = 0x05;}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{comment}{// There are 85 different frequencies which can be used for making songs in TuneStudio2560.}}
+\DoxyCodeLine{204 \textcolor{comment}{// Each of these is called a "{}note"{} which contains the frequency to play the buzzer and a human readable "{}pitch"{}.}}
+\DoxyCodeLine{205 \textcolor{comment}{// The pitch is as defined on the musical chromatic scale.}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{208 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}{TONE\_BUTTON\_AMOUNT}} = 5;}
+\DoxyCodeLine{210 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a109d7ea1e23a45e34028db39be6a6d17}{TONES\_PER\_BUTTON}} = 17;}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{213 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}{DEFAULT\_NOTE\_DELAY}} = 80;}
+\DoxyCodeLine{215 \textcolor{keyword}{constexpr} uint8\_t \mbox{\hyperlink{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}{DEFAULT\_NOTE\_LENGTH}} = 50;}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{225 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structnote}{note}} \{}
+\DoxyCodeLine{227   \textcolor{keyword}{const} \textcolor{keywordtype}{char} * \textcolor{keyword}{const} \mbox{\hyperlink{structnote_a232b3dd44ffe06e3cd9c5a78969be07e}{pitch}};}
+\DoxyCodeLine{229   \textcolor{keyword}{const} uint16\_t \mbox{\hyperlink{structnote_ab3ff06c0de426c3029a074a3ae65cbee}{frequency}};}
+\DoxyCodeLine{230 \} \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\_t}};}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{238 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structbutton_frequencies}{buttonFrequencies}} \{}
+\DoxyCodeLine{240   \textcolor{keyword}{const} uint8\_t \mbox{\hyperlink{structbutton_frequencies_a1842a4e1bdd8fb6f5647f800c27cce17}{pin}};}
+\DoxyCodeLine{242   \textcolor{keyword}{const} \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{structbutton_frequencies_aff69eab0bb6e0b841e39cc89a285b1af}{notes}}[\mbox{\hyperlink{tune__studio_8h_a109d7ea1e23a45e34028db39be6a6d17}{TONES\_PER\_BUTTON}}];}
+\DoxyCodeLine{243 \} \mbox{\hyperlink{tune__studio_8h_a9c63d14c6b25b834eb135c377f56452d}{buttonFrequencies\_t}};}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{251 \textcolor{keyword}{const} \mbox{\hyperlink{structbutton_frequencies}{buttonFrequencies\_t}} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} \mbox{\hyperlink{tune__studio_8h_a1831015283358fdc0d1c7216d88210bd}{PROGRAM\_NOTES}}[\mbox{\hyperlink{tune__studio_8h_af843d9187757d48b7ab33b0f6688bdd4}{TONE\_BUTTON\_AMOUNT}}] \{}
+\DoxyCodeLine{252     \{\mbox{\hyperlink{tune__studio_8h_a4cf922197e38cce19925d8f1d71dff7c}{BTN\_TONE\_1}}, \{\{pitch\_b0, 31\}, \{pitch\_c1, 33\}, \{pitch\_cs1, 35\}, \{pitch\_d1, 37\}, \{pitch\_ds1, 39\}, \{pitch\_e1, 41\}, \{pitch\_f1, 44\}, \{pitch\_fs1, 46\}, \{pitch\_g1, 49\}, \{pitch\_gs1, 52\}, \{pitch\_a1, 55\}, \{pitch\_as1, 58\}, \{pitch\_b1, 62\}, \{pitch\_c2, 65\}, \{pitch\_cs2, 69\}, \{pitch\_d2, 73\}, \{pitch\_ds2, 78\}\}\},}
+\DoxyCodeLine{253     \{\mbox{\hyperlink{tune__studio_8h_af7967689d6a524f5f0aa6e51c080db2f}{BTN\_TONE\_2}}, \{\{pitch\_e2, 82\}, \{pitch\_f2, 87\}, \{pitch\_fs2, 93\}, \{pitch\_g2, 98\}, \{pitch\_gs2, 104\}, \{pitch\_a2, 110\}, \{pitch\_as2, 117\}, \{pitch\_b2, 123\}, \{pitch\_c3, 131\}, \{pitch\_cs3, 139\}, \{pitch\_d3, 147\}, \{pitch\_ds3, 156\}, \{pitch\_e3, 165\}, \{pitch\_f3, 175\}, \{pitch\_fs3, 185\}, \{pitch\_g3, 196\}, \{pitch\_gs3, 208\}\}\},}
+\DoxyCodeLine{254     \{\mbox{\hyperlink{tune__studio_8h_ac5a4f299746c7f40b9196333a4fa9eb7}{BTN\_TONE\_3}}, \{\{pitch\_a3, 220\}, \{pitch\_as3, 233\}, \{pitch\_b3, 247\}, \{pitch\_c4, 262\}, \{pitch\_cs4, 277\}, \{pitch\_d4, 294\}, \{pitch\_ds4, 311\}, \{pitch\_e4, 330\}, \{pitch\_f4, 349\}, \{pitch\_fs4, 370\}, \{pitch\_g4, 392\}, \{pitch\_gs4, 415\}, \{pitch\_a4, 440\}, \{pitch\_as4, 466\}, \{pitch\_b4, 494\}, \{pitch\_c5, 523\}, \{pitch\_cs5, 554\}\}\},}
+\DoxyCodeLine{255     \{\mbox{\hyperlink{tune__studio_8h_a63e1ff4646948562cfe81e20a5a30c12}{BTN\_TONE\_4}}, \{\{pitch\_d5, 587\}, \{pitch\_ds5, 622\}, \{pitch\_e5, 659\}, \{pitch\_f5, 698\}, \{pitch\_fs5, 740\}, \{pitch\_g5, 784\}, \{pitch\_gs5, 831\}, \{pitch\_a5, 880\}, \{pitch\_as5, 932\}, \{pitch\_b5, 988\}, \{pitch\_c6, 1047\}, \{pitch\_cs6, 1109\}, \{pitch\_d6, 1175\}, \{pitch\_ds6, 1245\}, \{pitch\_e6, 1319\}, \{pitch\_f6, 1397\}, \{pitch\_fs6, 1480\}\}\},}
+\DoxyCodeLine{256     \{\mbox{\hyperlink{tune__studio_8h_adeffd67e6caeebd8d7a2d119638b1ecf}{BTN\_TONE\_5}}, \{\{pitch\_g6, 1568\}, \{pitch\_gs6, 1661\}, \{pitch\_a6, 1760\}, \{pitch\_as6, 1865\}, \{pitch\_b6, 1976\}, \{pitch\_c7, 2093\}, \{pitch\_cs7, 2217\}, \{pitch\_d7, 2349\}, \{pitch\_ds7, 2489\}, \{pitch\_e7, 2637\}, \{pitch\_f7, 2794\}, \{pitch\_fs7, 2960\}, \{pitch\_g7, 3136\}, \{pitch\_gs7, 3322\}, \{pitch\_a7, 3520\}, \{pitch\_as7, 3729\}, \{pitch\_b7, 3951\}\}\}}
+\DoxyCodeLine{257 \};}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{266 \textcolor{keyword}{const} \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{tune__studio_8h_a8c0494dcf9e2d76031d1872fea492aef}{PAUSE\_NOTE}} = \{ \textcolor{stringliteral}{"{}PS"{}}, (\textcolor{keyword}{const} uint16\_t)1 \};}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{275 \textcolor{keyword}{const} \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{tune__studio_8h_a9f62d506cb115ad03404613a5d2f4b6c}{EMPTY\_NOTE}} = \{ \textcolor{stringliteral}{"{}0000"{}}, (\textcolor{keyword}{const} uint16\_t)0 \};}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{282 \textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{tune__studio_8h_a733327e75d327c2b033dee3cafacdff5}{ROOT\_DIR}}[] = \textcolor{stringliteral}{"{}/"{}};}
+\DoxyCodeLine{284 \textcolor{keyword}{const} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} \textcolor{keywordtype}{char} \mbox{\hyperlink{tune__studio_8h_aab10c2755d1db4b098e0ef1a5b9430d8}{PROGRESS\_LABEL}}[] = \textcolor{stringliteral}{"{}PROGRESS:"{}};}
+\DoxyCodeLine{286 \textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{tune__studio_8h_a4b679425a1c685eed5ca06b4d82ae5a0}{FILE\_TXT\_EXTENSION}}[] = \textcolor{stringliteral}{"{}.txt"{}};}
+\DoxyCodeLine{288 \textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{tune__studio_8h_a84a64bcd6e0a1a4d8e99270f219c8ad6}{README\_FILE}}[] = \textcolor{stringliteral}{"{}README.TXT"{}};}
+\DoxyCodeLine{296 \textcolor{keyword}{const} \mbox{\hyperlink{tune__studio_8h_a1463b78518fd47d76ed64307cdedac4d}{PROGMEM}} \textcolor{keywordtype}{char} \mbox{\hyperlink{tune__studio_8h_a983fbfb6eaf83047e286754b0488caa6}{OPTIONAL\_NAMING\_CHARACTERS}}[] = \{ \textcolor{charliteral}{'A'},\textcolor{charliteral}{'B'},\textcolor{charliteral}{'C'},\textcolor{charliteral}{'D'},\textcolor{charliteral}{'E'},\textcolor{charliteral}{'F'},\textcolor{charliteral}{'G'},\textcolor{charliteral}{'H'},\textcolor{charliteral}{'I'},\textcolor{charliteral}{'J'},\textcolor{charliteral}{'K'},\textcolor{charliteral}{'L'},\textcolor{charliteral}{'M'},\textcolor{charliteral}{'N'},\textcolor{charliteral}{'O'},\textcolor{charliteral}{'P'},\textcolor{charliteral}{'Q'},\textcolor{charliteral}{'R'},\textcolor{charliteral}{'S'},\textcolor{charliteral}{'T'},\textcolor{charliteral}{'U'},\textcolor{charliteral}{'V'},\textcolor{charliteral}{'W'},\textcolor{charliteral}{'X'},\textcolor{charliteral}{'Y'},\textcolor{charliteral}{'Z'}, \textcolor{charliteral}{'0'},\textcolor{charliteral}{'1'},\textcolor{charliteral}{'2'},\textcolor{charliteral}{'3'},\textcolor{charliteral}{'4'},\textcolor{charliteral}{'5'},\textcolor{charliteral}{'6'},\textcolor{charliteral}{'7'},\textcolor{charliteral}{'8'},\textcolor{charliteral}{'9'}, \textcolor{charliteral}{'\_'} \};}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{307 \textcolor{keyword}{extern} LiquidCrystal\_I2C \mbox{\hyperlink{tune__studio_8h_a0b3886fc5d22cd9c3db5f0da7b01a2ce}{lcd}};}
+\DoxyCodeLine{308 }
+\DoxyCodeLine{315 \textcolor{keyword}{extern} SevSegShift \mbox{\hyperlink{tune__studio_8h_a7967ed4f18105d53aefe34e96d8e13ce}{segDisplay}};}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{327 \textcolor{keyword}{extern} \mbox{\hyperlink{class_song}{Song<MAX\_SONG\_LENGTH>}} \mbox{\hyperlink{tune__studio_8h_a28afc8e6d990f11741be48e710ace49f}{prgmSong}};}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{330 \textcolor{preprocessor}{\#define SPI\_CLOCK SD\_SCK\_MHZ(1)}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \textcolor{comment}{// Try to select the best SD card configuration.}}
+\DoxyCodeLine{333 \textcolor{preprocessor}{\#if HAS\_SDIO\_CLASS}}
+\DoxyCodeLine{334 \textcolor{preprocessor}{\#define SD\_CONFIG SdioConfig(FIFO\_SDIO)}}
+\DoxyCodeLine{335 \textcolor{preprocessor}{\#elif  ENABLE\_DEDICATED\_SPI}}
+\DoxyCodeLine{336 \textcolor{preprocessor}{\#define SD\_CONFIG SdSpiConfig(SD\_CS\_PIN, DEDICATED\_SPI, SPI\_CLOCK)}}
+\DoxyCodeLine{337 \textcolor{preprocessor}{\#else  }\textcolor{comment}{// HAS\_SDIO\_CLASS}}
+\DoxyCodeLine{338 \textcolor{preprocessor}{\#define SD\_CONFIG SdSpiConfig(SD\_CS\_PIN, SHARED\_SPI, SPI\_CLOCK)}}
+\DoxyCodeLine{339 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// HAS\_SDIO\_CLASS}}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{344 \textcolor{keywordtype}{bool} \mbox{\hyperlink{tune__studio_8h_a7da257a468bb931002f0ed9b79d90305}{is\_interrupt}}();}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{352 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a5c8c46147c22df1bbea1dafd0137d9a8}{delay\_ms}}(\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} milliseconds);}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{359 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a7e2ece690821267d286ff4821e025939}{isr\_btn\_handle}}();}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{367 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a898ace50e0bb46c6ade75cdfd315dd3d}{update\_state}}(\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{StateID}} state);}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{375 \textcolor{keywordtype}{bool} \mbox{\hyperlink{tune__studio_8h_a751b1071ae1dc089835601e0aca8358d}{is\_pressed}}(\textcolor{keyword}{const} uint8\_t buttonPin);}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{385 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a9386d65ad053df2a1adf6903f75a8792}{print\_lcd}}(\textcolor{keyword}{const} \_\_FlashStringHelper* text, uint8\_t charDelay = 150);}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{396 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a5a978cd011bc94902689b04925ca6754}{print\_scrolling}}(\textcolor{keyword}{const} \_\_FlashStringHelper* text, uint8\_t cursorY, uint8\_t charDelay);}
+\DoxyCodeLine{397 }
+\DoxyCodeLine{403 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a0b054358c6ee471e4be199b22ddca445}{lcd\_clear\_row}}(uint8\_t row);}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{417 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_af1ea9647da2198982b72c4e825120eb5}{set\_selected\_page}}(uint8\_t page);}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{422 uint8\_t \mbox{\hyperlink{tune__studio_8h_adb814100fc443252753e7c6ae379eaf6}{get\_selected\_page}}();}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{429 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a4c29562acdad606a577408dd8abc25c2}{set\_selected\_song}}(uint8\_t song);}
+\DoxyCodeLine{430 }
+\DoxyCodeLine{436 uint8\_t \mbox{\hyperlink{tune__studio_8h_a7efb8415d72df1cd92f12b7998fe75a0}{get\_selected\_song}}();}
+\DoxyCodeLine{437 }
+\DoxyCodeLine{447 uint16\_t \mbox{\hyperlink{tune__studio_8h_a26f66aac20632e8caaaa2f797d19023f}{get\_current\_freq}}();}
+\DoxyCodeLine{448 }
+\DoxyCodeLine{449 }
+\DoxyCodeLine{454 \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{tune__studio_8h_a0a05e82ad1b207c0c95881c6a4774028}{get\_current\_tone}}(uint8\_t toneButton);}
+\DoxyCodeLine{455 }
+\DoxyCodeLine{462 \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{tune__studio_8h_acf0f9b68e6df821a93f361d78f31d066}{get\_note\_from\_freq}}(\textcolor{keyword}{const} uint16\_t frequency);}
+\DoxyCodeLine{463 }
+\DoxyCodeLine{470 \mbox{\hyperlink{structnote}{note\_t}} \mbox{\hyperlink{tune__studio_8h_a4c38b2cc661404b6e33159c8f7c24ec4}{get\_note\_from\_pitch}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* \textcolor{keyword}{const} pitch);}
+\DoxyCodeLine{471 }
+\DoxyCodeLine{480 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_ae3bc360cfa9682139e87c79973fcded9}{sd\_save\_song}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} * \textcolor{keyword}{const} fileName, \mbox{\hyperlink{class_song}{Song<MAX\_SONG\_LENGTH>}} song);}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{488 \textcolor{keyword}{const} \textcolor{keywordtype}{char}* \mbox{\hyperlink{tune__studio_8h_aa84dbe6e60ec0541e7d39983e4e528f0}{sd\_get\_file}}(uint8\_t index);}
+\DoxyCodeLine{489 }
+\DoxyCodeLine{499 \textcolor{keywordtype}{bool} \mbox{\hyperlink{tune__studio_8h_af4fc318f751ef7ab7cb146c553f7bc72}{sd\_songcpy}}(\mbox{\hyperlink{class_song}{Song<MAX\_SONG\_LENGTH>}} \&song, \textcolor{keyword}{const} \textcolor{keywordtype}{char} * \textcolor{keyword}{const} fileName);}
+\DoxyCodeLine{500 }
+\DoxyCodeLine{506 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a48d42d6622c1973cc66e5ce6fff4dd21}{sd\_rem}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* \textcolor{keyword}{const} fileName);}
+\DoxyCodeLine{507 }
+\DoxyCodeLine{512 \textcolor{keywordtype}{void} \mbox{\hyperlink{tune__studio_8h_a29ed6f6a625e942c0fea91a7c081070b}{sd\_make\_readme}}();}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514 }
+\DoxyCodeLine{530 \textcolor{keyword}{const} \textcolor{keywordtype}{char}* \mbox{\hyperlink{tune__studio_8h_ac93f9e7f2f690936d955d0bad29bb254}{pgm\_pcpyr}}(uint8\_t btnIndex, uint8\_t noteIndex);}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532 \textcolor{preprocessor}{\#if DEBUG == true}}
+\DoxyCodeLine{537 \textcolor{keyword}{const} \textcolor{keywordtype}{char}* \mbox{\hyperlink{tune__studio_8h_a70897c02b858c8c0f08518d19a5b71da}{get\_active\_time}}();}
+\DoxyCodeLine{538 }
+\DoxyCodeLine{539 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{540 }
+\DoxyCodeLine{541 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

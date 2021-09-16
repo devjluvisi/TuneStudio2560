@@ -1,0 +1,213 @@
+\hypertarget{class_creator_mode_create_new}{}\doxysection{Creator\+Mode\+Create\+New Class Reference}
+\label{class_creator_mode_create_new}\index{CreatorModeCreateNew@{CreatorModeCreateNew}}
+
+
+{\ttfamily \#include $<$states.\+h$>$}
+
+Inheritance diagram for Creator\+Mode\+Create\+New\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_creator_mode_create_new}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_creator_mode_create_new_aa889b71a8b987213cba688eab9cb708f}{Creator\+Mode\+Create\+New}} ()
+\item 
+\mbox{\hyperlink{class_creator_mode_create_new_a22d8eeb535bfe305f23752d22fb48e89}{$\sim$\+Creator\+Mode\+Create\+New}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}{init}} () override
+\begin{DoxyCompactList}\small\item\em The method to be run when the program state first loads. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_creator_mode_create_new_a158a7ff6826c93af01ea467135b4b7f7}{loop}} () override
+\begin{DoxyCompactList}\small\item\em A method to be run on an infinite loop after the \mbox{\hyperlink{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}{init()}} method is run. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_creator_mode_create_new_a3b2a7f283403e07e3dfc713269ffd2a8}{print\+\_\+song\+\_\+lcd}} ()
+\begin{DoxyCompactList}\small\item\em Prints the current song to the LCD and accounts for scrolling. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_creator_mode_create_new_a76fec88b1f9c1a84445c21459cca4537}{get\+\_\+lcd\+\_\+required\+\_\+rows}} ()
+\begin{DoxyCompactList}\small\item\em Get the amount of pages that the song should have. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_creator_mode_create_new_a3827310b819f9550cf23276e149ff15a}{set\+\_\+save\+\_\+name}} (char file\+Name\mbox{[}9\mbox{]})
+\begin{DoxyCompactList}\small\item\em Allows the user to create their own name for the song. Uses an infinite loop which briefly stops the program while the user chooses a name. \end{DoxyCompactList}\item 
+const char \mbox{\hyperlink{class_creator_mode_create_new_abcd9f6018274a49d4bc93aeaa59c57a7}{get\+\_\+character\+\_\+from\+\_\+analog}} ()
+\begin{DoxyCompactList}\small\item\em Gets a character from the alphabet depending on the current reading by an analog input (the potentiometer). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long \mbox{\hyperlink{class_creator_mode_create_new_a7494a40e4e85513aeb21b00f2120704c}{previous\+Update}}
+\begin{DoxyCompactList}\small\item\em The last time the information text was updated. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_creator_mode_create_new_a171991e3a4e2049478108c57d058c24e}{last\+Button\+Press}}
+\begin{DoxyCompactList}\small\item\em The last time a button was pressed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_creator_mode_create_new_a33aafadeabbdf3873489921440818849}{option\+Waiting}}
+\begin{DoxyCompactList}\small\item\em If the user has pressed the option button and is waiting for an additonal command. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_creator_mode_create_new_ab5950d36c719b5f8c607d44ab8793a3d}{play\+Sound}}
+\begin{DoxyCompactList}\small\item\em If the loop should play a sound on the next iteration (user has pressed a button). \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_creator_mode_create_new_a9a893886df4fd294b01e901810817014}{scrolled\+Lines}}
+\begin{DoxyCompactList}\small\item\em The amount of lines the user has scrolled on the lcd. Needed for determining what notes to show. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_creator_mode_create_new_aa889b71a8b987213cba688eab9cb708f}\label{class_creator_mode_create_new_aa889b71a8b987213cba688eab9cb708f}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{CreatorModeCreateNew()}{CreatorModeCreateNew()}}
+{\footnotesize\ttfamily Creator\+Mode\+Create\+New\+::\+Creator\+Mode\+Create\+New (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a22d8eeb535bfe305f23752d22fb48e89}\label{class_creator_mode_create_new_a22d8eeb535bfe305f23752d22fb48e89}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!````~CreatorModeCreateNew@{$\sim$CreatorModeCreateNew}}
+\index{````~CreatorModeCreateNew@{$\sim$CreatorModeCreateNew}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{$\sim$CreatorModeCreateNew()}{~CreatorModeCreateNew()}}
+{\footnotesize\ttfamily Creator\+Mode\+Create\+New\+::$\sim$\+Creator\+Mode\+Create\+New (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_creator_mode_create_new_abcd9f6018274a49d4bc93aeaa59c57a7}\label{class_creator_mode_create_new_abcd9f6018274a49d4bc93aeaa59c57a7}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!get\_character\_from\_analog@{get\_character\_from\_analog}}
+\index{get\_character\_from\_analog@{get\_character\_from\_analog}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{get\_character\_from\_analog()}{get\_character\_from\_analog()}}
+{\footnotesize\ttfamily const char Creator\+Mode\+Create\+New\+::get\+\_\+character\+\_\+from\+\_\+analog (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gets a character from the alphabet depending on the current reading by an analog input (the potentiometer). 
+
+Converts the analog read signal from the potentiometer into one character A-\/Z, 0-\/9 and underscore.
+
+This is used when deciding a name for a new song to save.
+
+\begin{DoxyReturn}{Returns}
+The character that matches the analog signal.
+
+A character matching the analog signal. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_creator_mode_create_new_a76fec88b1f9c1a84445c21459cca4537}\label{class_creator_mode_create_new_a76fec88b1f9c1a84445c21459cca4537}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!get\_lcd\_required\_rows@{get\_lcd\_required\_rows}}
+\index{get\_lcd\_required\_rows@{get\_lcd\_required\_rows}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{get\_lcd\_required\_rows()}{get\_lcd\_required\_rows()}}
+{\footnotesize\ttfamily uint8\+\_\+t Creator\+Mode\+Create\+New\+::get\+\_\+lcd\+\_\+required\+\_\+rows (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Get the amount of pages that the song should have. 
+
+Get the number of rows the LCD can have.
+
+\begin{DoxyReturn}{Returns}
+The number of rows required to store the current amount of notes the user has added to the song.
+
+A number of rows. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}\label{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!init@{init}}
+\index{init@{init}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void Creator\+Mode\+Create\+New\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+The method to be run when the program state first loads. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{Program\+State}}.
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a158a7ff6826c93af01ea467135b4b7f7}\label{class_creator_mode_create_new_a158a7ff6826c93af01ea467135b4b7f7}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!loop@{loop}}
+\index{loop@{loop}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void Creator\+Mode\+Create\+New\+::loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+A method to be run on an infinite loop after the \mbox{\hyperlink{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}{init()}} method is run. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{Program\+State}}.
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a3b2a7f283403e07e3dfc713269ffd2a8}\label{class_creator_mode_create_new_a3b2a7f283403e07e3dfc713269ffd2a8}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!print\_song\_lcd@{print\_song\_lcd}}
+\index{print\_song\_lcd@{print\_song\_lcd}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{print\_song\_lcd()}{print\_song\_lcd()}}
+{\footnotesize\ttfamily void Creator\+Mode\+Create\+New\+::print\+\_\+song\+\_\+lcd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Prints the current song to the LCD and accounts for scrolling. 
+
+Prints the current song data onto the LCD display. \mbox{\Hypertarget{class_creator_mode_create_new_a3827310b819f9550cf23276e149ff15a}\label{class_creator_mode_create_new_a3827310b819f9550cf23276e149ff15a}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!set\_save\_name@{set\_save\_name}}
+\index{set\_save\_name@{set\_save\_name}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{set\_save\_name()}{set\_save\_name()}}
+{\footnotesize\ttfamily void Creator\+Mode\+Create\+New\+::set\+\_\+save\+\_\+name (\begin{DoxyParamCaption}\item[{char}]{file\+Name\mbox{[}9\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Allows the user to create their own name for the song. Uses an infinite loop which briefly stops the program while the user chooses a name. 
+
+Sets the name of which the song should be saved into permanent storage. Modifies the \char`\"{}file\+Name\char`\"{} global variable to hold the new value.
+
+\begin{DoxyReturn}{Returns}
+The name the user has decided on. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_creator_mode_create_new_a171991e3a4e2049478108c57d058c24e}\label{class_creator_mode_create_new_a171991e3a4e2049478108c57d058c24e}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!lastButtonPress@{lastButtonPress}}
+\index{lastButtonPress@{lastButtonPress}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{lastButtonPress}{lastButtonPress}}
+{\footnotesize\ttfamily uint8\+\_\+t Creator\+Mode\+Create\+New\+::last\+Button\+Press\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The last time a button was pressed. 
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a33aafadeabbdf3873489921440818849}\label{class_creator_mode_create_new_a33aafadeabbdf3873489921440818849}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!optionWaiting@{optionWaiting}}
+\index{optionWaiting@{optionWaiting}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{optionWaiting}{optionWaiting}}
+{\footnotesize\ttfamily bool Creator\+Mode\+Create\+New\+::option\+Waiting\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the user has pressed the option button and is waiting for an additonal command. 
+
+\mbox{\Hypertarget{class_creator_mode_create_new_ab5950d36c719b5f8c607d44ab8793a3d}\label{class_creator_mode_create_new_ab5950d36c719b5f8c607d44ab8793a3d}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!playSound@{playSound}}
+\index{playSound@{playSound}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{playSound}{playSound}}
+{\footnotesize\ttfamily bool Creator\+Mode\+Create\+New\+::play\+Sound\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the loop should play a sound on the next iteration (user has pressed a button). 
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a7494a40e4e85513aeb21b00f2120704c}\label{class_creator_mode_create_new_a7494a40e4e85513aeb21b00f2120704c}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!previousUpdate@{previousUpdate}}
+\index{previousUpdate@{previousUpdate}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{previousUpdate}{previousUpdate}}
+{\footnotesize\ttfamily unsigned long Creator\+Mode\+Create\+New\+::previous\+Update\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The last time the information text was updated. 
+
+\mbox{\Hypertarget{class_creator_mode_create_new_a9a893886df4fd294b01e901810817014}\label{class_creator_mode_create_new_a9a893886df4fd294b01e901810817014}} 
+\index{CreatorModeCreateNew@{CreatorModeCreateNew}!scrolledLines@{scrolledLines}}
+\index{scrolledLines@{scrolledLines}!CreatorModeCreateNew@{CreatorModeCreateNew}}
+\doxysubsubsection{\texorpdfstring{scrolledLines}{scrolledLines}}
+{\footnotesize\ttfamily uint8\+\_\+t Creator\+Mode\+Create\+New\+::scrolled\+Lines\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The amount of lines the user has scrolled on the lcd. Needed for determining what notes to show. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/states/\mbox{\hyperlink{states_8h}{states.\+h}}\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/src/studio-\/libs/states/\mbox{\hyperlink{cm__create__new_8cpp}{cm\+\_\+create\+\_\+new.\+cpp}}\end{DoxyCompactItemize}

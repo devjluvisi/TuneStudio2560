@@ -7,40 +7,348 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>MakerStudio2560</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
     </head>
-    <body>
+    <body style="font-family: 'Trebuchet MS'">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
         <header>
-            <h1 class="text-center">MakerStudio2560</h1>
+            <h1 style="text-align: center;">MakerStudio2560</h1>
+            <h3 style="text-align: center;"><i><em><u>A song creation, editing and playback tool for TuneStudio2560</u></em></i></h3>
+            <a href="javascript:void(0);" id="toggleDark">Toggle Dark Mode (Dark Mode: Off)</a>
+            <br />
+            <a href="javascript:void(0);" id="changeFont">Change Font (Current: Trebuchet MS)</a>
         </header>
         <hr />
         <main>
-            <section class="container">
+            <section>
                 <details>
+                    <!-- Show Website Instructions -->
+                    <!-- The content of instructions automatically changes depending on the mode. -->
                     <summary>
-                        <strong>Click to View Instructions</strong>
+                        <strong style="cursor: pointer;">Click to View Instructions</strong>
                     </summary>
-                    <p>
-                        Hello
-                    </p>
+                    <div style="padding: 1%; border: 8px; border-style: groove;">
+                        <div id="selectModeInstructions">
+                            <i>To view editing mode instructions, select/create a file.</i><br /><br />
+                            <strong>MakerStudio2560</strong> is a song creation, editing, and playback tool made to assist the TuneStudio2560 for users who wish to create their own songs
+                            outside of TuneStudio2560.
+                            <br />
+                            <strong>MakerStudio2560</strong> was created to allow the fast creation of songs outside of TuneStudio2560. 
+                            <br />
+                            The benefits of <strong>MakerStudio2560</strong> include an interactive
+                            <em>Web GUI</em> when creating songs which allows the creation of complex songs in a faster manner then what is possible on TuneStudio2560.
+                            <br />
+                            Although TuneStudio2560 provides a user friendly way in creating songs, <strong>MakerStudio2560</strong> provides more functionallity with a keyboard and cursor control scheme.
+                            <br />
+                            Of course, <strong>MakerStudio2560</strong> is completely backwards compatible with TuneStudio2560 in its handling of Song files, so any songs you create in TuneStudio2560 will work here and any songs you make here will work in TuneStudio2560.
+                            <br />
+                            Start by selecting a song file already on your SD card or creating a new song file now.
+                        </div>
+                        <div id="editingModeInstructions">
+                            <!-- represents a list of different links a user can click for instructions. -->
+                            <div id="editingModeInstructionContentMenu">
+                                <i>To view select mode instructions, exit editing mode.</i><br /><br />
+                                <strong>MakerStudio2560</strong> follows a similar pattern to creating songs as done on TuneStudio2560, however there are some notable feature additions.
+                                <br />
+                                The instructions for editing mode are sectioned off into different parts.
+                                <br />
+                                <span style="color: purple"><strong>Click on a menu item to view information.</strong></span>
+                                <ul>
+                                    <li><a id="i01" href="javascript:void(0);"><i>Quick Start Guide</i></a></li>
+                                    <li><a id="i02" href="javascript:void(0);">Auto-Save</a></li>
+                                    <li><a id="i03" href="javascript:void(0);">UI Customization</a></li>
+                                    <li><a id="i04" href="javascript:void(0);">Editing Song Attributes</a></li>
+                                    <li><a id="i05" href="javascript:void(0);">Editing Song Data</a></li>
+                                    <li><a id="i06" href="javascript:void(0);">Song Playback</a></li>
+                                    <li><a id="i07" href="javascript:void(0);">Downloading/Uploading Songs</a></li>
+                                    
+                                </ul>
+                            </div>
+                            <!-- Represents the content of whichever link a user clicks. -->
+                            <div id="editingModeInstructionsContent" style="display: none;">
+                                <span style="padding-bottom: 20px;">Viewing Instructions for: <strong id="iContentViewLabel"></strong></span>
+                                <br />
+                                <a id="ix0" href="javascript:void(0);">&#8592; Go Back</a>
+                                <hr />
+                                <p id="i01_c" style="display: none;">
+                                After you have uploaded or created a new song file you first should adjust the attributes which are above the <q>Song Data</q> text.
+                                <br />
+                                These attributes represent keys for both TuneStudio2560 and MakerStudio2560 which are used to playback your song and recognize it.
+                                <br />
+                                MakerStudio2560 has custom attributes such as <q>Author</q>, <q>Creation Date</q>, and <q>Last Edit Date</q>. These are not read by TuneStudio2560.
+                                <br />
+                                When you have adjusted your attributes, add or remove notes by clicking on the individual <q><button aria-label="add" style="padding: 5px; margin: 0; background: none;"> <i class="fas fa-plus-circle fa-lg" style="color: green;"></i> </button>  <button aria-label="rem" style="padding: 5px; margin: 0; background: none;"> <i class="fas fa-trash-alt fa-lg" style="color: red;"></i> </button></q>
+                                buttons.
+                                <br />
+                                Note that MakerStudio2560 allows you to have a song as small as one in length but TuneStudio2560 requires at least 8 notes to play.
+                                <br />
+                                There is also no set limit on notes in MakerStudio2560, so make sure the number of notes you add is less then your Arduino's maximum allowed setting. (255 default)
+                                <br />
+                                When you have finished adding notes, you can playback your song using the media controls as well as adjust the volume of the song playback.
+                                <br />
+                                There is also a variety of other UI settings to change like font size, font type, dark mode.
+                                <br />
+                                Your progress is automatically saved every 5 seconds by default. Adjust it by clicking on the dropdown with the green text.
+                                <br />
+                                When finished, click on <q>Download</q> button to download a song file or <q>Copy</q> to copy the text of the song file.
+                                <br />
+                                MakerStudio2560 and TuneStudio2560 communicate using the same file format so songs between them can be interchanged at will.
+                                </p>
+                                <p id="i02_c" style="display: none;">
+                                Your progress on MakerStudio2560 is <strong>automatically saved</strong>.
+                                <br />
+                                The interval for which your progress is saved can be adjusted by clicking on the dropdown with green text.
+                                <br />
+                                AutoSave can be enabled or disabled by clicking on a checkbox.
+                                <br />
+                                The interval can be adjusted by changing the value of the interval text box.
+                                <br />
+                                When finished you must click <q>Save Settings</q> or else your auto save settings will not save.
+                                </p>
+                                <p id="i03_c" style="display: none;">
+                                There is a variety of UI customization which users can do on MakerStudio2560.
+                                <br />
+                                <br />
+
+                                <strong>Toggle Dark Theme</strong>: Toggle the dark/light theme by clicking on the <q>Toggle Dark Mode</q> hyperlink.
+                                <br />
+                                Your dark mode settings are automatically saved.
+                                <br />
+
+                                <strong>Change Font Family</strong>: Users can adjust their font to be one of five pre-selected fonts by clicking on the <q>Change Font</q> hyperlink.
+                                <br />
+                                The changes to the font family are automatically saved.
+                                <br />
+
+                                <strong>Change Font Size</strong>: The font size for the song data table is adjustable by clicking on the <q>+</q> or <q>-</q> buttons.
+                                <br />
+                                Changes to the font size will not be saved and only last for the duration that the website instance is running.
+
+                                </p>
+                                <p id="i04_c" style="display: none;">
+                                Each song which is created has individual song attributes which can be adjusted.
+                                <br />
+                                <strong>Song Name</strong>: An attribute read by the Arduino. Tells the name of the song file. Must be between 1-8 characters.
+                                <br />
+                                <strong>Song Size</strong>: A non-adjustable attribute tells the length of the song excluding the <q>END</q> note.
+                                <br />
+                                <strong>Author</strong>: An attribute NOT read by the Arduino. Tells the author of the song and is saved into the song file text/data. Attribute can be read by MakerStudio2560 for future use.
+                                <br />
+                                <strong>Tone Length</strong>: An attribute read by the Arduino. Adjust the length that each individual tone in the song plays for (in milliseconds). Numbers must be above 0 and below 255.
+                                <br />
+                                <strong>Tone Delay</strong>: An attribute read by the Arduino. Adjust the delay between each of the individual tones in the song.
+                                <br />
+                                <strong>Creation Date</strong>: An attribute NOT read by the Arduino. Describes the creation date of the song file in MakerStudio2560. Can be read by MakerStudio2560.
+                                <br />
+                                <strong>Last Edit Date</strong>: An attribute NOT read by the Arduino. Describes the last edit date of the song file in MakerStudio2560. Can be read by MakerStudio2560.
+                            </p>
+                                <p id="i05_c" style="display: none;">
+                                Editing song data works somewhat similar to that of TuneStudio2560.
+                                <br />
+                                MakerStudio2560 starts with a default <q>B0</q> note for new songs.
+                                <br />
+                                Additional notes can be <strong>added</strong> by clicking on the <q><button aria-label="add" style="padding: 5px; margin: 0; background: none;"> <i class="fas fa-plus-circle fa-lg" style="color: green;"></i> </button></q> button.
+                                <br />
+                                When a new note is added, its default value is set the same as the note it was just added from.
+                                <br />
+                                Notes can be <strong>deleted</strong> by clicking on the <q><button aria-label="rem" style="padding: 5px; margin: 0; background: none;"> <i class="fas fa-trash-alt fa-lg" style="color: red;"></i> </button></q> button.
+                                <br />
+                                There must be <strong>at least</strong> one note in the song excluding the <q>END</q> note.
+                                <br />
+                                After a note has been added, its pitch can be adjusted by clicking on the dropdown.
+                                <br />
+                                When a new pitch is selected, the frequency column automatically updates with the new frequency (in hz) of that note.
+                                <br />
+                                MakerStudio2560 is different then TuneStudio2560 in that notes can be changed at any point in the song and notes can be inserted/removed at any point in the track.
+                                </p>
+                                <p id="i06_c" style="display: none;">
+                                Similar to on TuneStudio2560, songs can be played back while editing.
+                                <br />
+                                The box below the Song Data is the media control box and controls song playback.
+                                <br />
+                                A text header at the top describes the current state of the playback.
+                                <br />
+                                The <strong>progress bar</strong> and time describe the current progress of the track in real life seconds.
+                                <br />
+                                The <strong>fast forward/rewind buttons</strong> allow a user to skip 10% ahead or 10% behind in the songs track.
+                                <br />
+                                The <strong>volume slider</strong> allows the volume of the song to be adjusted during playback.
+                                <br />
+                                The <strong>Play/Pause Button</strong> allows a song to be started or paused at any point.
+                                <br />
+                                The <strong>Restart Button</strong> allows a song to be reset and played again when finished.
+                                <br />
+                                The <strong>Stop Song Button</strong> immediately stops the song at any point and resets progress.
+                                <br />
+                                The track that the media control area reads is updated every time an auto-save is run.
+                                </p>
+                                <p id="i07_c" style="display: none;">
+                                When satisfied with a song, an author can choose to download the song or copy its contents.
+                                <br />
+                                The <q>Download</q> button will download (client-side) a .txt file with the name being the name of the song.
+                                <br />
+                                This new song file is automatically prepared to run on the Arduino.
+                                <br />
+                                Simply drag the file onto the Arduino SD card and run it!
+                                <br />
+                                The <q>Copy</q> button will copy all of the data to the clipboard instead of downloading a file. This data can then be pasted anywhere.
+                                </p>
+                            </div>                           
+                        </div>
+                    </div>
+                        
                 </details>
             </section>
-            <section class="container border">
-                <p>Work in Progress</p>
+            <section>
+                <article>
+                <a href="index.html">Go to Reference Site</a>
+                <br />
+                <a target="_blank" href="https://github.com/devjluvisi/TuneStudio2560">Go to GitHub Repository</a>
+                <br />
+                </article>
+            </section>
+            <section id="modeScreen" style="border-style: double; margin-left: 10%; margin-right: 10%; margin-top: 20px;">
+                
+                <!-- File Selection Screen -->
+                <div id="selectionMode">
+                    <span><strong>-- File Selection --</strong></span>
+                    <br />
+                    <span>Choose a file on your computer or create a new file to begin.</span>
+                    <br />
+                    <span>If you have been previously editing a song then you can continue where you left off.</span>
+                    <br />
+                    <span><i>Files selected must be valid song files (.txt extension) and must have proper formatting and names.</i></span>
+                    <div style="margin-top: 5%; margin-bottom: 5%;"> </div>
+                    <div style="margin-left: 8px; padding: 8px;">
+                        <input type="button" id="resumeFile" style="font-family: Arial; font-weight: 400; font-size: 13.3333px;" title="Resume from your previous saved song." value="Resume Edit">
+                        <input type="button" id="newFile" style="font-family: Arial; font-weight: 400; font-size: 13.3333px;" title="Create a new song file." value="Create File">
+                        <input type="file" id="getFile" name="getFile" title="Select a file from your computer.">
+                    </div>
+                    <div style="margin-top: 1%; margin-bottom: 1%;"> </div>
+                </div>
+                
+                <!-- File Editing Screen -->
+                <div id="editMode">
+                    <span><strong>-- Song Editing --</strong></span>
+                    <br />
+                    <span>You are currently editing a song. <a id="returnSelectMode" href="javascript:void(0);">Click to go back to file selection.</a></span>
+                    <br />
+                    <span>Make sure to view editing mode instructions by clicking on <i>"Click to View Instructions"</i> dropdown.</span>
+                    <br />
+                    <span><strong style="color: red;">IMPORTANT</strong> Please ensure the song you are creating does not exceed the maximum allowed number of notes. <strong title="You can check how many notes you are allowed to have in your song by going on TuneStudio2560 and entering Creator Mode. After adding a note, the top text bar should display the maximum allowed number.">Learn More</strong></span>
+                    <br />
+                    <details style="padding-left: 5px;">
+                        <summary id="autoSaveMessage" title="Click to configure." style="cursor: pointer; margin-bottom: 0px; padding-bottom: 0px;">
+                            <span style="color: rgb(60, 207, 68)"><i id="autoSaveMessageText">Your progress is automatically saved in your browser when you exit.</i></span>
+                        </summary>
+                        <p style="padding-left: 2%; margin: 0px;">
+                            <span><strong>Configure Auto Save</strong> <i>(This browser only)</i></span>
+                            <br />
+                            <label for="autoSaveEnabled">Auto Save Enabled: </label><input type="checkbox" id="autoSaveEnabled">
+                            <br />
+                            <span>Interval (in seconds): </span> <span id="autoSaveInterval" contenteditable="true" style="display: inline-block; border: solid 1px black; border-radius: 4px; width: 30px;"></span>
+                            <br />
+                            <a id="autoSaveSettingsSaveLink" href="javascript:void(0);">Save Settings</a>
+                            <br />
+                        </p>
+                    </details>
+                    <hr />
+                    <span><strong>Song Name:</strong> <span id="attr_songName" contenteditable="true" style="text-transform: uppercase; display: inline-block; border: solid 1px black; border-radius: 4px; min-width: 30px; max-width: 85px;"></span> </span>
+                    <br />
+                    <span><strong>Song Size:</strong> <span id="attr_songSize"></span> </span>
+                    <br />
+                    <span><strong>Author:</strong> <span id="attr_songAuthor" contenteditable="true" style="display: inline-block; border: solid 1px black; border-radius: 4px; min-width: 30px; max-width: 135px;"></span> </span>
+                    <br />
+                    <span><strong>Tone Length (ms):</strong> <span id="attr_toneLength" contenteditable="true" style="display: inline-block; border: solid 1px black; border-radius: 4px; min-width: 20px; max-width: 35px;"></span> </span>
+                    <br />
+                    <span><strong>Tone Delay (ms):</strong> <span id="attr_toneDelay" contenteditable="true" style="display: inline-block; border: solid 1px black; border-radius: 4px; min-width: 20px; max-width: 35px;"></span> </span>
+                    <br />
+                    <span><strong>Pause Delay (ms):</strong> <span id="attr_pauseDelay"><i>Coming Soon...</i></span> </span>
+                    <br />
+                    <br />
+                    <span><i>Creation Date: </i> <span id="attr_creationDate"></span> </span>
+                    <br />
+                    <span><i>Last Edit: </i> <span id="attr_lastEditDate"></span> </span>
+                    <br />
+                    <br />
+                    <span style="margin-left: 1%;"><strong><i>Song Data</i></strong></span>
+                    <span>(Font Size</span>
+                    <button style="cursor: pointer; width: 25px; height: 25px;" id="fontIncreaseButton">+</button>
+                    <button style="cursor: pointer; width: 25px; height: 25px;" id="fontDecreaseButton">-</button>
+                    <span>)</span>
+                    <div>
+                        <div style="border-style: solid; border-radius: 2px; padding: 5px; margin: 1%; min-width: 15%; max-width: 400px; margin-top: 0px; height: 200px; overflow-y: scroll;">
+    
+                            <table id="songDataTable" border="2" cellpadding="2" cellspacing="0" style="font-size: 16px;">
+                                <!-- To be filled with data -->
+                                
+                              </table>
+                        </div>
+                    </div>
+                    <div style="border-style: solid; border-radius: 2px; padding: 1%; min-width: 20%; max-width: 300px; margin-left: 1%; margin-right: 1%;">
+                        <span id="playingLabel">Press Play to Start Song</span>
+                        <hr />
+                        <progress id="songProgressBar" value="0" max="100"></progress>
+                        <span id="currentProgressTime">0:00</span>
+                        <span>|</span>
+                        <span id="endingTime">0:00</span>
+                        <br />
+                        <button id="skipBack" aria-label="Rewind Song" style="padding: 6px;" class="fas fa-angle-double-left fa-sm"></button>
+                        <button id="skipForward" aria-label="Fast Forward Song" style="padding: 6px;" class="fas fa-angle-double-right fa-sm"></button>
+                        <hr />
+                        <i class="fas fa-volume-up fa-fw"></i>
+                        <input id="songVolume" title="song volume adjuster" type="range" min="1" max="100" value="50">
+                        <br />
+                        <div style="margin-top: 5px; margin-bottom: 5px;"></div>
+                        <button id="playPauseSong" aria-label="Play/Pause Song" style="padding: 6px;" class="fas fa-play-circle fa-lg"></button>
+                        <button id="restartSong" aria-label="Restart Song" style="padding: 6px;" class="fas fa-sync fa-lg"></button>
+                        <button id="stopSong" aria-label="Stop Song" style="padding: 6px;" class="fas fa-stop-circle fa-lg"></button>
+                    </div>
+                    <hr style="margin-bottom: 0px;" />
+                    <div style="padding: 8px;">
+                        <button id="downloadBtn" style="padding: 5px;" title="Download a .txt file of your song.">Download</button>
+                        <button id="copyBtn" style="padding: 5px;" title="Copy the song data onto your clipboard.">Copy</button>
+                        <button id="restartBtn" style="padding: 5px;" title="Delete all the song data and restart from defaults.">Restart</button>
+                    </div>
+                    
+                </div>
             </section>
         </main>
-        <footer>
-
+        
+        <footer style="margin-bottom: 2%; display: none;">
+            <hr style="margin-top: 28px;" />
+            <article style="text-align: center;">
+                <p>
+                    &#128151; <strong>Thank you for checking out MakerStudio2560!</strong> &#128151;
+                    <br />
+                    If you enjoyed the website and/or TuneStudio2560 then make sure to reach out to me.
+                    <br />
+                    This is the biggest project I have created yet and I worked on it while being a full time student so I am so glad I finally finished it.
+                    <br />
+                    I am not very familiar with JavaScript at all so the code is quite messy but it was a good new project to try.
+                    <br />
+                    For any suggestions please reach out to me via my contact information below.
+                    <hr style="width: 50%;" />
+                    <strong>Personal Email: <a href="mailto:jluvisi2021@gmail.com">jluvisi2021@gmail.com</a>  </strong>
+                    <br />
+                    <strong>Academic Email: <a href="mailto:jacob.luvisi@sjsu.edu">jacob.luvisi@sjsu.edu</a></strong>
+                    <br />
+                    <strong>Linkedin: <a href="#!">Jacob Luvisi</a></strong>
+                    <br />
+                    <strong>Discord:</strong> Interryne#0943
+                    <hr style="width: 50%;" />
+                </p>
+            </article>
+            
         </footer>
     </body>
 </html>
+<!-- Load the JavaScript at the end of the HTML rendering. -->
+<script src="files/MakerStudioScript.js"></script>

@@ -47,7 +47,7 @@
  * Mode 2 = High Features, Larger Songs <br />
  * 
  */
-#define PRGM_MODE 1
+#define PRGM_MODE 0
 
 
 /**
@@ -241,7 +241,6 @@ typedef struct buttonFrequencies {
   /** @brief The array of notes which the tune button represents. */
   const note_t notes[TONES_PER_BUTTON];
 } buttonFrequencies_t;
-
 
 /**
  * @brief An array of all possible tones which can be played.

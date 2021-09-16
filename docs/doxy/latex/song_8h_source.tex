@@ -1,0 +1,54 @@
+\hypertarget{song_8h_source}{}\doxysection{song.\+h}
+\label{song_8h_source}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/song.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/song.h}}
+\mbox{\hyperlink{song_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#ifndef song\_h}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define song\_h}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{_new_tone_8h}{NewTone.h}}>}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{37 \textcolor{keyword}{typedef} uint8\_t \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{40 \textcolor{keyword}{constexpr} uint16\_t \mbox{\hyperlink{song_8h_a23fcef524940ce4e61885302fc1d37bf}{PAUSE\_DELAY}} = 500;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{48 \textcolor{keyword}{template} < song\_\textcolor{keywordtype}{size\_t} MAX\_SONG\_SIZE >}
+\DoxyCodeLine{49 \textcolor{keyword}{class }\mbox{\hyperlink{class_song}{Song}} \{}
+\DoxyCodeLine{50   \textcolor{keyword}{private}:}
+\DoxyCodeLine{52   uint8\_t \mbox{\hyperlink{class_song_a4a189e14d704271ca1b52cc08a77fcaa}{\_pin}}; }
+\DoxyCodeLine{54   uint8\_t \mbox{\hyperlink{class_song_ac9b047a46326fae4696c9402d0d48d01}{\_noteDelay}}; }
+\DoxyCodeLine{56   uint8\_t \mbox{\hyperlink{class_song_a78fba15e2f3bdf354c31c2e791148e74}{\_noteLength}}; }
+\DoxyCodeLine{58   \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{class_song_af7bb75e05877192b46b304cdc2fd79c0}{\_currSize}};}
+\DoxyCodeLine{66   uint16\_t \mbox{\hyperlink{class_song_a029ef90a4f03863b8ab7e5621a34ca47}{\_songData}}[MAX\_SONG\_SIZE];}
+\DoxyCodeLine{67   \textcolor{keyword}{public}:}
+\DoxyCodeLine{75     \mbox{\hyperlink{class_song_ad01c815a93101d90bb7c3e51472296aa}{Song}}(uint8\_t pin, uint8\_t noteLength, uint16\_t noteDelay);}
+\DoxyCodeLine{76     }
+\DoxyCodeLine{83   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_ac61cfa06013e8b60cfa3b5bfc557e34c}{play\_note}}(uint16\_t \mbox{\hyperlink{structnote}{note}});}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{88   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_song_a56548d668b114ce19490f45c97516903}{is\_song\_full}}();}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{95   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_affbb4697ee9f37c44924700bab44cde0}{add\_note}}(uint16\_t \mbox{\hyperlink{structnote}{note}});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{101   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_ac0868cd60874f710378535bfacdaae08}{add\_pause}}();}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{106   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_a1b867eb95eff59b2091e6a4305cb607e}{remove\_note}}();}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_a26d680a66151bcee9fe2d406d05db1c3}{play\_song}}();}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_a2007cedad2b7590d73404aed0099a3cf}{clear}}();}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{125   uint16\_t \mbox{\hyperlink{class_song_a586d30972638bb1299411ef6847afeac}{get\_note}}(\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} index);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{130   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_song_ab8e4aa1bd0bfdd8e43579c78cdcf479f}{is\_empty}}();}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{136   \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{class_song_a3db408513d08eb3d29c87b5e83e67587}{get\_size}}();}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{145   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_song_a8c584ed395732cdd9e281031581f86d6}{set\_attributes}}(uint8\_t noteLength, uint16\_t noteDelay);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{150   uint8\_t \mbox{\hyperlink{class_song_a7ec1cbcdd49b1605021428050f5cd337}{get\_note\_length}}();}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{155   uint16\_t \mbox{\hyperlink{class_song_ada4cc2e4fa223e8f6d7af739f897733e}{get\_note\_delay}}();}
+\DoxyCodeLine{156 \};}
+\DoxyCodeLine{157 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

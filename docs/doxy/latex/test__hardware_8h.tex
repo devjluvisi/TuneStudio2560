@@ -1,0 +1,90 @@
+\hypertarget{test__hardware_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/debug/test\+\_\+hardware.h File Reference}
+\label{test__hardware_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/test\_hardware.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/test\_hardware.h}}
+
+
+A header file for unit testing on Tune\+Studio2560.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{test__hardware_8h_a61de5a5d6a82119d7c056deed51a4ef8}{test\+\_\+rgb\+\_\+led}} ()
+\begin{DoxyCompactList}\small\item\em Tests if the RGB led is working by lighting it up multiple times and reading the values from each of the pins. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test__hardware_8h_a5e00a17145e7cc52341e4ebe46bb66e3}{test\+\_\+buttons}} ()
+\begin{DoxyCompactList}\small\item\em Tests if the buttons are working by reading the value of each button and checking if it is HIGH. Buttons are HIGH if they are not being pressed and are LOW if they are being pressed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test__hardware_8h_a6619c9d01a62e1f4bf7cf39825dd8984}{test\+\_\+speaker1}} ()
+\begin{DoxyCompactList}\small\item\em Tests the first speaker. Plays 3 tones and then asks the user to input if the speaker is working or not. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test__hardware_8h_ab163fbd9ad360950acfacc63945614d2}{test\+\_\+potentiometer}} ()
+\begin{DoxyCompactList}\small\item\em Asks the user to adjust the value of the potentiometer to test its functionality. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test__hardware_8h_a204874673777a6048541fcfe921f880a}{test\+\_\+lcd}} ()
+\begin{DoxyCompactList}\small\item\em Displays text on the LCD and asks the user to confirm if the text on the LCD exists. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A header file for unit testing on Tune\+Studio2560. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/07-\/26
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__hardware_8h_a5e00a17145e7cc52341e4ebe46bb66e3}\label{test__hardware_8h_a5e00a17145e7cc52341e4ebe46bb66e3}} 
+\index{test\_hardware.h@{test\_hardware.h}!test\_buttons@{test\_buttons}}
+\index{test\_buttons@{test\_buttons}!test\_hardware.h@{test\_hardware.h}}
+\doxysubsubsection{\texorpdfstring{test\_buttons()}{test\_buttons()}}
+{\footnotesize\ttfamily void test\+\_\+buttons (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Tests if the buttons are working by reading the value of each button and checking if it is HIGH. Buttons are HIGH if they are not being pressed and are LOW if they are being pressed. 
+
+\mbox{\Hypertarget{test__hardware_8h_a204874673777a6048541fcfe921f880a}\label{test__hardware_8h_a204874673777a6048541fcfe921f880a}} 
+\index{test\_hardware.h@{test\_hardware.h}!test\_lcd@{test\_lcd}}
+\index{test\_lcd@{test\_lcd}!test\_hardware.h@{test\_hardware.h}}
+\doxysubsubsection{\texorpdfstring{test\_lcd()}{test\_lcd()}}
+{\footnotesize\ttfamily void test\+\_\+lcd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Displays text on the LCD and asks the user to confirm if the text on the LCD exists. 
+
+\mbox{\Hypertarget{test__hardware_8h_ab163fbd9ad360950acfacc63945614d2}\label{test__hardware_8h_ab163fbd9ad360950acfacc63945614d2}} 
+\index{test\_hardware.h@{test\_hardware.h}!test\_potentiometer@{test\_potentiometer}}
+\index{test\_potentiometer@{test\_potentiometer}!test\_hardware.h@{test\_hardware.h}}
+\doxysubsubsection{\texorpdfstring{test\_potentiometer()}{test\_potentiometer()}}
+{\footnotesize\ttfamily void test\+\_\+potentiometer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Asks the user to adjust the value of the potentiometer to test its functionality. 
+
+\mbox{\Hypertarget{test__hardware_8h_a61de5a5d6a82119d7c056deed51a4ef8}\label{test__hardware_8h_a61de5a5d6a82119d7c056deed51a4ef8}} 
+\index{test\_hardware.h@{test\_hardware.h}!test\_rgb\_led@{test\_rgb\_led}}
+\index{test\_rgb\_led@{test\_rgb\_led}!test\_hardware.h@{test\_hardware.h}}
+\doxysubsubsection{\texorpdfstring{test\_rgb\_led()}{test\_rgb\_led()}}
+{\footnotesize\ttfamily void test\+\_\+rgb\+\_\+led (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Tests if the RGB led is working by lighting it up multiple times and reading the values from each of the pins. 
+
+\mbox{\Hypertarget{test__hardware_8h_a6619c9d01a62e1f4bf7cf39825dd8984}\label{test__hardware_8h_a6619c9d01a62e1f4bf7cf39825dd8984}} 
+\index{test\_hardware.h@{test\_hardware.h}!test\_speaker1@{test\_speaker1}}
+\index{test\_speaker1@{test\_speaker1}!test\_hardware.h@{test\_hardware.h}}
+\doxysubsubsection{\texorpdfstring{test\_speaker1()}{test\_speaker1()}}
+{\footnotesize\ttfamily void test\+\_\+speaker1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Tests the first speaker. Plays 3 tones and then asks the user to input if the speaker is working or not. 
+

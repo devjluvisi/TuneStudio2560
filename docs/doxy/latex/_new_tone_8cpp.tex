@@ -1,0 +1,63 @@
+\hypertarget{_new_tone_8cpp}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/lib/\+New\+Tone/\+New\+Tone.cpp File Reference}
+\label{_new_tone_8cpp}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/lib/NewTone/NewTone.cpp@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/lib/NewTone/NewTone.cpp}}
+{\ttfamily \#include \char`\"{}New\+Tone.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_new_tone_8cpp_ab37918ae1d254355a85a52ff48ffbba7}{New\+Tone}} (uint8\+\_\+t pin, unsigned long frequency, unsigned long length)
+\item 
+void \mbox{\hyperlink{_new_tone_8cpp_a94640e484da3b0e0d7989bdecdb88b4c}{no\+New\+Tone}} (uint8\+\_\+t pin)
+\item 
+\mbox{\hyperlink{_new_tone_8cpp_ad39420cdd896dd12c68e36313139d0a5}{ISR}} (TIMER1\+\_\+\+COMPA\+\_\+vect)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long \mbox{\hyperlink{_new_tone_8cpp_ac1ff9e5163f9420a38bda1f26e423167}{\+\_\+nt\+\_\+time}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{_new_tone_8cpp_abc8c6d63c09090f3ba84ee8389ddbb2e}{\+\_\+pin\+Mask}} = 0
+\item 
+volatile uint8\+\_\+t $\ast$ \mbox{\hyperlink{_new_tone_8cpp_ad33a4316f277159432ea41e8c2eb2822}{\+\_\+pin\+Output}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_new_tone_8cpp_ad39420cdd896dd12c68e36313139d0a5}\label{_new_tone_8cpp_ad39420cdd896dd12c68e36313139d0a5}} 
+\index{NewTone.cpp@{NewTone.cpp}!ISR@{ISR}}
+\index{ISR@{ISR}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{ISR()}{ISR()}}
+{\footnotesize\ttfamily ISR (\begin{DoxyParamCaption}\item[{TIMER1\+\_\+\+COMPA\+\_\+vect}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_new_tone_8cpp_ab37918ae1d254355a85a52ff48ffbba7}\label{_new_tone_8cpp_ab37918ae1d254355a85a52ff48ffbba7}} 
+\index{NewTone.cpp@{NewTone.cpp}!NewTone@{NewTone}}
+\index{NewTone@{NewTone}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{NewTone()}{NewTone()}}
+{\footnotesize\ttfamily void New\+Tone (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pin,  }\item[{unsigned long}]{frequency,  }\item[{unsigned long}]{length }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{_new_tone_8cpp_a94640e484da3b0e0d7989bdecdb88b4c}\label{_new_tone_8cpp_a94640e484da3b0e0d7989bdecdb88b4c}} 
+\index{NewTone.cpp@{NewTone.cpp}!noNewTone@{noNewTone}}
+\index{noNewTone@{noNewTone}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{noNewTone()}{noNewTone()}}
+{\footnotesize\ttfamily void no\+New\+Tone (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pin }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_new_tone_8cpp_ac1ff9e5163f9420a38bda1f26e423167}\label{_new_tone_8cpp_ac1ff9e5163f9420a38bda1f26e423167}} 
+\index{NewTone.cpp@{NewTone.cpp}!\_nt\_time@{\_nt\_time}}
+\index{\_nt\_time@{\_nt\_time}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{\_nt\_time}{\_nt\_time}}
+{\footnotesize\ttfamily unsigned long \+\_\+nt\+\_\+time}
+
+\mbox{\Hypertarget{_new_tone_8cpp_abc8c6d63c09090f3ba84ee8389ddbb2e}\label{_new_tone_8cpp_abc8c6d63c09090f3ba84ee8389ddbb2e}} 
+\index{NewTone.cpp@{NewTone.cpp}!\_pinMask@{\_pinMask}}
+\index{\_pinMask@{\_pinMask}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{\_pinMask}{\_pinMask}}
+{\footnotesize\ttfamily uint8\+\_\+t \+\_\+pin\+Mask = 0}
+
+\mbox{\Hypertarget{_new_tone_8cpp_ad33a4316f277159432ea41e8c2eb2822}\label{_new_tone_8cpp_ad33a4316f277159432ea41e8c2eb2822}} 
+\index{NewTone.cpp@{NewTone.cpp}!\_pinOutput@{\_pinOutput}}
+\index{\_pinOutput@{\_pinOutput}!NewTone.cpp@{NewTone.cpp}}
+\doxysubsubsection{\texorpdfstring{\_pinOutput}{\_pinOutput}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t$\ast$ \+\_\+pin\+Output}
+

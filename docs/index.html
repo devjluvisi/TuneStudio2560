@@ -3,8 +3,18 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<!-- -->
+<!-- Trust me, there is nothing fancy you want to steal here. :P -->
+<!-- -->
+<!--
+  _______                _____ _             _ _      ___  _____   __   ___  
+ |__   __|              / ____| |           | (_)    |__ \| ____| / /  / _ \ 
+    | |_   _ _ __   ___| (___ | |_ _   _  __| |_  ___   ) | |__  / /_ | | | |
+    | | | | | '_ \ / _ \\___ \| __| | | |/ _` | |/ _ \ / /|___ \| '_ \| | | |
+    | | |_| | | | |  __/____) | |_| |_| | (_| | | (_) / /_ ___) | (_) | |_| |
+    |_|\__,_|_| |_|\___|_____/ \__|\__,_|\__,_|_|\___/____|____/ \___/ \___/                                                                     
+-->
 
-<!-- Trust me, there is nothing fancy you want to steal here. -->
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -17,8 +27,6 @@
                 background-color: rgb(44, 47, 54);
                 color: white;
             }
-            
-            
         </style>
     </head>
     <body id="#body" style="padding-bottom: 5%;">
@@ -29,14 +37,34 @@
             <div style="text-align: center;">
                 <h1>TuneStudio2560 Reference Site</h1>
                 <h3>A song creation and playback device made for the Arduino Mega 2560.</h3>
-                <p>More updates to come in the future!</p>
+                <p>Welcome to the official website for TuneStudio2560!<br/> Here, there is a variety of additional information, documentation, and tools to help you get started and learn more!</p>
             </div>
             <a id="#darkToggle" href="javascript:toggleDark()" style="text-align: left;">Toggle Dark Mode (Dark Mode: On)</a>
         </header>
         <hr />
         <main>
+            <!-- Quick Access -->
             <section style="padding-bottom: 15px;">
-                <h3>Repository</h3>
+                <h3 style="padding-bottom: 0px; margin-bottom: 0px;">Quick Access &#11088;</h3>
+                <span><i>Hover over links to view information.</i></span>
+                <div style="margin-top: 10px; margin-bottom: 10px;"></div>
+                <article style="font-weight: bold;">
+                    <a href="#MakerStudio2560" title="An interactive Web tool which allows you to create and edit songs for TuneStudio2560.">> MakerStudio2560</a>
+                    <br />
+                    <a href="#Changelog" title="A changelog of major differences between releases.">> Changelog</a>
+                    <br />
+                    <a href="content/TuneStudio2560 Product Brief.pdf" target="_blank" title="View an online PDF document detailing a simple, comprehensive and high-level product brief of TuneStudio2560.">> Product Brief (PDF)</a>
+                    <br />
+                    <a href="doxy/html/index.html" target="_blank" title="View the complete code documentation as created by Doxygen.">> Doxygen Documentation</a>
+                    <br />
+                    <a href="#DownloadCenter" title="Download release builds and other development tools.">> Download Center</a>
+                    <br />
+                    <a href="#UserContent" title="View real life images and a video tutorial of TuneStudio2560.">> Images & Video Tutorial/Brief</a>
+                    <br />
+                    <a href="#FutureTodoList" title="Major changes planned for the future.">> Future Todo List</a>
+                </article>
+                <br />
+                <span><i>External Links</i></span>
                 <article style="font-weight: bold;">
                     ~ <a href="https://github.com/devjluvisi/TuneStudio2560" target="_blank">Main GitHub Repository</a>
                     <br />
@@ -46,8 +74,9 @@
                 </article>
             </section>
             <hr />
-            <section>
-                <h3><u><i>(NEW)</i></u> MakerStudio2560</h3>
+            <!-- MakerStudio2560 Link -->
+            <section id="MakerStudio2560">
+                <h3><u><i>(NEW)</i></u> MakerStudio2560 &#128736;</h3>
                 <article>
                     <p>
                         TuneStudio2560 allows the user editing of files on the SD card by individually editing every .txt file in the root "/" directory.<br />
@@ -74,8 +103,9 @@
                 </article>
             </section>
             <hr />
-            <section>
-                <h3>Changelog</h3>
+            <!-- Version Changelog -->
+            <section id="Changelog">
+                <h3>Changelog &#128203;</h3>
                 <article>
                     <p>
                         The changelog shows all changes for major releases in TuneStudio2560.<br />
@@ -199,9 +229,152 @@
                         <li><i>These optimizations mean SRAM utilization during execution is now below 2KB at any point in time meaning a potential Arduino Uno port has officially become possible.</i></li>
                     </ul>
                 </article>
+                <!-- v1.2.0-R3 -->
+                <article>
+                    <b><em>v1.2.2-R4</em></b>
+                    <div style="font-family: monospace;">
+                        <span title="Release Date">Released: Sep, 14, 2021</span> <br />
+                        <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1300 Bytes (1.3KB)</span> <br />
+                        <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 29990 Bytes (30.0KB)</span>
+                    </div>
+                    <u>____________________</u>
+                    <br />
+                    <ul>
+                        <li>Added Doxygen compaitble comments.</li>
+                        <li>[WEB] Updated Website, Released MakerStudio2560, Doxygen Website, and Product Brief.</li>
+                        <li>Drastically improved comments and documentation.</li>
+                        <li>LED now blinks green on startup depending on program mode.</li>
+                        <li>Optimized <code>sd_get_file</code> to be much smaller.</li>
+                        <li>Optimized <code>print_read_me</code>.</li>
+                        <li>CreatorMode now removes <q>[SONG]</q> header when the top text bar is getting too long.</li>
+                        <li>Fixed errors when saving some songs.</li>
+                        <li>Optimized deletion when using <code>lm_playing_song</code></li>
+                        <li><span style="color: red; font-weight: bold;">MAJOR</span> Changed SD library from SD.h to SdFat.h
+                            <details>
+                                <summary>
+                                    <i>Click to view developer comments.</i>
+                                </summary>
+                                <div style="padding-left: 1%">
+                                    <span>
+                                        From now on the application will now use the more modern SdFat library for communication with the SD module.
+                                        <br />
+                                        This new library allows us to adjust the MHz of the SPI bus as well.
+                                        <br />
+                                        The new library shows a considerable performance improvement and is much smaller and less demanding then the old library.
+                                    </span>
+                                </p>
+                            </details>
+                        </li>
+                    </ul>
+                </article>
             </section>
             <hr />
-            <section>
+            <!-- Download Center Area -->
+            <section id="DownloadCenter">
+                <h3>
+                    Download Center &#128230;
+                </h3>
+                <article>
+                    <details>
+                        <summary style="cursor: pointer;">
+                            Versions & Links <i>Click to Expand</i>
+                        </summary>
+                        <div>
+                            <span><i>To download unreleased versions you will need to compile source from GitHub.<br/>The latest pre-release as of the last update of the website is posted below.</i></span>
+                            <br />
+                            <br />
+                            <span><strong><u>Releases</u></strong></span>
+                            <br />
+                            <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.0.0-R1">v1.0.0-R1</a>
+                            <br />
+                            <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.1.0-R2">v1.1.0-R2</a>
+                            <br />
+                            <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.2.0-R3">v1.2.0-R3</a>
+                            <br />
+                            <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.2.2-R4">v1.2.2-R4</a>
+                            <br />
+                            <br />
+                            <span><strong><u>Libraries</u></strong></span>
+                            <ul>
+                                <li>
+                                    <a href="#!" target="_blank">LiquidCrystal_I2C</a>
+                                </li>
+                                <li>
+                                    <a href="#!" target="_blank"><s>SD</s></a> <i>Deprecated as of v1.2.1</i>
+                                </li>
+                                <li>
+                                    <a href="#!" target="_blank">SdFat</a>
+                                </li>
+                                <li>
+                                    <a href="#!" target="_blank">SevSegShift</a>
+                                </li>
+                                <span><i>vv Already Included in Git vv</i></span>
+                                <li>
+                                    <a href="#!" target="_blank">digitalWriteFast</a> (Included)
+                                </li>
+                                <li>
+                                    <a href="#!" target="_blank">NewTone</a> (Included)
+                                </li>
+                            </ul>
+                            <span><strong><u>Applications</u></strong></span>
+                            <ul>
+                                <li><a href="#!" target="_blank">Visual Studio Code</a></li>
+                                <li><a href="#!" target="_blank">Arduino IDE</a></li>
+                                <li><a href="#!" target="_blank">PlatformIO</a></li>
+                            </ul>
+                        </div>
+                    </details>
+                </article>
+                
+            </section>
+            <hr />
+            <!-- Images & Video Section -->
+            <section id="UserContent">
+                <h3>
+                    Images & Tutorial Video &#128249;
+                </h3>
+                <article>
+                    <details>
+                        <summary style="cursor: pointer;">
+                            View Images <i>Click to Expand</i>
+                        </summary>
+                        <div>
+                            <ul>
+                                <li>
+                                    <a target="_blank" href="https://drive.google.com/file/d/1x_KPnLLoV8FBZf8_gIBrOMooCQdFYkIJ/view?usp=sharing">Front Side View</a>
+                                </li>
+                                <li>
+                                    <a target="_blank" href="https://drive.google.com/file/d/1h6ZuS02zGjfIPqNX9wXxts_ypn6si7ga/view?usp=sharing">Microcontroller Connections</a>
+                                    
+                                </li>
+                                <li>
+                                    <a target="_blank" href="https://drive.google.com/file/d/1mh9kiWrSoQHn9jY_jgDriwogZaqQANsO/view?usp=sharing">On Top View #1</a>
+                                    
+                                </li>
+                                <li>
+                                    <a target="_blank" href="https://drive.google.com/file/d/1xyAq59Icyjg3h3hXCXsvQ11HtrXAifZ8/view?usp=sharing">On Top View #2</a>
+                                    
+                                </li>
+                                <li>
+                                    <a target="_blank" href="https://drive.google.com/file/d/1adUnfSR2Me600TtcgpClWeAUZybAE6Rr/view?usp=sharing">View with LCD and SD</a>
+                                
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details style="cursor: pointer;">
+                        <summary>
+                            View Tutorial Video <i>Click to Expand</i>
+                        </summary>
+                        <div>
+    
+                        </div>
+                    </details>
+                </article>
+            </section>
+            <hr />
+            <!-- TODO List for-->
+            <section id="FutureTodoList">
                 <h3>Future Todo List &#9989;:</h3>
                 <article>
                     <ol>
@@ -209,19 +382,28 @@
                             <s>Reduce SRAM by moving cstrings from PROGRAM_NOTES to PROGMEM.</s>
                         </li>
                         <li>
-                            Create a Cross-Platform desktop application that allows for the ease of use when adding/removing/editing notes from songs.
+                            <s>Create a Cross-Platform desktop application that allows for the ease of use when adding/removing/editing notes from songs.</s>
                         </li>
                         <li>
-                            Continue flash and memory optimizations.
+                            <s>Continue flash and memory optimizations.</s>
                         </li>
                         <li>
-                            Use optimized SD card library.
+                            <s>Use optimized SD card library.</s>
                         </li>
                         <li>
                             Port TuneStudio2560 to more boards (including ARM).
                         </li>
                         <li>
-                           Update website with pictures and video.
+                           <s>Update website with pictures and video.</s>
+                        </li>
+                        <li>
+                            <s>Create Doxygen documentation.</s>
+                        </li>
+                        <li>
+                            <s>Update README to use HTML attributes and be cleaner.</s>
+                        </li>
+                        <li>
+                            Add ability for user to adjust pause length in song as well as have an option for each note to have a specific pause length via syntax such as (FS2::50) with 50 being the ms to delay for.
                         </li>
                         <li>
                             To be continued...
@@ -240,7 +422,12 @@
         </footer>
     </body>
     <script>
-        let DARK_MODE_KEY = "darkMode"
+        console.log(
+`[TuneStudio2560 - Reference Site]
+Welcome! Please enjoy your stay.
+The source code for all elements of this website and MakerStudio2560 are publicly available under MIT license on my GitHub.
+    - Jacob Luvisi`);
+        let DARK_MODE_KEY = "DarkModeRef"
         let ENABLED = "enabled"
         let DISABLED = "disabled"
 
@@ -254,7 +441,10 @@
         }else{
             document.getElementById("#body").classList.remove("body-dark");
             document.getElementById("#darkToggle").innerText = "Toggle Dark Mode (Dark Mode: Off)";
-        
+            var el = document.querySelectorAll('a');
+            for(var i=0;i<el.length;i++){
+             el[i].style.color = 'blue';
+            }
         }
 
         function toggleDark() {

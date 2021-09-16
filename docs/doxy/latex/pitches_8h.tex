@@ -1,0 +1,49 @@
+\hypertarget{pitches_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/pitches.h File Reference}
+\label{pitches_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/pitches.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/pitches.h}}
+
+
+A complete fill containing all of the human readable pitches available in Tune\+Studio2560.  
+
+
+{\ttfamily \#include $<$avr/pgmspace.\+h$>$}\newline
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char pitch\+\_\+b0\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{pitches_8h_aed33f6a0410f42a2f67634ba3248718e}{PROGMEM}} = \char`\"{}B0\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A complete fill containing all of the human readable pitches available in Tune\+Studio2560. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi
+\end{DoxyAuthor}
+This header file was created to store constants for every char string (c-\/string) pitch which has a respective frequency.~\newline
+ This is preferable for microcontrollers with low RAM due to the fact that the previous method\+:~\newline
+ const button\+Frequencies\+\_\+t PROGRAM\+\_\+\+NOTES\mbox{[}TONE\+\_\+\+BUTTON\+\_\+\+AMOUNT\mbox{]} PROGMEM\{~\newline
+ \{BTN\+\_\+\+TONE\+\_\+1, \{\{\char`\"{}\+B0\char`\"{}, 31\}, ...\}\},~\newline
+ \};~\newline
+ Stored the pointers for the pitches in PROGMEM but the pitch data was still stored in SRAM causing over 357 of SRAM bytes to be used. ~\newline
+ This header file is dedicated to making sure the pitch data and the pitch pointers remain and are retrieved from PROGMEM. ~\newline
+ ~\newline
+ Used Since v1.\+2.\+0-\/R3 $\ast$$\ast$
+
+\begin{DoxyVersion}{Version}
+1.\+2.\+0-\/R3 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/08-\/29
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{pitches_8h_aed33f6a0410f42a2f67634ba3248718e}\label{pitches_8h_aed33f6a0410f42a2f67634ba3248718e}} 
+\index{pitches.h@{pitches.h}!PROGMEM@{PROGMEM}}
+\index{PROGMEM@{PROGMEM}!pitches.h@{pitches.h}}
+\doxysubsubsection{\texorpdfstring{PROGMEM}{PROGMEM}}
+{\footnotesize\ttfamily const char pitch\+\_\+b7 \mbox{[}$\,$\mbox{]} PROGMEM = \char`\"{}B0\char`\"{}}
+

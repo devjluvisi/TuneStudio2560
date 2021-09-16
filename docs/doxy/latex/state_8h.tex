@@ -1,0 +1,87 @@
+\hypertarget{state_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/state.h File Reference}
+\label{state_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/state.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/state.h}}
+
+
+Represents the \char`\"{}state\char`\"{} that Tune\+Studio is currently in. This header file represents the parent class that all states in Tune\+Studio inherit from.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_program_state}{Program\+State}}
+\begin{DoxyCompactList}\small\item\em A class which controls how to handle the controls, what to loop, and what to display on the lcd. The \mbox{\hyperlink{class_program_state}{Program\+State}} can be thought of as a \char`\"{}container\char`\"{} where different parts of the program work seperately but use the same global data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} \{ \newline
+\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6ac22743f1fc74de09544ecc9bab74a17b}{MAIN\+\_\+\+MENU}}
+, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6aaec8c5e4aafb4dde2d0e4c813d0202db}{CM\+\_\+\+MENU}}
+, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a207b99f5ee018d355f462a48790a0f8c}{LM\+\_\+\+MENU}}
+, \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a04f42b76ac4f3bdcefac10c76ca80f3b}{LM\+\_\+\+PLAYING\+\_\+\+SONG}}
+, \newline
+\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6a01d2a1ca2dbced2ebed68d9b682584dc}{CM\+\_\+\+CREATE\+\_\+\+NEW}}
+ \}
+\begin{DoxyCompactList}\small\item\em Allows the identification of individual states. Useful as it prevents having to compare state objects to each other. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents the \char`\"{}state\char`\"{} that Tune\+Studio is currently in. This header file represents the parent class that all states in Tune\+Studio inherit from. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi
+\end{DoxyAuthor}
+\hypertarget{state_8h_autotoc_md0}{}\doxysubsubsection{\mbox{[}!\mbox{]} Important information about States \mbox{[}!\mbox{]}}\label{state_8h_autotoc_md0}
+Each different section of Tune\+Studio2560 is split off into different states. Each states have their own \char`\"{}routes\char`\"{} which dictate where they go when the user presses a specific button. (Select, Delete, etc) Each state handles user input differently, displays to the lcd using different text, and handles code differently. An example of states would be the home screen or a screen to create a new song. Each state has two primary methods\+:
+\begin{DoxyItemize}
+\item init()\+: A method to be run once the state is loaded but only when it is first loaded.
+\item \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}}\+: A method to be constantly run. Note that the init() method for a single state can be run multiple times throughout the programs life cycle but only once after the state has first been switched. Every state is allowed to have its seperate methods from init() and \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} as well as personal private (global) variables with that state. However, variables allocated dynamically during a states lifecycle must be destroyed in the deconstructor.
+\end{DoxyItemize}
+
+Each individual state is defined in the \char`\"{}states.\+h\char`\"{} header file. This header file represents the parent class to every state. The \mbox{\hyperlink{main_8cpp}{main.\+cpp}} class holds one global \char`\"{}state\char`\"{} variable called \char`\"{}prgm\+State\char`\"{} which is overriden when a new state is loaded.
+
+\char`\"{}prgm\+State\char`\"{} is a pointer to this class (parent class) and can be reallocated to any of the child states.
+
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/07-\/26
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6}} 
+\index{state.h@{state.h}!StateID@{StateID}}
+\index{StateID@{StateID}!state.h@{state.h}}
+\doxysubsubsection{\texorpdfstring{StateID}{StateID}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}}}
+
+
+
+Allows the identification of individual states. Useful as it prevents having to compare state objects to each other. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAIN\_MENU@{MAIN\_MENU}!state.h@{state.h}}\index{state.h@{state.h}!MAIN\_MENU@{MAIN\_MENU}}}\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6ac22743f1fc74de09544ecc9bab74a17b}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6ac22743f1fc74de09544ecc9bab74a17b}} 
+MAIN\+\_\+\+MENU&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CM\_MENU@{CM\_MENU}!state.h@{state.h}}\index{state.h@{state.h}!CM\_MENU@{CM\_MENU}}}\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6aaec8c5e4aafb4dde2d0e4c813d0202db}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6aaec8c5e4aafb4dde2d0e4c813d0202db}} 
+CM\+\_\+\+MENU&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LM\_MENU@{LM\_MENU}!state.h@{state.h}}\index{state.h@{state.h}!LM\_MENU@{LM\_MENU}}}\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6a207b99f5ee018d355f462a48790a0f8c}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6a207b99f5ee018d355f462a48790a0f8c}} 
+LM\+\_\+\+MENU&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LM\_PLAYING\_SONG@{LM\_PLAYING\_SONG}!state.h@{state.h}}\index{state.h@{state.h}!LM\_PLAYING\_SONG@{LM\_PLAYING\_SONG}}}\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6a04f42b76ac4f3bdcefac10c76ca80f3b}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6a04f42b76ac4f3bdcefac10c76ca80f3b}} 
+LM\+\_\+\+PLAYING\+\_\+\+SONG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CM\_CREATE\_NEW@{CM\_CREATE\_NEW}!state.h@{state.h}}\index{state.h@{state.h}!CM\_CREATE\_NEW@{CM\_CREATE\_NEW}}}\mbox{\Hypertarget{state_8h_a2c309f64131cbfdae6d95e6591f208e6a01d2a1ca2dbced2ebed68d9b682584dc}\label{state_8h_a2c309f64131cbfdae6d95e6591f208e6a01d2a1ca2dbced2ebed68d9b682584dc}} 
+CM\+\_\+\+CREATE\+\_\+\+NEW&\\
+\hline
+
+\end{DoxyEnumFields}

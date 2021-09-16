@@ -1,0 +1,79 @@
+\hypertarget{states_8h_source}{}\doxysection{states.\+h}
+\label{states_8h_source}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/states/states.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/studio-\/libs/states/states.h}}
+\mbox{\hyperlink{states_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef states\_h}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define states\_h}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tune__studio_8h}{studio-\/libs/tune\_studio.h}}>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{class_main_menu}{MainMenu}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{22   \textcolor{keyword}{private}: }
+\DoxyCodeLine{23   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_main_menu_a340d84023f931683f4f80c9a1d5d127f}{init}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{24   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_main_menu_a196924464cf822b25b11ba41293291a8}{loop}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{25   \textcolor{keyword}{public}: \mbox{\hyperlink{class_main_menu_a53eecf9d5ffd094f54ac4193e7e57eaf}{MainMenu}}();\mbox{\hyperlink{class_main_menu_a0a19ddba3ac52bf39c09b579171c98f2}{\string~MainMenu}}();}
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{class_listening_mode_playing_song}{ListeningModePlayingSong}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{29 \textcolor{preprocessor}{  \#define LM\_BOTTOM\_TEXT\_DELAY\_INTERVAL 5000}}
+\DoxyCodeLine{30   \textcolor{keyword}{private}: }
+\DoxyCodeLine{31   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}{init}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{32   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_listening_mode_playing_song_af0cc918be22249b663307937f711c5fa}{loop}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{34   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{class_listening_mode_playing_song_abc45d00e50005ab2090de7b57da1917b}{lastTextUpdate}};}
+\DoxyCodeLine{36   uint8\_t \mbox{\hyperlink{class_listening_mode_playing_song_aee6a4db0b24cf7237de2ebf82fe7705f}{bottomTextMode}};}
+\DoxyCodeLine{38   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_listening_mode_playing_song_a68e9bc979b50d5d6c3310854f4e6a2d5}{invalidSong}};}
+\DoxyCodeLine{40   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_listening_mode_playing_song_a6368cd1e6be19f4eff436d664953973f}{isPaused}};}
+\DoxyCodeLine{42   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_listening_mode_playing_song_a80325378bcc4932800a03f23515d5914}{requestedDelete}};}
+\DoxyCodeLine{44   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{class_listening_mode_playing_song_a569aefe46c3618c2e4a09cba86253b19}{lastTonePlay}};}
+\DoxyCodeLine{46   \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{class_listening_mode_playing_song_ab0b46b0734fc9751b7654bbe326fa031}{currentSongNote}};}
+\DoxyCodeLine{48   \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{class_listening_mode_playing_song_abf16ad80274677db49dbd3c924eaf051}{currentSongSize}};}
+\DoxyCodeLine{50   uint8\_t \mbox{\hyperlink{class_listening_mode_playing_song_ac2b9c84dfb9d6d5195fc22197b4c95c6}{blockRequirement}}; }
+\DoxyCodeLine{52   \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\_size\_t}} \mbox{\hyperlink{class_listening_mode_playing_song_a82bce80a4cac7b9d3421381708b556f5}{blockSize}};}
+\DoxyCodeLine{53   \textcolor{keyword}{public}: \mbox{\hyperlink{class_listening_mode_playing_song_af370a80881e1592b0de95fa4bee9349c}{ListeningModePlayingSong}}();\mbox{\hyperlink{class_listening_mode_playing_song_af2c8f1246a46fc1ac12a53d73b9312bf}{\string~ListeningModePlayingSong}}();}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{class }\mbox{\hyperlink{class_listening_mode_menu}{ListeningModeMenu}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{58   \textcolor{keyword}{private}: }
+\DoxyCodeLine{59   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}{init}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{60   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_listening_mode_menu_aaffaeaf571a72750c030d0c44a88df3c}{loop}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{62   uint8\_t \mbox{\hyperlink{class_listening_mode_menu_a92c755fff741f6727984149da2c6e0d9}{previousSong}};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \textcolor{keyword}{public}: \mbox{\hyperlink{class_listening_mode_menu_a203569470c61479b12fef7e98ab87244}{ListeningModeMenu}}();\mbox{\hyperlink{class_listening_mode_menu_a3b5aa911b28547d76c6b5f07b8943430}{\string~ListeningModeMenu}}();}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{class_creator_mode_menu}{CreatorModeMenu}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{69   \textcolor{keyword}{private}: }
+\DoxyCodeLine{70   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_menu_aa0a87f15970cf1abcc71415e5a9853e6}{init}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_menu_ae1d35562edccc7d5cac004202130f22c}{loop}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{72   \textcolor{keyword}{public}: \mbox{\hyperlink{class_creator_mode_menu_aedfe09d39487f2d557c0dd6c0b9a3b13}{CreatorModeMenu}}();\mbox{\hyperlink{class_creator_mode_menu_a60c13ba8b163e3a4fb78a820c9a128b1}{\string~CreatorModeMenu}}();}
+\DoxyCodeLine{73 \};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{class }\mbox{\hyperlink{class_creator_mode_create_new}{CreatorModeCreateNew}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_program_state}{ProgramState}} \{}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77   \textcolor{keyword}{private}: }
+\DoxyCodeLine{78   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_create_new_a3b975a88660c61a96cdc190b18cefb77}{init}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{79   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_create_new_a158a7ff6826c93af01ea467135b4b7f7}{loop}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{81   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{class_creator_mode_create_new_a7494a40e4e85513aeb21b00f2120704c}{previousUpdate}}; }
+\DoxyCodeLine{83   uint8\_t \mbox{\hyperlink{class_creator_mode_create_new_a171991e3a4e2049478108c57d058c24e}{lastButtonPress}};}
+\DoxyCodeLine{85   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_creator_mode_create_new_a33aafadeabbdf3873489921440818849}{optionWaiting}};}
+\DoxyCodeLine{87   \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_creator_mode_create_new_ab5950d36c719b5f8c607d44ab8793a3d}{playSound}};}
+\DoxyCodeLine{89   uint8\_t \mbox{\hyperlink{class_creator_mode_create_new_a9a893886df4fd294b01e901810817014}{scrolledLines}};}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{94   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_create_new_a3b2a7f283403e07e3dfc713269ffd2a8}{print\_song\_lcd}}();}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{102   uint8\_t \mbox{\hyperlink{class_creator_mode_create_new_a76fec88b1f9c1a84445c21459cca4537}{get\_lcd\_required\_rows}}();}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{110   \textcolor{keywordtype}{void} \mbox{\hyperlink{class_creator_mode_create_new_a3827310b819f9550cf23276e149ff15a}{set\_save\_name}}(\textcolor{keywordtype}{char} fileName[9]);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{121   \textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{class_creator_mode_create_new_abcd9f6018274a49d4bc93aeaa59c57a7}{get\_character\_from\_analog}}();}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   \textcolor{keyword}{public}: \mbox{\hyperlink{class_creator_mode_create_new_aa889b71a8b987213cba688eab9cb708f}{CreatorModeCreateNew}}();\mbox{\hyperlink{class_creator_mode_create_new_a22d8eeb535bfe305f23752d22fb48e89}{\string~CreatorModeCreateNew}}();}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

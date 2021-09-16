@@ -1,0 +1,94 @@
+\hypertarget{debug_8h_source}{}\doxysection{debug.\+h}
+\label{debug_8h_source}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/debug.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/debug/debug.h}}
+\mbox{\hyperlink{debug_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tune__studio_8h}{studio-\/libs/tune\_studio.h}}>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef debug\_h}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define debug\_h}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#if PERF\_METRICS == true}}
+\DoxyCodeLine{15  \textcolor{comment}{// measure memory usage.}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifdef \_\_arm\_\_}}
+\DoxyCodeLine{17 \textcolor{comment}{// should use uinstd.h to define sbrk but Due causes a conflict}}
+\DoxyCodeLine{18 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \textcolor{keywordtype}{char}* sbrk(\textcolor{keywordtype}{int} incr);}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#else  }\textcolor{comment}{// \_\_ARM\_\_}}
+\DoxyCodeLine{20 \textcolor{keyword}{extern} \textcolor{keywordtype}{char}* \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}};}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_\_arm\_\_}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{inline} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{debug_8h_aca10938ec1c69e493636582772633036}{freeMemory}}() \{}
+\DoxyCodeLine{24     \textcolor{keywordtype}{char} top;}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#ifdef \_\_arm\_\_}}
+\DoxyCodeLine{26     \textcolor{keywordflow}{return} \&top -\/ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(sbrk(0));}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#elif defined(CORE\_TEENSY) || (ARDUINO > 103 \&\& ARDUINO != 151)}}
+\DoxyCodeLine{28     \textcolor{keywordflow}{return} \&top -\/ \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}};}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#else  }\textcolor{comment}{// \_\_arm\_\_}}
+\DoxyCodeLine{30     \textcolor{keywordflow}{return} \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}} ? \&top -\/ \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}} : \&top -\/ \mbox{\hyperlink{debug_8h_a9310042b3956282440c091d20cb98c5f}{\_\_malloc\_heap\_start}};}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_\_arm\_\_}}
+\DoxyCodeLine{32 \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{// C++ for Arduino}}
+\DoxyCodeLine{35 \textcolor{comment}{// What is heap fragmentation?}}
+\DoxyCodeLine{36 \textcolor{comment}{// https://cpp4arduino.com/}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{comment}{// This source file captures the platform dependent code.}}
+\DoxyCodeLine{39 \textcolor{comment}{// This version was tested with the AVR Core version 1.6.22}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{// This code is freely inspired from https://github.com/McNeight/MemoryFree}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{comment}{// This heap allocator defines this structure to keep track of free blocks.}}
+\DoxyCodeLine{44 \textcolor{keyword}{struct }\mbox{\hyperlink{structblock__t}{block\_t}} \{}
+\DoxyCodeLine{45     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{structblock__t_aab4cc6a6a4db0943526aa73fc382d498}{sz}};}
+\DoxyCodeLine{46     \textcolor{keyword}{struct }\mbox{\hyperlink{structblock__t}{block\_t}}* \mbox{\hyperlink{structblock__t_a141c8320cee26b6de3c4debe9c1d0102}{nx}};}
+\DoxyCodeLine{47 \};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{comment}{// NOTE. The following extern variables are defined in malloc.c in avr-\/stdlib}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{comment}{// A pointer to the first block}}
+\DoxyCodeLine{52 \textcolor{keyword}{extern} \textcolor{keyword}{struct }\mbox{\hyperlink{structblock__t}{block\_t}}* \mbox{\hyperlink{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}{\_\_flp}};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{comment}{// A pointer to the end of the heap, initialized at first malloc()}}
+\DoxyCodeLine{55 \textcolor{keyword}{extern} \textcolor{keywordtype}{char}* \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{comment}{// A pointer to the beginning of the heap}}
+\DoxyCodeLine{58 \textcolor{keyword}{extern} \textcolor{keywordtype}{char}* \mbox{\hyperlink{debug_8h_a9310042b3956282440c091d20cb98c5f}{\_\_malloc\_heap\_start}};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}{getBlockSize}}(\textcolor{keyword}{struct} \mbox{\hyperlink{structblock__t}{block\_t}}* block) \{}
+\DoxyCodeLine{61     \textcolor{keywordflow}{return} block-\/>\mbox{\hyperlink{structblock__t_aab4cc6a6a4db0943526aa73fc382d498}{sz}} + 2;}
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}{getUnusedBytes}}() \{}
+\DoxyCodeLine{65     \textcolor{keywordtype}{char} foo;}
+\DoxyCodeLine{66     \textcolor{keywordflow}{if} (\mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}}) \{}
+\DoxyCodeLine{67         \textcolor{keywordflow}{return} size\_t(\&foo -\/ \mbox{\hyperlink{debug_8h_ad2ff777f15209dcbc47f56c686521c28}{\_\_brkval}});}
+\DoxyCodeLine{68     \}}
+\DoxyCodeLine{69     \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{70         \textcolor{keywordflow}{return} size\_t(\&foo -\/ \mbox{\hyperlink{debug_8h_a9310042b3956282440c091d20cb98c5f}{\_\_malloc\_heap\_start}});}
+\DoxyCodeLine{71     \}}
+\DoxyCodeLine{72 \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{inline} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{debug_8h_ab6ebaa52204d9b70b98b3a8ca0e0e686}{getTotalAvailableMemory}}() \{}
+\DoxyCodeLine{75     \textcolor{keywordtype}{size\_t} sum = \mbox{\hyperlink{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}{getUnusedBytes}}();}
+\DoxyCodeLine{76     \textcolor{keywordflow}{for} (\textcolor{keyword}{struct} \mbox{\hyperlink{structblock__t}{block\_t}}* block = \mbox{\hyperlink{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}{\_\_flp}}; block; block = block-\/>\mbox{\hyperlink{structblock__t_a141c8320cee26b6de3c4debe9c1d0102}{nx}}) \{}
+\DoxyCodeLine{77         sum += \mbox{\hyperlink{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}{getBlockSize}}(block);}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79     \textcolor{keywordflow}{return} sum;}
+\DoxyCodeLine{80 \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{inline} \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{debug_8h_ab15f63635b7fd8a8ceae386dbcbd0dd4}{getLargestAvailableBlock}}() \{}
+\DoxyCodeLine{83     \textcolor{keywordtype}{size\_t} largest = \mbox{\hyperlink{debug_8h_a289f22bfa6ae82b44eb72e9630e9f589}{getUnusedBytes}}();}
+\DoxyCodeLine{84     \textcolor{keywordflow}{for} (\textcolor{keyword}{struct} \mbox{\hyperlink{structblock__t}{block\_t}}* block = \mbox{\hyperlink{debug_8h_a5affa1db1ad512e38d2a90fb961153d4}{\_\_flp}}; block; block = block-\/>\mbox{\hyperlink{structblock__t_a141c8320cee26b6de3c4debe9c1d0102}{nx}}) \{}
+\DoxyCodeLine{85         \textcolor{keywordtype}{size\_t} size = \mbox{\hyperlink{debug_8h_a0eb3eea91e33512d6a36d362fbbc1a71}{getBlockSize}}(block);}
+\DoxyCodeLine{86         \textcolor{keywordflow}{if} (size > largest) \{}
+\DoxyCodeLine{87             largest = size;}
+\DoxyCodeLine{88         \}}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90     \textcolor{keywordflow}{return} largest;}
+\DoxyCodeLine{91 \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{inline} \textcolor{keywordtype}{float} \mbox{\hyperlink{debug_8h_afc2c83722ad322b593bbaa100bda4e27}{getFragmentation}}() \{}
+\DoxyCodeLine{94     \textcolor{keywordflow}{return} 100 -\/ \mbox{\hyperlink{debug_8h_ab15f63635b7fd8a8ceae386dbcbd0dd4}{getLargestAvailableBlock}}() * 100.0 / \mbox{\hyperlink{debug_8h_ab6ebaa52204d9b70b98b3a8ca0e0e686}{getTotalAvailableMemory}}();}
+\DoxyCodeLine{95 \}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,204 @@
+\hypertarget{class_listening_mode_playing_song}{}\doxysection{Listening\+Mode\+Playing\+Song Class Reference}
+\label{class_listening_mode_playing_song}\index{ListeningModePlayingSong@{ListeningModePlayingSong}}
+
+
+{\ttfamily \#include $<$states.\+h$>$}
+
+Inheritance diagram for Listening\+Mode\+Playing\+Song\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_listening_mode_playing_song}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_listening_mode_playing_song_af370a80881e1592b0de95fa4bee9349c}{Listening\+Mode\+Playing\+Song}} ()
+\item 
+\mbox{\hyperlink{class_listening_mode_playing_song_af2c8f1246a46fc1ac12a53d73b9312bf}{$\sim$\+Listening\+Mode\+Playing\+Song}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}{init}} () override
+\begin{DoxyCompactList}\small\item\em The method to be run when the program state first loads. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_listening_mode_playing_song_af0cc918be22249b663307937f711c5fa}{loop}} () override
+\begin{DoxyCompactList}\small\item\em A method to be run on an infinite loop after the \mbox{\hyperlink{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}{init()}} method is run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long \mbox{\hyperlink{class_listening_mode_playing_song_abc45d00e50005ab2090de7b57da1917b}{last\+Text\+Update}}
+\begin{DoxyCompactList}\small\item\em Tracks the last time that the information text was updated on the bottom of the lcd. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_listening_mode_playing_song_aee6a4db0b24cf7237de2ebf82fe7705f}{bottom\+Text\+Mode}}
+\begin{DoxyCompactList}\small\item\em Tracks a number which represents what text should be displayed on the bottom row of the lcd (information text). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_listening_mode_playing_song_a68e9bc979b50d5d6c3310854f4e6a2d5}{invalid\+Song}}
+\begin{DoxyCompactList}\small\item\em If the song which has been copied is invalid and cannot be played. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_listening_mode_playing_song_a6368cd1e6be19f4eff436d664953973f}{is\+Paused}}
+\begin{DoxyCompactList}\small\item\em If the song is paused. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_listening_mode_playing_song_a80325378bcc4932800a03f23515d5914}{requested\+Delete}}
+\begin{DoxyCompactList}\small\item\em If the user has requested to delete their song. \end{DoxyCompactList}\item 
+unsigned long \mbox{\hyperlink{class_listening_mode_playing_song_a569aefe46c3618c2e4a09cba86253b19}{last\+Tone\+Play}}
+\begin{DoxyCompactList}\small\item\em The last time a tone was played. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_listening_mode_playing_song_ab0b46b0734fc9751b7654bbe326fa031}{current\+Song\+Note}}
+\begin{DoxyCompactList}\small\item\em The current note of the song that we are on. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_listening_mode_playing_song_abf16ad80274677db49dbd3c924eaf051}{current\+Song\+Size}}
+\begin{DoxyCompactList}\small\item\em The size of the current song. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_listening_mode_playing_song_ac2b9c84dfb9d6d5195fc22197b4c95c6}{block\+Requirement}}
+\begin{DoxyCompactList}\small\item\em Tracks how many notes need to pass before a progress block is filled in. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_listening_mode_playing_song_a82bce80a4cac7b9d3421381708b556f5}{block\+Size}}
+\begin{DoxyCompactList}\small\item\em Tracks the total amount of notes that need to be played before the next progress block gets filled in. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_listening_mode_playing_song_af370a80881e1592b0de95fa4bee9349c}\label{class_listening_mode_playing_song_af370a80881e1592b0de95fa4bee9349c}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{ListeningModePlayingSong()}{ListeningModePlayingSong()}}
+{\footnotesize\ttfamily Listening\+Mode\+Playing\+Song\+::\+Listening\+Mode\+Playing\+Song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_af2c8f1246a46fc1ac12a53d73b9312bf}\label{class_listening_mode_playing_song_af2c8f1246a46fc1ac12a53d73b9312bf}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!````~ListeningModePlayingSong@{$\sim$ListeningModePlayingSong}}
+\index{````~ListeningModePlayingSong@{$\sim$ListeningModePlayingSong}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{$\sim$ListeningModePlayingSong()}{~ListeningModePlayingSong()}}
+{\footnotesize\ttfamily Listening\+Mode\+Playing\+Song\+::$\sim$\+Listening\+Mode\+Playing\+Song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}\label{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!init@{init}}
+\index{init@{init}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void Listening\+Mode\+Playing\+Song\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+The method to be run when the program state first loads. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{Program\+State}}.
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_af0cc918be22249b663307937f711c5fa}\label{class_listening_mode_playing_song_af0cc918be22249b663307937f711c5fa}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!loop@{loop}}
+\index{loop@{loop}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void Listening\+Mode\+Playing\+Song\+::loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+A method to be run on an infinite loop after the \mbox{\hyperlink{class_listening_mode_playing_song_a6a3f43e5f74a958720f69ce1470a7b82}{init()}} method is run. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{Program\+State}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_listening_mode_playing_song_ac2b9c84dfb9d6d5195fc22197b4c95c6}\label{class_listening_mode_playing_song_ac2b9c84dfb9d6d5195fc22197b4c95c6}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!blockRequirement@{blockRequirement}}
+\index{blockRequirement@{blockRequirement}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{blockRequirement}{blockRequirement}}
+{\footnotesize\ttfamily uint8\+\_\+t Listening\+Mode\+Playing\+Song\+::block\+Requirement\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tracks how many notes need to pass before a progress block is filled in. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_a82bce80a4cac7b9d3421381708b556f5}\label{class_listening_mode_playing_song_a82bce80a4cac7b9d3421381708b556f5}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!blockSize@{blockSize}}
+\index{blockSize@{blockSize}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{blockSize}{blockSize}}
+{\footnotesize\ttfamily \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} Listening\+Mode\+Playing\+Song\+::block\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tracks the total amount of notes that need to be played before the next progress block gets filled in. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_aee6a4db0b24cf7237de2ebf82fe7705f}\label{class_listening_mode_playing_song_aee6a4db0b24cf7237de2ebf82fe7705f}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!bottomTextMode@{bottomTextMode}}
+\index{bottomTextMode@{bottomTextMode}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{bottomTextMode}{bottomTextMode}}
+{\footnotesize\ttfamily uint8\+\_\+t Listening\+Mode\+Playing\+Song\+::bottom\+Text\+Mode\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tracks a number which represents what text should be displayed on the bottom row of the lcd (information text). 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_ab0b46b0734fc9751b7654bbe326fa031}\label{class_listening_mode_playing_song_ab0b46b0734fc9751b7654bbe326fa031}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!currentSongNote@{currentSongNote}}
+\index{currentSongNote@{currentSongNote}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{currentSongNote}{currentSongNote}}
+{\footnotesize\ttfamily \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} Listening\+Mode\+Playing\+Song\+::current\+Song\+Note\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The current note of the song that we are on. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_abf16ad80274677db49dbd3c924eaf051}\label{class_listening_mode_playing_song_abf16ad80274677db49dbd3c924eaf051}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!currentSongSize@{currentSongSize}}
+\index{currentSongSize@{currentSongSize}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{currentSongSize}{currentSongSize}}
+{\footnotesize\ttfamily \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} Listening\+Mode\+Playing\+Song\+::current\+Song\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The size of the current song. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_a68e9bc979b50d5d6c3310854f4e6a2d5}\label{class_listening_mode_playing_song_a68e9bc979b50d5d6c3310854f4e6a2d5}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!invalidSong@{invalidSong}}
+\index{invalidSong@{invalidSong}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{invalidSong}{invalidSong}}
+{\footnotesize\ttfamily bool Listening\+Mode\+Playing\+Song\+::invalid\+Song\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the song which has been copied is invalid and cannot be played. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_a6368cd1e6be19f4eff436d664953973f}\label{class_listening_mode_playing_song_a6368cd1e6be19f4eff436d664953973f}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!isPaused@{isPaused}}
+\index{isPaused@{isPaused}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{isPaused}{isPaused}}
+{\footnotesize\ttfamily bool Listening\+Mode\+Playing\+Song\+::is\+Paused\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the song is paused. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_abc45d00e50005ab2090de7b57da1917b}\label{class_listening_mode_playing_song_abc45d00e50005ab2090de7b57da1917b}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!lastTextUpdate@{lastTextUpdate}}
+\index{lastTextUpdate@{lastTextUpdate}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{lastTextUpdate}{lastTextUpdate}}
+{\footnotesize\ttfamily unsigned long Listening\+Mode\+Playing\+Song\+::last\+Text\+Update\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tracks the last time that the information text was updated on the bottom of the lcd. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_a569aefe46c3618c2e4a09cba86253b19}\label{class_listening_mode_playing_song_a569aefe46c3618c2e4a09cba86253b19}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!lastTonePlay@{lastTonePlay}}
+\index{lastTonePlay@{lastTonePlay}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{lastTonePlay}{lastTonePlay}}
+{\footnotesize\ttfamily unsigned long Listening\+Mode\+Playing\+Song\+::last\+Tone\+Play\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The last time a tone was played. 
+
+\mbox{\Hypertarget{class_listening_mode_playing_song_a80325378bcc4932800a03f23515d5914}\label{class_listening_mode_playing_song_a80325378bcc4932800a03f23515d5914}} 
+\index{ListeningModePlayingSong@{ListeningModePlayingSong}!requestedDelete@{requestedDelete}}
+\index{requestedDelete@{requestedDelete}!ListeningModePlayingSong@{ListeningModePlayingSong}}
+\doxysubsubsection{\texorpdfstring{requestedDelete}{requestedDelete}}
+{\footnotesize\ttfamily bool Listening\+Mode\+Playing\+Song\+::requested\+Delete\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+If the user has requested to delete their song. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/states/\mbox{\hyperlink{states_8h}{states.\+h}}\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/src/studio-\/libs/states/\mbox{\hyperlink{lm__playing__song_8cpp}{lm\+\_\+playing\+\_\+song.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,262 @@
+\hypertarget{digital_write_fast_8h}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/lib/digital\+Write\+Fast.h File Reference}
+\label{digital_write_fast_8h}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/lib/digitalWriteFast.h@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/include/lib/digitalWriteFast.h}}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a620ec4e523b08fa87d5e2213f128a304}{ERROR\+\_\+\+SEQUENCE}}~0b10101010
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_abe4c93bdf909706a57a177f6786af897}{BIT\+\_\+\+READ}}(value,  bit)~((value) \&   (1UL $<$$<$ (bit)))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ab94522870cd3d40d76ae0a8778166017}{BIT\+\_\+\+SET}}(value,  bit)~((value) $\vert$=  (1UL $<$$<$ (bit)))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a00bda5613fe59582e9cd36d07b8f2851}{BIT\+\_\+\+CLEAR}}(value,  bit)~((value) \&= $\sim$(1UL $<$$<$ (bit)))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a1c73c74b64f4d1b6538a8de13f95a2e6}{BIT\+\_\+\+WRITE}}(value,  bit,  bitvalue)~(bitvalue ? \mbox{\hyperlink{digital_write_fast_8h_ab94522870cd3d40d76ae0a8778166017}{BIT\+\_\+\+SET}}(value, bit) \+: \mbox{\hyperlink{digital_write_fast_8h_a00bda5613fe59582e9cd36d07b8f2851}{BIT\+\_\+\+CLEAR}}(value, bit))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a5d9d454d4b9f2ff8106d5199ac0d0186}{SWAP}}(x,  y)~do\{ (x)=(x)$^\wedge$(y); (y)=(x)$^\wedge$(y); (x)=(x)$^\wedge$(y); \}while(0)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a75acaba9e781937468d0911423bc0c35}{PROGMEM}}
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a963f816fc88a5d8479c285ed4c630229}{PGM\+\_\+P}}~const char $\ast$
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a73809107539df84eaf01f6a4dea4fbff}{PSTR}}(str)~(str)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ae0444ad0cb3250a5778a573dd10f41be}{memcpy\+\_\+P}}(dest,  src,  num)~memcpy((dest), (src), (num))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ab00bda73e5853cc61868501fe37fa9b7}{strcpy\+\_\+P}}(dst,  src)~strcpy((dst), (src))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a37c1666c2ccbf210e3829bbebc2b16e4}{strcat\+\_\+P}}(dst,  src)~strcat((dst), (src))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_abbb2cd396dde2d1575948bb16ce2853a}{strcmp\+\_\+P}}(a,  b)~strcmp((a), (b))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ae97e89b6ed4b46ade2eca9cafc6abd8d}{strcasecmp\+\_\+P}}(a,  b)~strcasecmp((a), (b))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a83b1e057d9ee4c5160557575be07c41f}{strncmp\+\_\+P}}(a,  b,  n)~strncmp((a), (b), (n))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a6986d443d13df0a4f28c6d1b52effb7d}{strncasecmp\+\_\+P}}(a,  b,  n)~strncasecmp((a), (b), (n))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_aca1ecbfa8b94eba4b5228f0a6a18a888}{strstr\+\_\+P}}(a,  b)~strstr((a), (b))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a76ea3b30093856a6482a978d9214142d}{strlen\+\_\+P}}(a)~strlen((a))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a45ba8afa17fe1ae5ab9327dbb6ca05b9}{sprintf\+\_\+P}}(s,  f, ...)~sprintf((s), (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a48c60b057902adf805797f183286728d}{pgm\+\_\+read\+\_\+byte}}(addr)~($\ast$(const unsigned char $\ast$)(addr))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a910fb5f01313d339d3b835d45e1e5ad0}{pgm\+\_\+read\+\_\+word}}(addr)~($\ast$(const unsigned short $\ast$)(addr))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a73cf3e57e32321cb193b3cc4b041cc6c}{pgm\+\_\+read\+\_\+dword}}(addr)~($\ast$(const unsigned long $\ast$)(addr))
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a8e4c6098d073922d247087549c084efd}{SPI\+\_\+\+SW\+\_\+\+SS\+\_\+\+PIN}}~(10)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a590704782aba04d0b90e20dc2e06bfe1}{SPI\+\_\+\+SW\+\_\+\+MOSI\+\_\+\+PIN}}~(11)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ad80cac0c04cae5a4106da0daaefe8392}{SPI\+\_\+\+SW\+\_\+\+MISO\+\_\+\+PIN}}~(12)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_aaa5382681cbe8124588319a841015562}{SPI\+\_\+\+SW\+\_\+\+SCK\+\_\+\+PIN}}~(13)
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_aa48cf672323b7a1784a973d1a4fd891e}{SPI\+\_\+\+HW\+\_\+\+SS\+\_\+\+PIN}}~SS
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_abde5a3df1fb9cf0e46476ea7ac10b48a}{SPI\+\_\+\+HW\+\_\+\+MOSI\+\_\+\+PIN}}~MOSI
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_a32f0a77e5800213b4d059bb700302d42}{SPI\+\_\+\+HW\+\_\+\+MISO\+\_\+\+PIN}}~MISO
+\item 
+\#define \mbox{\hyperlink{digital_write_fast_8h_ac26ddd8cd6a7cd10b23f08ea6e8f7032}{SPI\+\_\+\+HW\+\_\+\+SCK\+\_\+\+PIN}}~SCK
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{digital_write_fast_8h_acfb3ecdf61e3c560363866746fd186de}{Non\+Constant\+Used}} (void) \+\_\+\+\_\+attribute\+\_\+\+\_\+((error(\char`\"{}\char`\"{})))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{digital_write_fast_8h_a00bda5613fe59582e9cd36d07b8f2851}\label{digital_write_fast_8h_a00bda5613fe59582e9cd36d07b8f2851}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!BIT\_CLEAR@{BIT\_CLEAR}}
+\index{BIT\_CLEAR@{BIT\_CLEAR}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{BIT\_CLEAR}{BIT\_CLEAR}}
+{\footnotesize\ttfamily \#define BIT\+\_\+\+CLEAR(\begin{DoxyParamCaption}\item[{}]{value,  }\item[{}]{bit }\end{DoxyParamCaption})~((value) \&= $\sim$(1UL $<$$<$ (bit)))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_abe4c93bdf909706a57a177f6786af897}\label{digital_write_fast_8h_abe4c93bdf909706a57a177f6786af897}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!BIT\_READ@{BIT\_READ}}
+\index{BIT\_READ@{BIT\_READ}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{BIT\_READ}{BIT\_READ}}
+{\footnotesize\ttfamily \#define BIT\+\_\+\+READ(\begin{DoxyParamCaption}\item[{}]{value,  }\item[{}]{bit }\end{DoxyParamCaption})~((value) \&   (1UL $<$$<$ (bit)))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ab94522870cd3d40d76ae0a8778166017}\label{digital_write_fast_8h_ab94522870cd3d40d76ae0a8778166017}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!BIT\_SET@{BIT\_SET}}
+\index{BIT\_SET@{BIT\_SET}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{BIT\_SET}{BIT\_SET}}
+{\footnotesize\ttfamily \#define BIT\+\_\+\+SET(\begin{DoxyParamCaption}\item[{}]{value,  }\item[{}]{bit }\end{DoxyParamCaption})~((value) $\vert$=  (1UL $<$$<$ (bit)))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a1c73c74b64f4d1b6538a8de13f95a2e6}\label{digital_write_fast_8h_a1c73c74b64f4d1b6538a8de13f95a2e6}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!BIT\_WRITE@{BIT\_WRITE}}
+\index{BIT\_WRITE@{BIT\_WRITE}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{BIT\_WRITE}{BIT\_WRITE}}
+{\footnotesize\ttfamily \#define BIT\+\_\+\+WRITE(\begin{DoxyParamCaption}\item[{}]{value,  }\item[{}]{bit,  }\item[{}]{bitvalue }\end{DoxyParamCaption})~(bitvalue ? \mbox{\hyperlink{digital_write_fast_8h_ab94522870cd3d40d76ae0a8778166017}{BIT\+\_\+\+SET}}(value, bit) \+: \mbox{\hyperlink{digital_write_fast_8h_a00bda5613fe59582e9cd36d07b8f2851}{BIT\+\_\+\+CLEAR}}(value, bit))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a620ec4e523b08fa87d5e2213f128a304}\label{digital_write_fast_8h_a620ec4e523b08fa87d5e2213f128a304}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!ERROR\_SEQUENCE@{ERROR\_SEQUENCE}}
+\index{ERROR\_SEQUENCE@{ERROR\_SEQUENCE}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{ERROR\_SEQUENCE}{ERROR\_SEQUENCE}}
+{\footnotesize\ttfamily \#define ERROR\+\_\+\+SEQUENCE~0b10101010}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ae0444ad0cb3250a5778a573dd10f41be}\label{digital_write_fast_8h_ae0444ad0cb3250a5778a573dd10f41be}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!memcpy\_P@{memcpy\_P}}
+\index{memcpy\_P@{memcpy\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{memcpy\_P}{memcpy\_P}}
+{\footnotesize\ttfamily \#define memcpy\+\_\+P(\begin{DoxyParamCaption}\item[{}]{dest,  }\item[{}]{src,  }\item[{}]{num }\end{DoxyParamCaption})~memcpy((dest), (src), (num))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a963f816fc88a5d8479c285ed4c630229}\label{digital_write_fast_8h_a963f816fc88a5d8479c285ed4c630229}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!PGM\_P@{PGM\_P}}
+\index{PGM\_P@{PGM\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{PGM\_P}{PGM\_P}}
+{\footnotesize\ttfamily \#define PGM\+\_\+P~const char $\ast$}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a48c60b057902adf805797f183286728d}\label{digital_write_fast_8h_a48c60b057902adf805797f183286728d}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!pgm\_read\_byte@{pgm\_read\_byte}}
+\index{pgm\_read\_byte@{pgm\_read\_byte}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{pgm\_read\_byte}{pgm\_read\_byte}}
+{\footnotesize\ttfamily \#define pgm\+\_\+read\+\_\+byte(\begin{DoxyParamCaption}\item[{}]{addr }\end{DoxyParamCaption})~($\ast$(const unsigned char $\ast$)(addr))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a73cf3e57e32321cb193b3cc4b041cc6c}\label{digital_write_fast_8h_a73cf3e57e32321cb193b3cc4b041cc6c}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!pgm\_read\_dword@{pgm\_read\_dword}}
+\index{pgm\_read\_dword@{pgm\_read\_dword}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{pgm\_read\_dword}{pgm\_read\_dword}}
+{\footnotesize\ttfamily \#define pgm\+\_\+read\+\_\+dword(\begin{DoxyParamCaption}\item[{}]{addr }\end{DoxyParamCaption})~($\ast$(const unsigned long $\ast$)(addr))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a910fb5f01313d339d3b835d45e1e5ad0}\label{digital_write_fast_8h_a910fb5f01313d339d3b835d45e1e5ad0}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!pgm\_read\_word@{pgm\_read\_word}}
+\index{pgm\_read\_word@{pgm\_read\_word}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{pgm\_read\_word}{pgm\_read\_word}}
+{\footnotesize\ttfamily \#define pgm\+\_\+read\+\_\+word(\begin{DoxyParamCaption}\item[{}]{addr }\end{DoxyParamCaption})~($\ast$(const unsigned short $\ast$)(addr))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a75acaba9e781937468d0911423bc0c35}\label{digital_write_fast_8h_a75acaba9e781937468d0911423bc0c35}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!PROGMEM@{PROGMEM}}
+\index{PROGMEM@{PROGMEM}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{PROGMEM}{PROGMEM}}
+{\footnotesize\ttfamily \#define PROGMEM}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a73809107539df84eaf01f6a4dea4fbff}\label{digital_write_fast_8h_a73809107539df84eaf01f6a4dea4fbff}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!PSTR@{PSTR}}
+\index{PSTR@{PSTR}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{PSTR}{PSTR}}
+{\footnotesize\ttfamily \#define PSTR(\begin{DoxyParamCaption}\item[{}]{str }\end{DoxyParamCaption})~(str)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a32f0a77e5800213b4d059bb700302d42}\label{digital_write_fast_8h_a32f0a77e5800213b4d059bb700302d42}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_HW\_MISO\_PIN@{SPI\_HW\_MISO\_PIN}}
+\index{SPI\_HW\_MISO\_PIN@{SPI\_HW\_MISO\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_HW\_MISO\_PIN}{SPI\_HW\_MISO\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+HW\+\_\+\+MISO\+\_\+\+PIN~MISO}
+
+\mbox{\Hypertarget{digital_write_fast_8h_abde5a3df1fb9cf0e46476ea7ac10b48a}\label{digital_write_fast_8h_abde5a3df1fb9cf0e46476ea7ac10b48a}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_HW\_MOSI\_PIN@{SPI\_HW\_MOSI\_PIN}}
+\index{SPI\_HW\_MOSI\_PIN@{SPI\_HW\_MOSI\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_HW\_MOSI\_PIN}{SPI\_HW\_MOSI\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+HW\+\_\+\+MOSI\+\_\+\+PIN~MOSI}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ac26ddd8cd6a7cd10b23f08ea6e8f7032}\label{digital_write_fast_8h_ac26ddd8cd6a7cd10b23f08ea6e8f7032}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_HW\_SCK\_PIN@{SPI\_HW\_SCK\_PIN}}
+\index{SPI\_HW\_SCK\_PIN@{SPI\_HW\_SCK\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_HW\_SCK\_PIN}{SPI\_HW\_SCK\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+HW\+\_\+\+SCK\+\_\+\+PIN~SCK}
+
+\mbox{\Hypertarget{digital_write_fast_8h_aa48cf672323b7a1784a973d1a4fd891e}\label{digital_write_fast_8h_aa48cf672323b7a1784a973d1a4fd891e}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_HW\_SS\_PIN@{SPI\_HW\_SS\_PIN}}
+\index{SPI\_HW\_SS\_PIN@{SPI\_HW\_SS\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_HW\_SS\_PIN}{SPI\_HW\_SS\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+HW\+\_\+\+SS\+\_\+\+PIN~SS}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ad80cac0c04cae5a4106da0daaefe8392}\label{digital_write_fast_8h_ad80cac0c04cae5a4106da0daaefe8392}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_SW\_MISO\_PIN@{SPI\_SW\_MISO\_PIN}}
+\index{SPI\_SW\_MISO\_PIN@{SPI\_SW\_MISO\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_SW\_MISO\_PIN}{SPI\_SW\_MISO\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+SW\+\_\+\+MISO\+\_\+\+PIN~(12)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a590704782aba04d0b90e20dc2e06bfe1}\label{digital_write_fast_8h_a590704782aba04d0b90e20dc2e06bfe1}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_SW\_MOSI\_PIN@{SPI\_SW\_MOSI\_PIN}}
+\index{SPI\_SW\_MOSI\_PIN@{SPI\_SW\_MOSI\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_SW\_MOSI\_PIN}{SPI\_SW\_MOSI\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+SW\+\_\+\+MOSI\+\_\+\+PIN~(11)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_aaa5382681cbe8124588319a841015562}\label{digital_write_fast_8h_aaa5382681cbe8124588319a841015562}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_SW\_SCK\_PIN@{SPI\_SW\_SCK\_PIN}}
+\index{SPI\_SW\_SCK\_PIN@{SPI\_SW\_SCK\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_SW\_SCK\_PIN}{SPI\_SW\_SCK\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+SW\+\_\+\+SCK\+\_\+\+PIN~(13)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a8e4c6098d073922d247087549c084efd}\label{digital_write_fast_8h_a8e4c6098d073922d247087549c084efd}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SPI\_SW\_SS\_PIN@{SPI\_SW\_SS\_PIN}}
+\index{SPI\_SW\_SS\_PIN@{SPI\_SW\_SS\_PIN}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_SW\_SS\_PIN}{SPI\_SW\_SS\_PIN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+SW\+\_\+\+SS\+\_\+\+PIN~(10)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a45ba8afa17fe1ae5ab9327dbb6ca05b9}\label{digital_write_fast_8h_a45ba8afa17fe1ae5ab9327dbb6ca05b9}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!sprintf\_P@{sprintf\_P}}
+\index{sprintf\_P@{sprintf\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{sprintf\_P}{sprintf\_P}}
+{\footnotesize\ttfamily \#define sprintf\+\_\+P(\begin{DoxyParamCaption}\item[{}]{s,  }\item[{}]{f,  }\item[{}]{... }\end{DoxyParamCaption})~sprintf((s), (f), \+\_\+\+\_\+\+VA\+\_\+\+ARGS\+\_\+\+\_\+)}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ae97e89b6ed4b46ade2eca9cafc6abd8d}\label{digital_write_fast_8h_ae97e89b6ed4b46ade2eca9cafc6abd8d}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strcasecmp\_P@{strcasecmp\_P}}
+\index{strcasecmp\_P@{strcasecmp\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strcasecmp\_P}{strcasecmp\_P}}
+{\footnotesize\ttfamily \#define strcasecmp\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b }\end{DoxyParamCaption})~strcasecmp((a), (b))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a37c1666c2ccbf210e3829bbebc2b16e4}\label{digital_write_fast_8h_a37c1666c2ccbf210e3829bbebc2b16e4}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strcat\_P@{strcat\_P}}
+\index{strcat\_P@{strcat\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strcat\_P}{strcat\_P}}
+{\footnotesize\ttfamily \#define strcat\+\_\+P(\begin{DoxyParamCaption}\item[{}]{dst,  }\item[{}]{src }\end{DoxyParamCaption})~strcat((dst), (src))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_abbb2cd396dde2d1575948bb16ce2853a}\label{digital_write_fast_8h_abbb2cd396dde2d1575948bb16ce2853a}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strcmp\_P@{strcmp\_P}}
+\index{strcmp\_P@{strcmp\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strcmp\_P}{strcmp\_P}}
+{\footnotesize\ttfamily \#define strcmp\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b }\end{DoxyParamCaption})~strcmp((a), (b))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_ab00bda73e5853cc61868501fe37fa9b7}\label{digital_write_fast_8h_ab00bda73e5853cc61868501fe37fa9b7}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strcpy\_P@{strcpy\_P}}
+\index{strcpy\_P@{strcpy\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strcpy\_P}{strcpy\_P}}
+{\footnotesize\ttfamily \#define strcpy\+\_\+P(\begin{DoxyParamCaption}\item[{}]{dst,  }\item[{}]{src }\end{DoxyParamCaption})~strcpy((dst), (src))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a76ea3b30093856a6482a978d9214142d}\label{digital_write_fast_8h_a76ea3b30093856a6482a978d9214142d}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strlen\_P@{strlen\_P}}
+\index{strlen\_P@{strlen\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strlen\_P}{strlen\_P}}
+{\footnotesize\ttfamily \#define strlen\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a }\end{DoxyParamCaption})~strlen((a))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a6986d443d13df0a4f28c6d1b52effb7d}\label{digital_write_fast_8h_a6986d443d13df0a4f28c6d1b52effb7d}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strncasecmp\_P@{strncasecmp\_P}}
+\index{strncasecmp\_P@{strncasecmp\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strncasecmp\_P}{strncasecmp\_P}}
+{\footnotesize\ttfamily \#define strncasecmp\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b,  }\item[{}]{n }\end{DoxyParamCaption})~strncasecmp((a), (b), (n))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a83b1e057d9ee4c5160557575be07c41f}\label{digital_write_fast_8h_a83b1e057d9ee4c5160557575be07c41f}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strncmp\_P@{strncmp\_P}}
+\index{strncmp\_P@{strncmp\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strncmp\_P}{strncmp\_P}}
+{\footnotesize\ttfamily \#define strncmp\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b,  }\item[{}]{n }\end{DoxyParamCaption})~strncmp((a), (b), (n))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_aca1ecbfa8b94eba4b5228f0a6a18a888}\label{digital_write_fast_8h_aca1ecbfa8b94eba4b5228f0a6a18a888}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!strstr\_P@{strstr\_P}}
+\index{strstr\_P@{strstr\_P}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{strstr\_P}{strstr\_P}}
+{\footnotesize\ttfamily \#define strstr\+\_\+P(\begin{DoxyParamCaption}\item[{}]{a,  }\item[{}]{b }\end{DoxyParamCaption})~strstr((a), (b))}
+
+\mbox{\Hypertarget{digital_write_fast_8h_a5d9d454d4b9f2ff8106d5199ac0d0186}\label{digital_write_fast_8h_a5d9d454d4b9f2ff8106d5199ac0d0186}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!SWAP@{SWAP}}
+\index{SWAP@{SWAP}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{SWAP}{SWAP}}
+{\footnotesize\ttfamily \#define SWAP(\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~do\{ (x)=(x)$^\wedge$(y); (y)=(x)$^\wedge$(y); (x)=(x)$^\wedge$(y); \}while(0)}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{digital_write_fast_8h_acfb3ecdf61e3c560363866746fd186de}\label{digital_write_fast_8h_acfb3ecdf61e3c560363866746fd186de}} 
+\index{digitalWriteFast.h@{digitalWriteFast.h}!NonConstantUsed@{NonConstantUsed}}
+\index{NonConstantUsed@{NonConstantUsed}!digitalWriteFast.h@{digitalWriteFast.h}}
+\doxysubsubsection{\texorpdfstring{NonConstantUsed()}{NonConstantUsed()}}
+{\footnotesize\ttfamily void Non\+Constant\+Used (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+

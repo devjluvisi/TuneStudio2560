@@ -1,0 +1,446 @@
+\hypertarget{class_song}{}\doxysection{Song\texorpdfstring{$<$}{<} MAX\+\_\+\+SONG\+\_\+\+SIZE \texorpdfstring{$>$}{>} Class Template Reference}
+\label{class_song}\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+
+
+A \mbox{\hyperlink{class_song}{Song}} object. Initalized with a $<$\+MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ template to describe how large the songs are allowed to be in the program.  
+
+
+
+
+{\ttfamily \#include $<$song.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_song_ad01c815a93101d90bb7c3e51472296aa}{Song}} (uint8\+\_\+t pin, uint8\+\_\+t note\+Length, uint16\+\_\+t note\+Delay)
+\begin{DoxyCompactList}\small\item\em Construct a new song object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_ac61cfa06013e8b60cfa3b5bfc557e34c}{play\+\_\+note}} (uint16\+\_\+t \mbox{\hyperlink{structnote}{note}})
+\begin{DoxyCompactList}\small\item\em Play a note at a specified pin. This method is not neccessarily tied to any specific song object and works the same no matter how the song is built. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_song_a56548d668b114ce19490f45c97516903}{is\+\_\+song\+\_\+full}} ()
+\item 
+void \mbox{\hyperlink{class_song_affbb4697ee9f37c44924700bab44cde0}{add\+\_\+note}} (uint16\+\_\+t \mbox{\hyperlink{structnote}{note}})
+\begin{DoxyCompactList}\small\item\em Adds a note to the end of the song. If the song is full then the method completes without executing. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_ac0868cd60874f710378535bfacdaae08}{add\+\_\+pause}} ()
+\begin{DoxyCompactList}\small\item\em Adds a pause to the song. The amount of time the song is paused by is determined by a unchangeable variable. If the song is full then the method completes without executing. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_a1b867eb95eff59b2091e6a4305cb607e}{remove\+\_\+note}} ()
+\begin{DoxyCompactList}\small\item\em Remove a note from the end of the song. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_a26d680a66151bcee9fe2d406d05db1c3}{play\+\_\+song}} ()
+\begin{DoxyCompactList}\small\item\em Plays the current song. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_a2007cedad2b7590d73404aed0099a3cf}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Flushes all data from the array. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_song_a586d30972638bb1299411ef6847afeac}{get\+\_\+note}} (\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} index)
+\begin{DoxyCompactList}\small\item\em Get a frequency at a specified index of the song. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_song_ab8e4aa1bd0bfdd8e43579c78cdcf479f}{is\+\_\+empty}} ()
+\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song_a3db408513d08eb3d29c87b5e83e67587}{get\+\_\+size}} ()
+\begin{DoxyCompactList}\small\item\em Gets the size of the song (number of individual frequencies). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_song_a8c584ed395732cdd9e281031581f86d6}{set\+\_\+attributes}} (uint8\+\_\+t note\+Length, uint16\+\_\+t note\+Delay)
+\begin{DoxyCompactList}\small\item\em Set the attributes of the song. Only updates the note length and note delay. Leaves the rest of the song untouched. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_song_a7ec1cbcdd49b1605021428050f5cd337}{get\+\_\+note\+\_\+length}} ()
+\item 
+uint16\+\_\+t \mbox{\hyperlink{class_song_ada4cc2e4fa223e8f6d7af739f897733e}{get\+\_\+note\+\_\+delay}} ()
+\item 
+\mbox{\hyperlink{class_song_a8e636f12238e0b2e8a14735f56e5ba42}{Song}} (uint8\+\_\+t pin, uint8\+\_\+t note\+Length, uint16\+\_\+t note\+Delay)
+\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song_aa983a32f7a777e4cac4a23dcc5e46b2d}{get\+\_\+size}} ()
+\item 
+void \mbox{\hyperlink{class_song_aff3bc9223cae9b02dcc2c0ee5266d4ae}{play\+\_\+note}} (uint16\+\_\+t \mbox{\hyperlink{structnote}{note}})
+\item 
+bool \mbox{\hyperlink{class_song_abf99bf54b05b8b85091ded21e5608dc7}{is\+\_\+song\+\_\+full}} ()
+\item 
+void \mbox{\hyperlink{class_song_aac4e5bb7a6d4aab9a9b4e3f241b50dd1}{add\+\_\+note}} (uint16\+\_\+t \mbox{\hyperlink{structnote}{note}})
+\item 
+void \mbox{\hyperlink{class_song_ad8409a662f217011133b33a4a0e65b3d}{add\+\_\+pause}} ()
+\item 
+void \mbox{\hyperlink{class_song_a9a7a0e37fd507b847db73968bea83699}{remove\+\_\+note}} ()
+\item 
+void \mbox{\hyperlink{class_song_a0edde92a3117cb555361d35e5b8c6822}{play\+\_\+song}} ()
+\item 
+void \mbox{\hyperlink{class_song_a7fa2e616f8a960d9fa2d183658ea379a}{clear}} ()
+\item 
+uint16\+\_\+t \mbox{\hyperlink{class_song_af08b661a6b668010c3e9fd65116c6d63}{get\+\_\+note}} (\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} index)
+\item 
+bool \mbox{\hyperlink{class_song_a569f09d1204b1faa02cae3f7771c3542}{is\+\_\+empty}} ()
+\item 
+void \mbox{\hyperlink{class_song_a682f46591a0e3e614c0b717087a896c9}{set\+\_\+attributes}} (uint8\+\_\+t note\+Length, uint16\+\_\+t note\+Delay)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_song_ae05d2a188cbeedfc2efb3a7055ff147a}{get\+\_\+note\+\_\+length}} ()
+\item 
+uint16\+\_\+t \mbox{\hyperlink{class_song_a6a127738dbded481200bacb8f42c4e7a}{get\+\_\+note\+\_\+delay}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_song_a4a189e14d704271ca1b52cc08a77fcaa}{\+\_\+pin}}
+\begin{DoxyCompactList}\small\item\em The current hardware pin of a speaker. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_song_ac9b047a46326fae4696c9402d0d48d01}{\+\_\+note\+Delay}}
+\begin{DoxyCompactList}\small\item\em The note delay of the song. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_song_a78fba15e2f3bdf354c31c2e791148e74}{\+\_\+note\+Length}}
+\begin{DoxyCompactList}\small\item\em The note length of the song. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song_af7bb75e05877192b46b304cdc2fd79c0}{\+\_\+curr\+Size}}
+\begin{DoxyCompactList}\small\item\em The current size of the song. Is changed every time a note is added or remove from the \+\_\+song\+Data. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_song_a029ef90a4f03863b8ab7e5621a34ca47}{\+\_\+song\+Data}} \mbox{[}MAX\+\_\+\+SONG\+\_\+\+SIZE\mbox{]}
+\begin{DoxyCompactList}\small\item\em An array of MAX\+\_\+\+SONG\+\_\+\+SIZE which holds the values of all of the frequencies the song should play. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$\newline
+class Song$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$}
+A \mbox{\hyperlink{class_song}{Song}} object. Initalized with a $<$\+MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ template to describe how large the songs are allowed to be in the program. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em MAX\+\_\+\+SONG\+\_\+\+SIZE} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_song_ad01c815a93101d90bb7c3e51472296aa}\label{class_song_ad01c815a93101d90bb7c3e51472296aa}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!Song@{Song}}
+\index{Song@{Song}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{Song()}{Song()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+\mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\mbox{\hyperlink{class_song}{Song}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pin,  }\item[{uint8\+\_\+t}]{note\+Length,  }\item[{uint16\+\_\+t}]{note\+Delay }\end{DoxyParamCaption})}
+
+
+
+Construct a new song object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pin} & The pin to use for speaker output. \\
+\hline
+{\em note\+Length} & The length that the note should be played. \\
+\hline
+{\em note\+Delay} & The delay between each note of the song. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_song_a8e636f12238e0b2e8a14735f56e5ba42}\label{class_song_a8e636f12238e0b2e8a14735f56e5ba42}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!Song@{Song}}
+\index{Song@{Song}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{Song()}{Song()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::\mbox{\hyperlink{class_song}{Song}} (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pin,  }\item[{uint8\+\_\+t}]{note\+Length,  }\item[{uint16\+\_\+t}]{note\+Delay }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_song_affbb4697ee9f37c44924700bab44cde0}\label{class_song_affbb4697ee9f37c44924700bab44cde0}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!add\_note@{add\_note}}
+\index{add\_note@{add\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{add\_note()}{add\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::add\+\_\+note (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{note }\end{DoxyParamCaption})}
+
+
+
+Adds a note to the end of the song. If the song is full then the method completes without executing. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em note} & The note to add. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_song_aac4e5bb7a6d4aab9a9b4e3f241b50dd1}\label{class_song_aac4e5bb7a6d4aab9a9b4e3f241b50dd1}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!add\_note@{add\_note}}
+\index{add\_note@{add\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{add\_note()}{add\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::add\+\_\+note (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{note }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_ac0868cd60874f710378535bfacdaae08}\label{class_song_ac0868cd60874f710378535bfacdaae08}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!add\_pause@{add\_pause}}
+\index{add\_pause@{add\_pause}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{add\_pause()}{add\_pause()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::add\+\_\+pause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Adds a pause to the song. The amount of time the song is paused by is determined by a unchangeable variable. If the song is full then the method completes without executing. 
+
+\mbox{\Hypertarget{class_song_ad8409a662f217011133b33a4a0e65b3d}\label{class_song_ad8409a662f217011133b33a4a0e65b3d}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!add\_pause@{add\_pause}}
+\index{add\_pause@{add\_pause}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{add\_pause()}{add\_pause()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::add\+\_\+pause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a2007cedad2b7590d73404aed0099a3cf}\label{class_song_a2007cedad2b7590d73404aed0099a3cf}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!clear@{clear}}
+\index{clear@{clear}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Flushes all data from the array. 
+
+\mbox{\Hypertarget{class_song_a7fa2e616f8a960d9fa2d183658ea379a}\label{class_song_a7fa2e616f8a960d9fa2d183658ea379a}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!clear@{clear}}
+\index{clear@{clear}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a586d30972638bb1299411ef6847afeac}\label{class_song_a586d30972638bb1299411ef6847afeac}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note@{get\_note}}
+\index{get\_note@{get\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note()}{get\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint16\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::get\+\_\+note (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}}}]{index }\end{DoxyParamCaption})}
+
+
+
+Get a frequency at a specified index of the song. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & The index of the note to retrieve. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The frequency of the note. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_af08b661a6b668010c3e9fd65116c6d63}\label{class_song_af08b661a6b668010c3e9fd65116c6d63}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note@{get\_note}}
+\index{get\_note@{get\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note()}{get\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint16\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::get\+\_\+note (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}}}]{index }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_ada4cc2e4fa223e8f6d7af739f897733e}\label{class_song_ada4cc2e4fa223e8f6d7af739f897733e}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note\_delay@{get\_note\_delay}}
+\index{get\_note\_delay@{get\_note\_delay}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note\_delay()}{get\_note\_delay()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint16\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::get\+\_\+note\+\_\+delay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+The delay between each note. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_a6a127738dbded481200bacb8f42c4e7a}\label{class_song_a6a127738dbded481200bacb8f42c4e7a}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note\_delay@{get\_note\_delay}}
+\index{get\_note\_delay@{get\_note\_delay}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note\_delay()}{get\_note\_delay()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint16\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::get\+\_\+note\+\_\+delay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a7ec1cbcdd49b1605021428050f5cd337}\label{class_song_a7ec1cbcdd49b1605021428050f5cd337}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note\_length@{get\_note\_length}}
+\index{get\_note\_length@{get\_note\_length}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note\_length()}{get\_note\_length()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint8\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::get\+\_\+note\+\_\+length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+The length that each note is played for. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_ae05d2a188cbeedfc2efb3a7055ff147a}\label{class_song_ae05d2a188cbeedfc2efb3a7055ff147a}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_note\_length@{get\_note\_length}}
+\index{get\_note\_length@{get\_note\_length}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_note\_length()}{get\_note\_length()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint8\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::get\+\_\+note\+\_\+length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a3db408513d08eb3d29c87b5e83e67587}\label{class_song_a3db408513d08eb3d29c87b5e83e67587}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_size@{get\_size}}
+\index{get\_size@{get\_size}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_size()}{get\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::get\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Gets the size of the song (number of individual frequencies). 
+
+\begin{DoxyReturn}{Returns}
+Size of the song. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_aa983a32f7a777e4cac4a23dcc5e46b2d}\label{class_song_aa983a32f7a777e4cac4a23dcc5e46b2d}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!get\_size@{get\_size}}
+\index{get\_size@{get\_size}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{get\_size()}{get\_size()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::get\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_ab8e4aa1bd0bfdd8e43579c78cdcf479f}\label{class_song_ab8e4aa1bd0bfdd8e43579c78cdcf479f}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!is\_empty@{is\_empty}}
+\index{is\_empty@{is\_empty}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{is\_empty()}{is\_empty()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+bool \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+If a song is empty as in it has no notes in it. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_a569f09d1204b1faa02cae3f7771c3542}\label{class_song_a569f09d1204b1faa02cae3f7771c3542}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!is\_empty@{is\_empty}}
+\index{is\_empty@{is\_empty}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{is\_empty()}{is\_empty()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a56548d668b114ce19490f45c97516903}\label{class_song_a56548d668b114ce19490f45c97516903}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!is\_song\_full@{is\_song\_full}}
+\index{is\_song\_full@{is\_song\_full}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{is\_song\_full()}{is\_song\_full()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+bool \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::is\+\_\+song\+\_\+full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+If the song has reached its max length and nothing more can be added to it. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_song_abf99bf54b05b8b85091ded21e5608dc7}\label{class_song_abf99bf54b05b8b85091ded21e5608dc7}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!is\_song\_full@{is\_song\_full}}
+\index{is\_song\_full@{is\_song\_full}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{is\_song\_full()}{is\_song\_full()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::is\+\_\+song\+\_\+full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_ac61cfa06013e8b60cfa3b5bfc557e34c}\label{class_song_ac61cfa06013e8b60cfa3b5bfc557e34c}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!play\_note@{play\_note}}
+\index{play\_note@{play\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{play\_note()}{play\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::play\+\_\+note (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{note }\end{DoxyParamCaption})}
+
+
+
+Play a note at a specified pin. This method is not neccessarily tied to any specific song object and works the same no matter how the song is built. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em note} & The note to play. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_song_aff3bc9223cae9b02dcc2c0ee5266d4ae}\label{class_song_aff3bc9223cae9b02dcc2c0ee5266d4ae}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!play\_note@{play\_note}}
+\index{play\_note@{play\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{play\_note()}{play\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::play\+\_\+note (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{note }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a26d680a66151bcee9fe2d406d05db1c3}\label{class_song_a26d680a66151bcee9fe2d406d05db1c3}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!play\_song@{play\_song}}
+\index{play\_song@{play\_song}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{play\_song()}{play\_song()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::play\+\_\+song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Plays the current song. 
+
+\begin{DoxyRemark}{Remarks}
+Uses a blocking delay method. 
+\end{DoxyRemark}
+\mbox{\Hypertarget{class_song_a0edde92a3117cb555361d35e5b8c6822}\label{class_song_a0edde92a3117cb555361d35e5b8c6822}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!play\_song@{play\_song}}
+\index{play\_song@{play\_song}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{play\_song()}{play\_song()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::play\+\_\+song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a1b867eb95eff59b2091e6a4305cb607e}\label{class_song_a1b867eb95eff59b2091e6a4305cb607e}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!remove\_note@{remove\_note}}
+\index{remove\_note@{remove\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{remove\_note()}{remove\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::remove\+\_\+note (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Remove a note from the end of the song. 
+
+\mbox{\Hypertarget{class_song_a9a7a0e37fd507b847db73968bea83699}\label{class_song_a9a7a0e37fd507b847db73968bea83699}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!remove\_note@{remove\_note}}
+\index{remove\_note@{remove\_note}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{remove\_note()}{remove\_note()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::remove\+\_\+note (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_song_a8c584ed395732cdd9e281031581f86d6}\label{class_song_a8c584ed395732cdd9e281031581f86d6}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!set\_attributes@{set\_attributes}}
+\index{set\_attributes@{set\_attributes}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{set\_attributes()}{set\_attributes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+void \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::set\+\_\+attributes (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{note\+Length,  }\item[{uint16\+\_\+t}]{note\+Delay }\end{DoxyParamCaption})}
+
+
+
+Set the attributes of the song. Only updates the note length and note delay. Leaves the rest of the song untouched. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em note\+Length} & The note length to set. \\
+\hline
+{\em note\+Delay} & The delay between each note to set. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_song_a682f46591a0e3e614c0b717087a896c9}\label{class_song_a682f46591a0e3e614c0b717087a896c9}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!set\_attributes@{set\_attributes}}
+\index{set\_attributes@{set\_attributes}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{set\_attributes()}{set\_attributes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$\+::set\+\_\+attributes (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{note\+Length,  }\item[{uint16\+\_\+t}]{note\+Delay }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_song_af7bb75e05877192b46b304cdc2fd79c0}\label{class_song_af7bb75e05877192b46b304cdc2fd79c0}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!\_currSize@{\_currSize}}
+\index{\_currSize@{\_currSize}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{\_currSize}{\_currSize}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\+\_\+curr\+Size\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The current size of the song. Is changed every time a note is added or remove from the \+\_\+song\+Data. 
+
+\mbox{\Hypertarget{class_song_ac9b047a46326fae4696c9402d0d48d01}\label{class_song_ac9b047a46326fae4696c9402d0d48d01}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!\_noteDelay@{\_noteDelay}}
+\index{\_noteDelay@{\_noteDelay}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{\_noteDelay}{\_noteDelay}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint8\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\+\_\+note\+Delay\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The note delay of the song. 
+
+\mbox{\Hypertarget{class_song_a78fba15e2f3bdf354c31c2e791148e74}\label{class_song_a78fba15e2f3bdf354c31c2e791148e74}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!\_noteLength@{\_noteLength}}
+\index{\_noteLength@{\_noteLength}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{\_noteLength}{\_noteLength}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint8\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\+\_\+note\+Length\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The note length of the song. 
+
+\mbox{\Hypertarget{class_song_a4a189e14d704271ca1b52cc08a77fcaa}\label{class_song_a4a189e14d704271ca1b52cc08a77fcaa}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!\_pin@{\_pin}}
+\index{\_pin@{\_pin}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{\_pin}{\_pin}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint8\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\+\_\+pin\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The current hardware pin of a speaker. 
+
+\mbox{\Hypertarget{class_song_a029ef90a4f03863b8ab7e5621a34ca47}\label{class_song_a029ef90a4f03863b8ab7e5621a34ca47}} 
+\index{Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}!\_songData@{\_songData}}
+\index{\_songData@{\_songData}!Song$<$ MAX\_SONG\_SIZE $>$@{Song$<$ MAX\_SONG\_SIZE $>$}}
+\doxysubsubsection{\texorpdfstring{\_songData}{\_songData}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{song_8h_ac519eeb8110c1d9f3f61d52b51510917}{song\+\_\+size\+\_\+t}} MAX\+\_\+\+SONG\+\_\+\+SIZE$>$ \\
+uint16\+\_\+t \mbox{\hyperlink{class_song}{Song}}$<$ MAX\+\_\+\+SONG\+\_\+\+SIZE $>$\+::\+\_\+song\+Data\mbox{[}MAX\+\_\+\+SONG\+\_\+\+SIZE\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+An array of MAX\+\_\+\+SONG\+\_\+\+SIZE which holds the values of all of the frequencies the song should play. 
+
+\begin{DoxyRemark}{Remarks}
+It is important to know that the \mbox{\hyperlink{class_song}{Song}} class does not directly deal with the note\+\_\+t struct at all. Rather, notes are stored as frequencies only and pitches are retrieved on the fly. 
+\end{DoxyRemark}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{main_8cpp_acf0f9b68e6df821a93f361d78f31d066}{get\+\_\+note\+\_\+from\+\_\+freq(const uint16\+\_\+t frequency)}} 
+
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{main_8cpp_a4c38b2cc661404b6e33159c8f7c24ec4}{get\+\_\+note\+\_\+from\+\_\+pitch(const char $\ast$ const pitch)}} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/\mbox{\hyperlink{song_8h}{song.\+h}}\end{DoxyCompactItemize}

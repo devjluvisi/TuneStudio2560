@@ -1,0 +1,96 @@
+\hypertarget{class_listening_mode_menu}{}\doxysection{Listening\+Mode\+Menu Class Reference}
+\label{class_listening_mode_menu}\index{ListeningModeMenu@{ListeningModeMenu}}
+
+
+{\ttfamily \#include $<$states.\+h$>$}
+
+Inheritance diagram for Listening\+Mode\+Menu\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_listening_mode_menu}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_listening_mode_menu_a203569470c61479b12fef7e98ab87244}{Listening\+Mode\+Menu}} ()
+\item 
+\mbox{\hyperlink{class_listening_mode_menu_a3b5aa911b28547d76c6b5f07b8943430}{$\sim$\+Listening\+Mode\+Menu}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}{init}} () override
+\begin{DoxyCompactList}\small\item\em The method to be run when the program state first loads. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_listening_mode_menu_aaffaeaf571a72750c030d0c44a88df3c}{loop}} () override
+\begin{DoxyCompactList}\small\item\em A method to be run on an infinite loop after the \mbox{\hyperlink{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}{init()}} method is run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_listening_mode_menu_a92c755fff741f6727984149da2c6e0d9}{previous\+Song}}
+\begin{DoxyCompactList}\small\item\em The previous song that the method has read the user selected. Used for knowing when to update the lcd with new information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_listening_mode_menu_a203569470c61479b12fef7e98ab87244}\label{class_listening_mode_menu_a203569470c61479b12fef7e98ab87244}} 
+\index{ListeningModeMenu@{ListeningModeMenu}!ListeningModeMenu@{ListeningModeMenu}}
+\index{ListeningModeMenu@{ListeningModeMenu}!ListeningModeMenu@{ListeningModeMenu}}
+\doxysubsubsection{\texorpdfstring{ListeningModeMenu()}{ListeningModeMenu()}}
+{\footnotesize\ttfamily Listening\+Mode\+Menu\+::\+Listening\+Mode\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_listening_mode_menu_a3b5aa911b28547d76c6b5f07b8943430}\label{class_listening_mode_menu_a3b5aa911b28547d76c6b5f07b8943430}} 
+\index{ListeningModeMenu@{ListeningModeMenu}!````~ListeningModeMenu@{$\sim$ListeningModeMenu}}
+\index{````~ListeningModeMenu@{$\sim$ListeningModeMenu}!ListeningModeMenu@{ListeningModeMenu}}
+\doxysubsubsection{\texorpdfstring{$\sim$ListeningModeMenu()}{~ListeningModeMenu()}}
+{\footnotesize\ttfamily Listening\+Mode\+Menu\+::$\sim$\+Listening\+Mode\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}\label{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}} 
+\index{ListeningModeMenu@{ListeningModeMenu}!init@{init}}
+\index{init@{init}!ListeningModeMenu@{ListeningModeMenu}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void Listening\+Mode\+Menu\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+The method to be run when the program state first loads. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_afe57c19344302d3b8717a92ecd99ad5b}{Program\+State}}.
+
+\mbox{\Hypertarget{class_listening_mode_menu_aaffaeaf571a72750c030d0c44a88df3c}\label{class_listening_mode_menu_aaffaeaf571a72750c030d0c44a88df3c}} 
+\index{ListeningModeMenu@{ListeningModeMenu}!loop@{loop}}
+\index{loop@{loop}!ListeningModeMenu@{ListeningModeMenu}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void Listening\+Mode\+Menu\+::loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+A method to be run on an infinite loop after the \mbox{\hyperlink{class_listening_mode_menu_a5ee8398f7f4889beeeaa833be42a5802}{init()}} method is run. 
+
+
+
+Implements \mbox{\hyperlink{class_program_state_a45b3101edd602afcaf8dad541204201f}{Program\+State}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_listening_mode_menu_a92c755fff741f6727984149da2c6e0d9}\label{class_listening_mode_menu_a92c755fff741f6727984149da2c6e0d9}} 
+\index{ListeningModeMenu@{ListeningModeMenu}!previousSong@{previousSong}}
+\index{previousSong@{previousSong}!ListeningModeMenu@{ListeningModeMenu}}
+\doxysubsubsection{\texorpdfstring{previousSong}{previousSong}}
+{\footnotesize\ttfamily uint8\+\_\+t Listening\+Mode\+Menu\+::previous\+Song\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The previous song that the method has read the user selected. Used for knowing when to update the lcd with new information. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/include/studio-\/libs/states/\mbox{\hyperlink{states_8h}{states.\+h}}\item 
+C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/src/studio-\/libs/states/\mbox{\hyperlink{lm__menu_8cpp}{lm\+\_\+menu.\+cpp}}\end{DoxyCompactItemize}

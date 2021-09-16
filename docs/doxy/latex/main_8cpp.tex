@@ -1,0 +1,680 @@
+\hypertarget{main_8cpp}{}\doxysection{C\+:/\+Users/jacob/\+Documents/\+Git\+Hub/\+Tune\+Studio2560/src/main.cpp File Reference}
+\label{main_8cpp}\index{C:/Users/jacob/Documents/GitHub/TuneStudio2560/src/main.cpp@{C:/Users/jacob/Documents/GitHub/TuneStudio2560/src/main.cpp}}
+
+
+The main class for Tune\+Studio2560.  
+
+
+{\ttfamily \#include $<$studio-\/libs/tune\+\_\+studio.\+h$>$}\newline
+{\ttfamily \#include $<$studio-\/libs/states/states.\+h$>$}\newline
+{\ttfamily \#include $<$SPI.\+h$>$}\newline
+{\ttfamily \#include $<$Sd\+Fat.\+h$>$}\newline
+{\ttfamily \#include $<$debug/debug.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a53dc4af00adc7b3b4d12eafb71596dfc}{SELECT}}~0
+\item 
+\#define \mbox{\hyperlink{main_8cpp_aa498dfb3e15bd0b6ad9ef32a24990e8c}{CANCEL}}~1
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{main_8cpp_a4df716e30671ae57bc13874b9fdc9467}{lcd}} (0x27, \mbox{\hyperlink{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}{LCD\+\_\+\+COLS}}, \mbox{\hyperlink{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}{LCD\+\_\+\+ROWS}})
+\begin{DoxyCompactList}\small\item\em Represents a global instance of the Liquid Crystal display used for Tune\+Studio2560. \end{DoxyCompactList}\item 
+Sev\+Seg\+Shift \mbox{\hyperlink{main_8cpp_a8ccf31be88302c02c3eb52fc4ccf9d06}{seg\+Display}} (\mbox{\hyperlink{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}{SHIFT\+\_\+\+PIN\+\_\+\+DS}}, \mbox{\hyperlink{tune__studio_8h_a1c796f73e188890598417c3a75699db9}{SHIFT\+\_\+\+PIN\+\_\+\+SHCP}}, \mbox{\hyperlink{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}{SHIFT\+\_\+\+PIN\+\_\+\+STCP}})
+\begin{DoxyCompactList}\small\item\em Represents the 4-\/digit-\/wide 7-\/segment display used in Tune\+Studio2560. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{main_8cpp_a7da257a468bb931002f0ed9b79d90305}{is\+\_\+interrupt}} ()
+\item 
+void \mbox{\hyperlink{main_8cpp_a5c8c46147c22df1bbea1dafd0137d9a8}{delay\+\_\+ms}} (const unsigned long milliseconds)
+\begin{DoxyCompactList}\small\item\em A custom (blocking) delay function which checks if an immediate interrupt is occuring. Works the same as the normal arduino delay(ms) function just with a custom handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Sets up Tune\+Studio2560 to be used on an infinite loop by initalizing hardware and checking for errors. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em The primary \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} method of the Arduino is responsible for managing the program\+State and resetting interrupts. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_af1ea9647da2198982b72c4e825120eb5}{set\+\_\+selected\+\_\+page}} (uint8\+\_\+t page)
+\begin{DoxyCompactList}\small\item\em Set the selected page for selecting a song. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{main_8cpp_adb814100fc443252753e7c6ae379eaf6}{get\+\_\+selected\+\_\+page}} ()
+\item 
+void \mbox{\hyperlink{main_8cpp_a4c29562acdad606a577408dd8abc25c2}{set\+\_\+selected\+\_\+song}} (uint8\+\_\+t song)
+\begin{DoxyCompactList}\small\item\em Set a new song to be selected. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{main_8cpp_a7efb8415d72df1cd92f12b7998fe75a0}{get\+\_\+selected\+\_\+song}} ()
+\begin{DoxyCompactList}\small\item\em Get the current index of the selected song. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{main_8cpp_ac93f9e7f2f690936d955d0bad29bb254}{pgm\+\_\+pcpyr}} (uint8\+\_\+t btn\+Index, uint8\+\_\+t note\+Index)
+\begin{DoxyCompactList}\small\item\em Copies the string data from a index on PROGRAM\+\_\+\+NOTES PROGMEM and then returns the string data for that pointer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{main_8cpp_acf0f9b68e6df821a93f361d78f31d066}{get\+\_\+note\+\_\+from\+\_\+freq}} (const uint16\+\_\+t frequency)
+\begin{DoxyCompactList}\small\item\em Retrieve a note object that matches a specified frequency. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{main_8cpp_a4c38b2cc661404b6e33159c8f7c24ec4}{get\+\_\+note\+\_\+from\+\_\+pitch}} (const char $\ast$const pitch)
+\begin{DoxyCompactList}\small\item\em Retrieve a note object from a specified pitch. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} \mbox{\hyperlink{main_8cpp_a0a05e82ad1b207c0c95881c6a4774028}{get\+\_\+current\+\_\+tone}} (uint8\+\_\+t tone\+Button)
+\item 
+uint16\+\_\+t \mbox{\hyperlink{main_8cpp_a26f66aac20632e8caaaa2f797d19023f}{get\+\_\+current\+\_\+freq}} ()
+\begin{DoxyCompactList}\small\item\em Get the current frequency from the potentiometer. Whatever tune button was pressed previously is not accounted for. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a5ed400569b15b398e82176cd6d6312c0}{print\+\_\+lcd}} (const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$text, uint8\+\_\+t char\+Delay)
+\begin{DoxyCompactList}\small\item\em Prints text to the lcd and wraps text automatically. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a5a978cd011bc94902689b04925ca6754}{print\+\_\+scrolling}} (const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$text, uint8\+\_\+t cursorY, uint8\+\_\+t char\+Delay)
+\begin{DoxyCompactList}\small\item\em Prints a single line of scrolling text on the lcd. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a0b054358c6ee471e4be199b22ddca445}{lcd\+\_\+clear\+\_\+row}} (uint8\+\_\+t row)
+\begin{DoxyCompactList}\small\item\em Clears a row on the LCD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a898ace50e0bb46c6ade75cdfd315dd3d}{update\+\_\+state}} (\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}} state)
+\begin{DoxyCompactList}\small\item\em Forcefully update the current state. This method call should be the last one during a states \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} iteration and no code should come after this function call. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a7e2ece690821267d286ff4821e025939}{isr\+\_\+btn\+\_\+handle}} ()
+\begin{DoxyCompactList}\small\item\em Handles any interrupts which could be generated by the add/select or del/cancel buttons. Whether or not the immediate\+Interrupt variable should be toggled on depends on the current \mbox{\hyperlink{class_program_state}{Program\+State}} and how it wants to handle interrupts. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{main_8cpp_a751b1071ae1dc089835601e0aca8358d}{is\+\_\+pressed}} (const uint8\+\_\+t button\+Pin)
+\begin{DoxyCompactList}\small\item\em Checks for button presses \& updates Debounce rate. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_ae3bc360cfa9682139e87c79973fcded9}{sd\+\_\+save\+\_\+song}} (const char $\ast$const file\+Name, \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ song)
+\begin{DoxyCompactList}\small\item\em Saves a song class to the SD card by using the SD.\+h library and writing all of the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot be longer then 8 characters and should include a .TXT extension. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a48d42d6622c1973cc66e5ce6fff4dd21}{sd\+\_\+rem}} (const char $\ast$const file\+Name)
+\begin{DoxyCompactList}\small\item\em Delete a file from the micro\+SD. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{main_8cpp_aa84dbe6e60ec0541e7d39983e4e528f0}{sd\+\_\+get\+\_\+file}} (uint8\+\_\+t index)
+\begin{DoxyCompactList}\small\item\em Gets a file name from the SD card in descending order according to a specified index. For example index \char`\"{}0\char`\"{} would be the file at the top of the SD card. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{main_8cpp_af4fc318f751ef7ab7cb146c553f7bc72}{sd\+\_\+songcpy}} (\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \&song, const char $\ast$const file\+Name)
+\begin{DoxyCompactList}\small\item\em Copies and parses song data from a .txt file onto the global song object. The file must be in the correct format to work properly. \end{DoxyCompactList}\item 
+const char $\ast$ \mbox{\hyperlink{main_8cpp_a70897c02b858c8c0f08518d19a5b71da}{get\+\_\+active\+\_\+time}} ()
+\begin{DoxyCompactList}\small\item\em Get the current time that the arduino has been running in hours, minutes, and seconds. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a29ed6f6a625e942c0fea91a7c081070b}{sd\+\_\+make\+\_\+readme}} ()
+\begin{DoxyCompactList}\small\item\em Generates a README file in the SD card. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static volatile bool \mbox{\hyperlink{main_8cpp_a8b1664707309ef9e72b574ca9c245600}{immediate\+Interrupt}} = false
+\item 
+static volatile unsigned long \mbox{\hyperlink{main_8cpp_a18ec832e742616d037d5a342d30715f9}{last\+Button\+Press}} = 0
+\begin{DoxyCompactList}\small\item\em The last time a button was pressed that the main class registered through is\+\_\+pressed. \end{DoxyCompactList}\item 
+static volatile uint8\+\_\+t \mbox{\hyperlink{main_8cpp_acec302525ebbc029a13305d0bd9c89a0}{selected\+Song}} = 1
+\begin{DoxyCompactList}\small\item\em The current index of the selected. \end{DoxyCompactList}\item 
+static volatile uint8\+\_\+t \mbox{\hyperlink{main_8cpp_ac2a2fb4a9579d81702abb2ca880ec2b1}{selected\+Page}} = 1
+\begin{DoxyCompactList}\small\item\em The current selected page of the program. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \mbox{\hyperlink{main_8cpp_aefa8292e13326884e19686108c4106dc}{prgm\+Song}} (\mbox{\hyperlink{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}{SPEAKER\+\_\+1}}, \mbox{\hyperlink{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}{DEFAULT\+\_\+\+NOTE\+\_\+\+LENGTH}}, \mbox{\hyperlink{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}{DEFAULT\+\_\+\+NOTE\+\_\+\+DELAY}})
+\begin{DoxyCompactList}\small\item\em Represents the global song object to be used in the program when managing songs. \end{DoxyCompactList}\item 
+static Sd\+Fat \mbox{\hyperlink{main_8cpp_af7186c0ed9faf692c4abbb3fd945b9f9}{SD}}
+\begin{DoxyCompactList}\small\item\em A main-\/class-\/scoped global variable that represents the SD card on the Arduino. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{class_program_state}{Program\+State}} $\ast$ \mbox{\hyperlink{main_8cpp_a2b51620c65649eaa9c95259e477b5097}{prgm\+State}}
+\begin{DoxyCompactList}\small\item\em A global main-\/class-\/scoped variable which is a pointer to a \mbox{\hyperlink{class_program_state}{Program\+State}} instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The main class for Tune\+Studio2560. 
+
+\begin{DoxyAuthor}{Author}
+Jacob Lu\+Visi 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+2.\+2-\/Release 4 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2021-\/06-\/27 \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} 2021-\/9-\/11 (+)
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021
+\end{DoxyCopyright}
+\doxysubsection*{Tune\+Studio2560}
+
+\doxyparagraph*{Open source song playback and creation tool made for the Arduino Mega 2560 and compatible.}
+
+████████ ██ ██ ███ ██ ███████ ███████ ████████ ██ ██ ██████ ██ ██████ ██████ ███████ ██████ ██████ ██ ██ ██ ████ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ████ ██ ██ ██ ██ ██ ██ █████ ███████ ██ ██ ██ ██ ██ ██ ██ ██ █████ ███████ ███████ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██ ████ ██ ██ ██████ ██ ████ ███████ ███████ ██ ██████ ██████ ██ ██████ ███████ ███████ ██████ ██████
+
+Tune\+Studio2560 was developed using Platform\+IO on Visual Studio Code and it is highly recommended to modify this project using that framework.
+
+To view documentation on how the software for Tune\+Studio2560 operates please check out $\sim$ \href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers}{\texttt{ https\+://github.\+com/devjluvisi/\+Tune\+Studio2560/wiki/\+For-\/\+Developers}}
+
+To view general information on how to use Tune\+Studio2560 see $\sim$ \href{https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users}{\texttt{ https\+://github.\+com/devjluvisi/\+Tune\+Studio2560/wiki/\+For-\/\+Users}}
+
+To view how to create Tune\+Studio2560 along with the schematics, parts, and wiring view $\sim$ \href{https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It}{\texttt{ https\+://github.\+com/devjluvisi/\+Tune\+Studio2560/wiki/\+Build-\/\+It}}
+
+To view release changelogs, Maker\+Studio2560, future todo, and doxygen documentation view $\sim$ \href{https://devjluvisi.github.io/TuneStudio2560/}{\texttt{ https\+://devjluvisi.\+github.\+io/\+Tune\+Studio2560/}}
+
+All documentation to method functionality is in header files. Hover over methods to view information. It is highly recommended to use the online Doxygen documentation to view information about methods and variables.
+
+LICENSE -\/ MIT 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8cpp_aa498dfb3e15bd0b6ad9ef32a24990e8c}\label{main_8cpp_aa498dfb3e15bd0b6ad9ef32a24990e8c}} 
+\index{main.cpp@{main.cpp}!CANCEL@{CANCEL}}
+\index{CANCEL@{CANCEL}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{CANCEL}{CANCEL}}
+{\footnotesize\ttfamily \#define CANCEL~1}
+
+\mbox{\Hypertarget{main_8cpp_a53dc4af00adc7b3b4d12eafb71596dfc}\label{main_8cpp_a53dc4af00adc7b3b4d12eafb71596dfc}} 
+\index{main.cpp@{main.cpp}!SELECT@{SELECT}}
+\index{SELECT@{SELECT}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{SELECT}{SELECT}}
+{\footnotesize\ttfamily \#define SELECT~0}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a5c8c46147c22df1bbea1dafd0137d9a8}\label{main_8cpp_a5c8c46147c22df1bbea1dafd0137d9a8}} 
+\index{main.cpp@{main.cpp}!delay\_ms@{delay\_ms}}
+\index{delay\_ms@{delay\_ms}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{delay\_ms()}{delay\_ms()}}
+{\footnotesize\ttfamily void delay\+\_\+ms (\begin{DoxyParamCaption}\item[{const unsigned long}]{milliseconds }\end{DoxyParamCaption})}
+
+
+
+A custom (blocking) delay function which checks if an immediate interrupt is occuring. Works the same as the normal arduino delay(ms) function just with a custom handler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em milliseconds} & The time to delay for. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a70897c02b858c8c0f08518d19a5b71da}\label{main_8cpp_a70897c02b858c8c0f08518d19a5b71da}} 
+\index{main.cpp@{main.cpp}!get\_active\_time@{get\_active\_time}}
+\index{get\_active\_time@{get\_active\_time}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_active\_time()}{get\_active\_time()}}
+{\footnotesize\ttfamily const char $\ast$ get\+\_\+active\+\_\+time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current time that the arduino has been running in hours, minutes, and seconds. 
+
+\mbox{\Hypertarget{main_8cpp_a26f66aac20632e8caaaa2f797d19023f}\label{main_8cpp_a26f66aac20632e8caaaa2f797d19023f}} 
+\index{main.cpp@{main.cpp}!get\_current\_freq@{get\_current\_freq}}
+\index{get\_current\_freq@{get\_current\_freq}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_current\_freq()}{get\_current\_freq()}}
+{\footnotesize\ttfamily uint16\+\_\+t get\+\_\+current\+\_\+freq (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current frequency from the potentiometer. Whatever tune button was pressed previously is not accounted for. 
+
+\begin{DoxyRemark}{Remarks}
+This method does not deal with any tune buttons, rather it simply returns the current value as measured by the arduino. 
+
+This method\textquotesingle{}s speed increases drastically when PRGM\+\_\+\+MODE==2 or fast analog read is enabled.
+\end{DoxyRemark}
+\begin{DoxyReturn}{Returns}
+The current frequency read by the potentiometer. (0 and 1023) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a0a05e82ad1b207c0c95881c6a4774028}\label{main_8cpp_a0a05e82ad1b207c0c95881c6a4774028}} 
+\index{main.cpp@{main.cpp}!get\_current\_tone@{get\_current\_tone}}
+\index{get\_current\_tone@{get\_current\_tone}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_current\_tone()}{get\_current\_tone()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+current\+\_\+tone (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{tone\+Button }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em tone\+Button} & The button which was pressed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A note struct from the tone\+Button that was pressed. Finds the note by copying information from PROGMEM. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_acf0f9b68e6df821a93f361d78f31d066}\label{main_8cpp_acf0f9b68e6df821a93f361d78f31d066}} 
+\index{main.cpp@{main.cpp}!get\_note\_from\_freq@{get\_note\_from\_freq}}
+\index{get\_note\_from\_freq@{get\_note\_from\_freq}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_note\_from\_freq()}{get\_note\_from\_freq()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+note\+\_\+from\+\_\+freq (\begin{DoxyParamCaption}\item[{const uint16\+\_\+t}]{frequency }\end{DoxyParamCaption})}
+
+
+
+Retrieve a note object that matches a specified frequency. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frequency} & The frequency to search for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The note which has the frequency. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a4c38b2cc661404b6e33159c8f7c24ec4}\label{main_8cpp_a4c38b2cc661404b6e33159c8f7c24ec4}} 
+\index{main.cpp@{main.cpp}!get\_note\_from\_pitch@{get\_note\_from\_pitch}}
+\index{get\_note\_from\_pitch@{get\_note\_from\_pitch}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_note\_from\_pitch()}{get\_note\_from\_pitch()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tune__studio_8h_a1fc49e9f8f4a048b97b89654c6b0f871}{note\+\_\+t}} get\+\_\+note\+\_\+from\+\_\+pitch (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{pitch }\end{DoxyParamCaption})}
+
+
+
+Retrieve a note object from a specified pitch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pitch} & The pitch string to search for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The note which matches the frequency. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_adb814100fc443252753e7c6ae379eaf6}\label{main_8cpp_adb814100fc443252753e7c6ae379eaf6}} 
+\index{main.cpp@{main.cpp}!get\_selected\_page@{get\_selected\_page}}
+\index{get\_selected\_page@{get\_selected\_page}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_selected\_page()}{get\_selected\_page()}}
+{\footnotesize\ttfamily uint8\+\_\+t get\+\_\+selected\+\_\+page (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+The value of the selected\+Page variable in the main method. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a7efb8415d72df1cd92f12b7998fe75a0}\label{main_8cpp_a7efb8415d72df1cd92f12b7998fe75a0}} 
+\index{main.cpp@{main.cpp}!get\_selected\_song@{get\_selected\_song}}
+\index{get\_selected\_song@{get\_selected\_song}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_selected\_song()}{get\_selected\_song()}}
+{\footnotesize\ttfamily uint8\+\_\+t get\+\_\+selected\+\_\+song (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current index of the selected song. 
+
+\begin{DoxyReturn}{Returns}
+The current selected song in the main class. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a7da257a468bb931002f0ed9b79d90305}\label{main_8cpp_a7da257a468bb931002f0ed9b79d90305}} 
+\index{main.cpp@{main.cpp}!is\_interrupt@{is\_interrupt}}
+\index{is\_interrupt@{is\_interrupt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{is\_interrupt()}{is\_interrupt()}}
+{\footnotesize\ttfamily bool is\+\_\+interrupt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+If the interrupt flag is true. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a751b1071ae1dc089835601e0aca8358d}\label{main_8cpp_a751b1071ae1dc089835601e0aca8358d}} 
+\index{main.cpp@{main.cpp}!is\_pressed@{is\_pressed}}
+\index{is\_pressed@{is\_pressed}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{is\_pressed()}{is\_pressed()}}
+{\footnotesize\ttfamily bool is\+\_\+pressed (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t}]{button\+Pin }\end{DoxyParamCaption})}
+
+
+
+Checks for button presses \& updates Debounce rate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em button\+Pin} & The pin of the button to check for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the button is being pressed. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a7e2ece690821267d286ff4821e025939}\label{main_8cpp_a7e2ece690821267d286ff4821e025939}} 
+\index{main.cpp@{main.cpp}!isr\_btn\_handle@{isr\_btn\_handle}}
+\index{isr\_btn\_handle@{isr\_btn\_handle}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{isr\_btn\_handle()}{isr\_btn\_handle()}}
+{\footnotesize\ttfamily void isr\+\_\+btn\+\_\+handle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handles any interrupts which could be generated by the add/select or del/cancel buttons. Whether or not the immediate\+Interrupt variable should be toggled on depends on the current \mbox{\hyperlink{class_program_state}{Program\+State}} and how it wants to handle interrupts. 
+
+\mbox{\Hypertarget{main_8cpp_a4df716e30671ae57bc13874b9fdc9467}\label{main_8cpp_a4df716e30671ae57bc13874b9fdc9467}} 
+\index{main.cpp@{main.cpp}!lcd@{lcd}}
+\index{lcd@{lcd}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{lcd()}{lcd()}}
+{\footnotesize\ttfamily Liquid\+Crystal\+\_\+\+I2C lcd (\begin{DoxyParamCaption}\item[{0x27}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_a94f9bcf1048294892347248e4b27c9b3}{LCD\+\_\+\+COLS}}}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_ae8842648f085d102ff0d7b1f06896143}{LCD\+\_\+\+ROWS}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Represents a global instance of the Liquid Crystal display used for Tune\+Studio2560. 
+
+The Liquid Crystal display uses the I2C protocol and is responsible for direct user feedback on using the program.~\newline
+ The display should be the recommended {\bfseries{20 columns and 4 rows}}.~\newline
+ ~\newline
+ Editing Tune\+Studio2560 to accomidate smaller displays is possible by adjusting the LCD\+\_\+\+COLS and LCD\+\_\+\+ROWS but some changes to set\+Cursor(x, x) methods would need to be done. \mbox{\Hypertarget{main_8cpp_a0b054358c6ee471e4be199b22ddca445}\label{main_8cpp_a0b054358c6ee471e4be199b22ddca445}} 
+\index{main.cpp@{main.cpp}!lcd\_clear\_row@{lcd\_clear\_row}}
+\index{lcd\_clear\_row@{lcd\_clear\_row}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{lcd\_clear\_row()}{lcd\_clear\_row()}}
+{\footnotesize\ttfamily void lcd\+\_\+clear\+\_\+row (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row }\end{DoxyParamCaption})}
+
+
+
+Clears a row on the LCD. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & The row to clear. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_afe461d27b9c48d5921c00d521181f12f}\label{main_8cpp_afe461d27b9c48d5921c00d521181f12f}} 
+\index{main.cpp@{main.cpp}!loop@{loop}}
+\index{loop@{loop}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The primary \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} method of the Arduino is responsible for managing the program\+State and resetting interrupts. 
+
+\hypertarget{main_8cpp_What}{}\doxysubparagraph{it does}\label{main_8cpp_What}
+The \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} method will first call the execute() function for the prgm\+State variable. The execute() function will handle the initalization and looping for the Program State. ~\newline
+ After, the immediate\+Interrupt variable is set to \char`\"{}false\char`\"{} just in case the loop was reset due to an interrupt. ~\newline
+~\newline
+ {\itshape For PERF\+\_\+\+METRICS \& DEBUG Only\+:}~\newline
+ Prints out performance statistics to the Serial monitor. The performance statistics which are displayed are\+:
+\begin{DoxyItemize}
+\item Time the loop took to complete (in microseconds)
+\item The RAM usage of the program.
+\item The current (\%) of RAM the program is utilizing.
+\item The number of clock cycles which have passed since the previous iteration.
+\item The \char`\"{}\+IPS\char`\"{} or \char`\"{}\+Iterations Per Second\char`\"{} of the loop which describes how many times the loop can run PER SECOND if the number of clock cycles is counted accurately. 
+\end{DoxyItemize}\mbox{\Hypertarget{main_8cpp_ac93f9e7f2f690936d955d0bad29bb254}\label{main_8cpp_ac93f9e7f2f690936d955d0bad29bb254}} 
+\index{main.cpp@{main.cpp}!pgm\_pcpyr@{pgm\_pcpyr}}
+\index{pgm\_pcpyr@{pgm\_pcpyr}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{pgm\_pcpyr()}{pgm\_pcpyr()}}
+{\footnotesize\ttfamily const char $\ast$ pgm\+\_\+pcpyr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{btn\+Index,  }\item[{uint8\+\_\+t}]{note\+Index }\end{DoxyParamCaption})}
+
+
+
+Copies the string data from a index on PROGRAM\+\_\+\+NOTES PROGMEM and then returns the string data for that pointer. 
+
+After the pointer is retrieved from PROGMEM the value is stored in a private static buffer array which can be used by other methods. ~\newline
+ Ex\+: pgm\+\_\+pcpyr(0, 0) -\/\texorpdfstring{$>$}{>} \char`\"{}\+B0\char`\"{}
+
+\begin{DoxySince}{Since}
+v1.\+2.\+0-\/R3
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em btn\+Index} & The button to get in the PROGRAM\+\_\+\+NOTES array. \\
+\hline
+{\em note\+Index} & The note to get for that button. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The data which was copied from the pointer. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a5ed400569b15b398e82176cd6d6312c0}\label{main_8cpp_a5ed400569b15b398e82176cd6d6312c0}} 
+\index{main.cpp@{main.cpp}!print\_lcd@{print\_lcd}}
+\index{print\_lcd@{print\_lcd}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{print\_lcd()}{print\_lcd()}}
+{\footnotesize\ttfamily void print\+\_\+lcd (\begin{DoxyParamCaption}\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$}]{text,  }\item[{uint8\+\_\+t}]{char\+Delay = {\ttfamily 150} }\end{DoxyParamCaption})}
+
+
+
+Prints text to the lcd and wraps text automatically. 
+
+Will clear the screen on a \textbackslash{}n character encounter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print. \\
+\hline
+{\em char\+Delay} & The delay before each character. (150 default) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a5a978cd011bc94902689b04925ca6754}\label{main_8cpp_a5a978cd011bc94902689b04925ca6754}} 
+\index{main.cpp@{main.cpp}!print\_scrolling@{print\_scrolling}}
+\index{print\_scrolling@{print\_scrolling}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{print\_scrolling()}{print\_scrolling()}}
+{\footnotesize\ttfamily void print\+\_\+scrolling (\begin{DoxyParamCaption}\item[{const \+\_\+\+\_\+\+Flash\+String\+Helper $\ast$}]{text,  }\item[{uint8\+\_\+t}]{cursorY,  }\item[{uint8\+\_\+t}]{char\+Delay }\end{DoxyParamCaption})}
+
+
+
+Prints a single line of scrolling text on the lcd. 
+
+\begin{DoxyRemark}{Remarks}
+This method does not clear the screen before executing.
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The text to print. \\
+\hline
+{\em cursorY} & Where the cursor should start printing on the Y-\/\+Axis (row). \\
+\hline
+{\em char\+Delay} & Delay between the scroll. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_aa84dbe6e60ec0541e7d39983e4e528f0}\label{main_8cpp_aa84dbe6e60ec0541e7d39983e4e528f0}} 
+\index{main.cpp@{main.cpp}!sd\_get\_file@{sd\_get\_file}}
+\index{sd\_get\_file@{sd\_get\_file}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{sd\_get\_file()}{sd\_get\_file()}}
+{\footnotesize\ttfamily const char $\ast$ sd\+\_\+get\+\_\+file (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{index }\end{DoxyParamCaption})}
+
+
+
+Gets a file name from the SD card in descending order according to a specified index. For example index \char`\"{}0\char`\"{} would be the file at the top of the SD card. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & The index of the file to get. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The name of the file (includes the file extension) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a29ed6f6a625e942c0fea91a7c081070b}\label{main_8cpp_a29ed6f6a625e942c0fea91a7c081070b}} 
+\index{main.cpp@{main.cpp}!sd\_make\_readme@{sd\_make\_readme}}
+\index{sd\_make\_readme@{sd\_make\_readme}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{sd\_make\_readme()}{sd\_make\_readme()}}
+{\footnotesize\ttfamily void sd\+\_\+make\+\_\+readme (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generates a README file in the SD card. 
+
+\begin{DoxyRemark}{Remarks}
+Will not generate a README if a README.\+TXT file exists on the SD card root. 
+\end{DoxyRemark}
+\mbox{\Hypertarget{main_8cpp_a48d42d6622c1973cc66e5ce6fff4dd21}\label{main_8cpp_a48d42d6622c1973cc66e5ce6fff4dd21}} 
+\index{main.cpp@{main.cpp}!sd\_rem@{sd\_rem}}
+\index{sd\_rem@{sd\_rem}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{sd\_rem()}{sd\_rem()}}
+{\footnotesize\ttfamily void sd\+\_\+rem (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Delete a file from the micro\+SD. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The file to delete. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ae3bc360cfa9682139e87c79973fcded9}\label{main_8cpp_ae3bc360cfa9682139e87c79973fcded9}} 
+\index{main.cpp@{main.cpp}!sd\_save\_song@{sd\_save\_song}}
+\index{sd\_save\_song@{sd\_save\_song}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{sd\_save\_song()}{sd\_save\_song()}}
+{\footnotesize\ttfamily void sd\+\_\+save\+\_\+song (\begin{DoxyParamCaption}\item[{const char $\ast$const}]{file\+Name,  }\item[{\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$}]{song }\end{DoxyParamCaption})}
+
+
+
+Saves a song class to the SD card by using the SD.\+h library and writing all of the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot be longer then 8 characters and should include a .TXT extension. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The name to save the song as. Must be between 1 and 8 characters, A-\/Z, 0-\/9 and underscores only. \\
+\hline
+{\em song} & The song instance to save. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_af4fc318f751ef7ab7cb146c553f7bc72}\label{main_8cpp_af4fc318f751ef7ab7cb146c553f7bc72}} 
+\index{main.cpp@{main.cpp}!sd\_songcpy@{sd\_songcpy}}
+\index{sd\_songcpy@{sd\_songcpy}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{sd\_songcpy()}{sd\_songcpy()}}
+{\footnotesize\ttfamily bool sd\+\_\+songcpy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ \&}]{song,  }\item[{const char $\ast$const}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Copies and parses song data from a .txt file onto the global song object. The file must be in the correct format to work properly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em song} & A reference of a song to copy to. \\
+\hline
+{\em file\+Name} & The path in the SD card.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the song was able to be successfully copied. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_a8ccf31be88302c02c3eb52fc4ccf9d06}\label{main_8cpp_a8ccf31be88302c02c3eb52fc4ccf9d06}} 
+\index{main.cpp@{main.cpp}!segDisplay@{segDisplay}}
+\index{segDisplay@{segDisplay}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{segDisplay()}{segDisplay()}}
+{\footnotesize\ttfamily Sev\+Seg\+Shift seg\+Display (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{tune__studio_8h_ad98c3b084594fdb8905bcbd51247f8c6}{SHIFT\+\_\+\+PIN\+\_\+\+DS}}}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_a1c796f73e188890598417c3a75699db9}{SHIFT\+\_\+\+PIN\+\_\+\+SHCP}}}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_a7392d956c0bc8024bc460a7e99341dfb}{SHIFT\+\_\+\+PIN\+\_\+\+STCP}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Represents the 4-\/digit-\/wide 7-\/segment display used in Tune\+Studio2560. 
+
+The segment display is reponsible for showing the current note in Creator Mode. ~\newline
+ The display is wired using the Sev\+Seg\+Shift library by being connected to {\bfseries{2x 74HC595N Shift Registers}}. \mbox{\Hypertarget{main_8cpp_af1ea9647da2198982b72c4e825120eb5}\label{main_8cpp_af1ea9647da2198982b72c4e825120eb5}} 
+\index{main.cpp@{main.cpp}!set\_selected\_page@{set\_selected\_page}}
+\index{set\_selected\_page@{set\_selected\_page}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{set\_selected\_page()}{set\_selected\_page()}}
+{\footnotesize\ttfamily void set\+\_\+selected\+\_\+page (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{page }\end{DoxyParamCaption})}
+
+
+
+Set the selected page for selecting a song. 
+
+Each page selection represents a jump of 5. ~\newline
+ EX\+: Page 1 (Songs 1-\/5) ~\newline
+ Page 2 (Songs 6-\/10) ~\newline
+ ~\newline
+ There can only be a absolute maximum of 51 pages because 255/5 is 51 and there are 255 maximum allowed songs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em page} & The new page to set. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a4c29562acdad606a577408dd8abc25c2}\label{main_8cpp_a4c29562acdad606a577408dd8abc25c2}} 
+\index{main.cpp@{main.cpp}!set\_selected\_song@{set\_selected\_song}}
+\index{set\_selected\_song@{set\_selected\_song}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{set\_selected\_song()}{set\_selected\_song()}}
+{\footnotesize\ttfamily void set\+\_\+selected\+\_\+song (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{song }\end{DoxyParamCaption})}
+
+
+
+Set a new song to be selected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em song} & The numerical index of the song to set. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{main.cpp@{main.cpp}!setup@{setup}}
+\index{setup@{setup}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sets up Tune\+Studio2560 to be used on an infinite loop by initalizing hardware and checking for errors. 
+
+\begin{DoxyParagraph}{In Order\+:}
+
+\begin{DoxyItemize}
+\item \mbox{[}DEBUG ONLY\mbox{]} Initalize the Serial Monitor
+\item Setup pin\+Mode
+\item Attach interrupts to select/cancel buttons.
+\item Initalize the Liquid Crystal Display.
+\item Add custom characters to the LCD.
+\item Initalize and setup the 4-\/digit 7-\/Segment display.
+\item Setup the SD card and check for errors.
+\item Make the README.\+TXT file.
+\item \mbox{[}PRGM\+\_\+\+MODE==2\mbox{]} Enable Fast Analog Read
+\item Set the prgm\+State variable to the Main Menu. 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+\mbox{\Hypertarget{main_8cpp_a898ace50e0bb46c6ade75cdfd315dd3d}\label{main_8cpp_a898ace50e0bb46c6ade75cdfd315dd3d}} 
+\index{main.cpp@{main.cpp}!update\_state@{update\_state}}
+\index{update\_state@{update\_state}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{update\_state()}{update\_state()}}
+{\footnotesize\ttfamily void update\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{state_8h_a2c309f64131cbfdae6d95e6591f208e6}{State\+ID}}}]{state }\end{DoxyParamCaption})}
+
+
+
+Forcefully update the current state. This method call should be the last one during a states \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} iteration and no code should come after this function call. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+State} & The new state to set the application to. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_a8b1664707309ef9e72b574ca9c245600}\label{main_8cpp_a8b1664707309ef9e72b574ca9c245600}} 
+\index{main.cpp@{main.cpp}!immediateInterrupt@{immediateInterrupt}}
+\index{immediateInterrupt@{immediateInterrupt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{immediateInterrupt}{immediateInterrupt}}
+{\footnotesize\ttfamily volatile bool immediate\+Interrupt = false\hspace{0.3cm}{\ttfamily [static]}}
+
+Indicates whether or not an immediate interrupt should be called. Almost all loops in Tune\+Studio2560 main class have another condition to check for this interrupt. If this flag is set to true then the current execution loop halts and attempts to return back to the main \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop()}} function as fast as possible.
+
+The delay\+\_\+ms(ms) function in this program also makes use of this variable. \mbox{\Hypertarget{main_8cpp_a18ec832e742616d037d5a342d30715f9}\label{main_8cpp_a18ec832e742616d037d5a342d30715f9}} 
+\index{main.cpp@{main.cpp}!lastButtonPress@{lastButtonPress}}
+\index{lastButtonPress@{lastButtonPress}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{lastButtonPress}{lastButtonPress}}
+{\footnotesize\ttfamily volatile unsigned long last\+Button\+Press = 0\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The last time a button was pressed that the main class registered through is\+\_\+pressed. 
+
+\mbox{\Hypertarget{main_8cpp_aefa8292e13326884e19686108c4106dc}\label{main_8cpp_aefa8292e13326884e19686108c4106dc}} 
+\index{main.cpp@{main.cpp}!prgmSong@{prgmSong}}
+\index{prgmSong@{prgmSong}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{prgmSong}{prgmSong}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_song}{Song}}$<$ \mbox{\hyperlink{tune__studio_8h_a562deb06370e5987656b70139ae83426}{MAX\+\_\+\+SONG\+\_\+\+LENGTH}} $>$ prgm\+Song(\mbox{\hyperlink{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}{SPEAKER\+\_\+1}}, \mbox{\hyperlink{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}{DEFAULT\+\_\+\+NOTE\+\_\+\+LENGTH}}, \mbox{\hyperlink{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}{DEFAULT\+\_\+\+NOTE\+\_\+\+DELAY}}) (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{tune__studio_8h_a25a791d41e89e121b5d1d6c95d81d999}{SPEAKER\+\_\+1}}}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_a5607cf15aa43334a841f0bd50d9bfb92}{DEFAULT\+\_\+\+NOTE\+\_\+\+LENGTH}}}]{,  }\item[{\mbox{\hyperlink{tune__studio_8h_a2d5a3e87078d37bcbe3d8fb6e09e1a62}{DEFAULT\+\_\+\+NOTE\+\_\+\+DELAY}}}]{ }\end{DoxyParamCaption})}
+
+
+
+Represents the global song object to be used in the program when managing songs. 
+
+This song object is used between program states and can be accessed at any time. When a new song wants to be used by the application, the song is cleared using .clear() and notes are re-\/added.
+
+\begin{DoxySince}{Since}
+v1.\+2.\+0-\/R3 Songs are no longer pointers and are no longer dynamically allocated. Any song the program is going to use is now accessible by the \char`\"{}prgm\+Song\char`\"{} global variable. 
+\end{DoxySince}
+\mbox{\Hypertarget{main_8cpp_a2b51620c65649eaa9c95259e477b5097}\label{main_8cpp_a2b51620c65649eaa9c95259e477b5097}} 
+\index{main.cpp@{main.cpp}!prgmState@{prgmState}}
+\index{prgmState@{prgmState}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{prgmState}{prgmState}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_program_state}{Program\+State}}$\ast$ prgm\+State\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+A global main-\/class-\/scoped variable which is a pointer to a \mbox{\hyperlink{class_program_state}{Program\+State}} instance. 
+
+\hypertarget{main_8cpp_A}{}\doxysubparagraph{Brief Description}\label{main_8cpp_A}
+The prgm\+State variable represents the current \mbox{\hyperlink{class_program_state}{Program\+State}} the program is in on a global scale. ~\newline
+ The prgm\+State is a pointer to a larger \mbox{\hyperlink{class_program_state}{Program\+State}} object which was allocated on the heap.~\newline
+ Whenever we need to interact with the current user state we access the prgm\+State variable which is only scoped to the main class.~\newline
+ To change the prgm\+State from another class you either need to use an interrupt from a supporting \mbox{\hyperlink{class_program_state}{Program\+State}} or use the update\+\_\+state method.~\newline
+ The prgm\+State variable {\bfseries{SHOULD NEVER}} be allocated with new() outside of update\+\_\+state and the \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup()}} method. ~\newline
+ To learn more about program states view the \mbox{\hyperlink{state_8h}{state.\+h}} file.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{state_8h}{state.\+h}} 
+
+\mbox{\hyperlink{main_8cpp_a898ace50e0bb46c6ade75cdfd315dd3d}{update\+\_\+state(\+State\+ID state)}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{main_8cpp_af7186c0ed9faf692c4abbb3fd945b9f9}\label{main_8cpp_af7186c0ed9faf692c4abbb3fd945b9f9}} 
+\index{main.cpp@{main.cpp}!SD@{SD}}
+\index{SD@{SD}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{SD}{SD}}
+{\footnotesize\ttfamily Sd\+Fat SD\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+A main-\/class-\/scoped global variable that represents the SD card on the Arduino. 
+
+\begin{DoxySince}{Since}
+v1.\+2.\+2-\/R4 
+\end{DoxySince}
+\mbox{\Hypertarget{main_8cpp_ac2a2fb4a9579d81702abb2ca880ec2b1}\label{main_8cpp_ac2a2fb4a9579d81702abb2ca880ec2b1}} 
+\index{main.cpp@{main.cpp}!selectedPage@{selectedPage}}
+\index{selectedPage@{selectedPage}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{selectedPage}{selectedPage}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t selected\+Page = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The current selected page of the program. 
+
+\begin{DoxyRemark}{Remarks}
+Each page contains 5 different songs on the SD card. 
+\end{DoxyRemark}
+\mbox{\Hypertarget{main_8cpp_acec302525ebbc029a13305d0bd9c89a0}\label{main_8cpp_acec302525ebbc029a13305d0bd9c89a0}} 
+\index{main.cpp@{main.cpp}!selectedSong@{selectedSong}}
+\index{selectedSong@{selectedSong}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{selectedSong}{selectedSong}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t selected\+Song = 1\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The current index of the selected. 
+
