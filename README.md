@@ -36,7 +36,9 @@ Current Program Space & RAM Requirements for **v1.2.2-R4 (latest)**
 |      BUILD     |       SRAM          |        FLASH        |
 | -------------- | ------------------- | ------------------- |
 | **v1.2.2-R4**  | 1300 Bytes (15.9%)  | 29990 Bytes (11.8%) |
+  
 <small>Percentages based off Arduino Mega 256K Program Space & 8K RAM.</small>  
+
 *View GitHub WIKI for a full table covering all releases*
 ## Features
 - Ability to create different tunes using one of the five defined buttons and adjust their frequency using the potentiometer.
