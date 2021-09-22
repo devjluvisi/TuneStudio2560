@@ -3,7 +3,7 @@
  * @author Jacob LuVisi
  * @brief The main header file for the application. Includes important variables and methods that are shared between all TuneStudio files. <br />
  * Note that method definitions described in this file are declerations for main.cpp methods only.
- * @version 1.2.2-R4
+ * @version 1.3.0-R5
  * @date 2021-07-26
  *
  * @copyright Copyright (c) 2021
@@ -21,7 +21,6 @@
 #include <lib/digitalWriteFast.h>
 #include <studio-libs/pitches.h>
 #include <studio-libs/song.h>
-
 
 /**
  * @brief Enable/Disable the DEBUG functionallity of TuneStudio2560.<br/>
@@ -47,7 +46,7 @@
  * Mode 2 = High Features, Larger Songs <br />
  * 
  */
-#define PRGM_MODE 0
+#define PRGM_MODE 1
 
 
 /**
@@ -81,7 +80,7 @@
  * Minor Updates refer to updates which fix bugs or do optimizations. Sometimes minor updates may add function as well. <br />
  * Minor Code Updates occur when enough minor updates have been made to justify a new release. <br />
  */
-const char VERSION_ID[] PROGMEM = "1.2.2-R4";
+const char VERSION_ID[] PROGMEM = "1.3.0-R5";
 
 /** @brief DS pin for the Shift Register connected to the 4 Digit 7-Segment Display.*/
 constexpr uint8_t SHIFT_PIN_DS = 5;
@@ -473,11 +472,13 @@ note_t get_note_from_pitch(const char* const pitch);
  * @brief Saves a song class to the SD card by using the SD.h library and writing all of
  * the tones from the song to the SD card. Allows the saving with a specified file name. File name cannot
  * be longer then 8 characters and should include a .TXT extension.
+ * 
+ * @since v1.3.0-5: Now directly references global song object, no longer takes an object in.
  *
  * @param fileName The name to save the song as. Must be between 1 and 8 characters, A-Z, 0-9 and underscores only.
  * @param song The song instance to save.
  */
-void sd_save_song(const char * const fileName, Song<MAX_SONG_LENGTH> song);
+void sd_save_song(const char * const fileName);
 
 /**
  * @brief Gets a file name from the SD card in descending order according to a specified index. For example index "0" would be the file at the top of the SD card.
@@ -490,13 +491,13 @@ const char* sd_get_file(uint8_t index);
 /**
  * @brief Copies and parses song data from a .txt file onto the global song object.
  * The file must be in the correct format to work properly.
+ * @since v1.3.0-R5: Function no longer takes in a parameter for a reference to a song "&song". Instead it directly references the global song variable.
  *
- * @param song A reference of a song to copy to.
  * @param fileName The path in the SD card.
  *
  * @return If the song was able to be successfully copied.
  */
-bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName);
+bool sd_songcpy(const char * const fileName);
 
 /**
  * @brief Delete a file from the microSD.

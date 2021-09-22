@@ -46,10 +46,17 @@ class ListeningModePlayingSong: public ProgramState {
   song_size_t currentSongNote;
   /** @brief The size of the current song. */
   song_size_t currentSongSize;
+  #if PRGM_MODE == 0
   /** @brief Tracks how many notes need to pass before a progress block is filled in. */
-  uint8_t blockRequirement; 
+  song_size_t blockRequirement; 
   /** @brief Tracks the total amount of notes that need to be played before the next progress block gets filled in. */
   song_size_t blockSize;
+  #else
+  /** @brief Tracks how many notes need to pass before a progress block is filled in. */
+  float blockRequirement; 
+  /** @brief Tracks the total amount of notes that need to be played before the next progress block gets filled in. */
+  float blockSize;
+  #endif
   public: ListeningModePlayingSong();~ListeningModePlayingSong();
 
 };

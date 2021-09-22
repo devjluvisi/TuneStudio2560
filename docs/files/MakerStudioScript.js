@@ -547,7 +547,7 @@
 		// Add year
 		dateAsString += date.getFullYear();
 		// Add date/time seperator.
-		dateAsString += " - ";
+		dateAsString += " ~ ";
 		// Add time
 		if (date.getHours() > 12) {
 			dateAsString += date.getHours() - 12;
@@ -868,7 +868,7 @@ Data:\n`;
 		}
 	});
 	attrAuthor.keypress((e) => {
-		if (attrAuthor.text().length === 15) {
+		if (attrAuthor.text().length === 15 || e.which === "-".charCodeAt(0) || e.which === "=".charCodeAt(0)) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 		}

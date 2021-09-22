@@ -2,8 +2,8 @@
  * @file main.cpp
  * @author Jacob LuVisi
  * @brief The main class for TuneStudio2560.
- * @version 1.2.2-Release 4
- * @date 2021-06-27 <-> 2021-9-11 (+)
+ * @version 1.3.0 Release 5
+ * @date 2021-06-27 <-> 2021-9-22 (+)
  *
  * @copyright Copyright (c) 2021
  *
@@ -18,16 +18,12 @@
  *
  *
  * TuneStudio2560 was developed using PlatformIO on Visual Studio Code and it is highly recommended to modify
- * this project using that framework.
+ * this project using those tools.
  *
- * To view documentation on how the software for TuneStudio2560 operates please check out
- * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers
- *
- * To view general information on how to use TuneStudio2560 see
- * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users
- *
- * To view how to create TuneStudio2560 along with the schematics, parts, and wiring view
- * ~ https://github.com/devjluvisi/TuneStudio2560/wiki/Build-It
+ * Useful Developer Documentation & References:
+ * ~ PRODUCT BRIEF -> https://devjluvisi.github.io/TuneStudio2560/content/TuneStudio2560%20Product%20Brief.pdf
+ * ~ C++ DOXYGEN WEB DOC -> https://devjluvisi.github.io/TuneStudio2560/doxy/html/index.html
+ * ~ GITHUB WIKI DEV DOC -> https://github.com/devjluvisi/TuneStudio2560/wiki/For-Developers
  * 
  * To view release changelogs, MakerStudio2560, future todo, and doxygen documentation view
  * ~ https://devjluvisi.github.io/TuneStudio2560/
@@ -125,9 +121,10 @@ bool is_interrupt() {
 
 
 void delay_ms(const unsigned long milliseconds) {
+  // Set a constant "waitTime" so we can track the time the delay function was first called.
   const unsigned long waitTime = milliseconds + millis();
   while (waitTime > millis() && !is_interrupt()) { // Continue looping forever.
-    continue;
+    asm("nop");
   }
 }
 
@@ -150,7 +147,7 @@ void delay_ms(const unsigned long milliseconds) {
  * @see state.h
  * @see update_state(StateID state)
  */
-static ProgramState * prgmState;
+static ProgramState * prgmState = new MainMenu();
 
 /**
  * @brief Sets up TuneStudio2560 to be used on an infinite loop by initalizing hardware and checking for errors.
@@ -380,12 +377,6 @@ void setup() {
   delay(700);
   analogWrite(RGB_GREEN, LOW);
   #endif
-
-    
-
-
-  // Set the user to the main menu.
-  prgmState = new MainMenu();
 }
 
 /**
@@ -543,7 +534,7 @@ note_t get_current_tone(uint8_t toneButton) {
   // Note that the subTone value is not evenly split and the final subTone (17) has slightly less potential values.
   const uint8_t subTone = (get_current_freq() + 1) / 61;
   toneButton = BTN_TO_INDEX(toneButton);
-  return toneButton != 255 ? note_t {
+  return toneButton != UINT8_MAX ? note_t {
     (pgm_pcpyr(toneButton, subTone)), ((uint16_t) pgm_read_word( & PROGRAM_NOTES[toneButton].notes[subTone].frequency))
   } : EMPTY_NOTE;
 }
@@ -720,28 +711,27 @@ bool is_pressed(const uint8_t buttonPin) {
 //// SD CARD FUNCTIONS ////
 //////////////////////////
 
-void sd_save_song(const char * const fileName, Song<MAX_SONG_LENGTH> song) {
+void sd_save_song(const char * const fileName) {
   // Delete the previous song if the name already exists.
   sd_rem(fileName);
   // Create a song object to be saved
   File songFile = SD.open(fileName, FILE_WRITE);
 
-  songFile.println(F(
+  songFile.print(F(
     "# Welcome to a song file!\n"
     "# To view more information, check out https://github.com/devjluvisi/TuneStudio2560/wiki/For-Users\n"
-    "\n# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)"
+    "\n# The delay between each different tone (ms). (Must be 9999 or less and greater than 0)\n"
+    "TONE_DELAY="
   ));
-  songFile.print(F("TONE_DELAY="));
   songFile.println(DEFAULT_NOTE_DELAY);
-  songFile.println(F("\n# The length that each tone should play for (ms). (Must be 255 or less and greater than 0)"));
-  songFile.print(F("TONE_LENGTH="));
+  songFile.print(F("\n# The length that each tone should play for (ms). (Must be 255 or less and greater than 0)\nTONE_LENGTH="));
   songFile.println(DEFAULT_NOTE_LENGTH);
   songFile.println(F("\nData:"));
 
   // Convert each frequency in the song to a pitch and save it on the SD.
-  for (song_size_t i = 0; i < song.get_size(); i++) {
+  for (song_size_t i = 0; i < prgmSong.get_size(); i++) {
     songFile.print(F("  - "));
-    songFile.println(get_note_from_freq(song.get_note(i)).pitch);
+    songFile.println(get_note_from_freq(prgmSong.get_note(i)).pitch);
   }
   songFile.println(F("\n# END"));
   songFile.close();
@@ -800,7 +790,7 @@ const char * sd_get_file(uint8_t index) {
   return name;
 }
 
-bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
+bool sd_songcpy(const char * const fileName) {
 
   // If the file does not exist.
   if (!SD.exists(fileName)) {
@@ -812,7 +802,7 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
   // Track if the current '=' sign being read is for the tone delay or for the tone length.
   bool isToneDelay = true;
   // Remove all data from song
-  song.clear();
+  prgmSong.clear();
 
   // Store these variables to update later if the user has input custom delays.
   uint8_t noteDelay = DEFAULT_NOTE_DELAY;
@@ -828,7 +818,7 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
 
     // Ignore the lines with hashtags.
     if (letter == '#') {
-      while (letter != '\n') {
+      while (letter != '\n' && entry.available()) {
         letter = entry.read();
       }
     }
@@ -839,16 +829,15 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
       uint8_t index = 0;
       while (entry.peek() != '\n') {
         letter = entry.read();
-        // Ignore the spaces.
-        if (letter == ' ') {
+        // Ignore the spaces.|| letter == '\r' || letter == '\b' || letter = '\t'
+        if (letter == ' ' || letter == '\r' || letter == '\b' || letter == '\t' || letter == '=') {
           continue;
         }
         // Add the character to the buffer.
         buffer[index] = letter;
         index++;
       }
-      // Set a terminating character.
-      buffer[index - 1] = '\0';
+      buffer[index] = '\0';
       const uint16_t textToNum = atoi(buffer);
 
       if (isToneDelay) {
@@ -857,7 +846,7 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
         #if DEBUG == true
         Serial.print(get_active_time());
         Serial.print(F(" Read a TONE DELAY of: "));
-        Serial.println(buffer);
+        Serial.println(textToNum);
         #endif
       } else {
 
@@ -865,7 +854,7 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
         #if DEBUG == true
         Serial.print(get_active_time());
         Serial.print(F(" Read a TONE LENGTH of: "));
-        Serial.println(buffer);
+        Serial.println(textToNum);
         #endif
       }
     }
@@ -879,46 +868,59 @@ bool sd_songcpy(Song<MAX_SONG_LENGTH> &song, const char * const fileName) {
       while (entry.peek() != '\n') {
         if (index == 4) {
           entry.close();
+          #if DEBUG == true
+          Serial.print(get_active_time());
+          Serial.print(F("Song failed due to note size. Count: "));
+          Serial.print(index);
+          #endif
           return false;
         }
         letter = entry.read();
         // Ignore the spaces.
-        if (letter == ' ') {
+        if (letter == ' ' || letter == '\r' || letter == '\b' || letter == '\t' || letter == '=') {
           continue;
         }
         // Add the character to the buffer.
         buffer[index] = letter;
         index++;
       }
-      // Set a terminating character.
-      buffer[index - 1] = '\0';
+buffer[index] = '\0';
       // Add the note.
       note_t foundNote = get_note_from_pitch(buffer);
       if (foundNote.frequency == EMPTY_NOTE.frequency) {
         entry.close();
+        #if DEBUG == true
+        Serial.print(get_active_time());
+        Serial.println(F("Song copy finished, found END note."));
+        #endif
         return false;
       }
-      song.add_note(foundNote.frequency);
+      prgmSong.add_note(foundNote.frequency);
       songSize++;
     }
   }
   if (songSize < MIN_SONG_LENGTH || songSize > MAX_SONG_LENGTH) {
+    #if DEBUG == true
+    Serial.print(get_active_time());
+    Serial.println(F("Song failed due to size."));
+    #endif
     entry.close();
     return false;
   }
 
   // Update the note length and note delay with what the file has read.
-  song.set_attributes(noteLength, noteDelay);
+  prgmSong.set_attributes(noteLength, noteDelay);
 
   // Close the file
   entry.close();
-  return true;
+  
   #if DEBUG == true
   Serial.print(get_active_time());
   Serial.print(F(" Copied a song ("));
   Serial.print(fileName);
   Serial.println(F(") from SD card to memory."));
   #endif
+  return true;
 }
 
 // FOR DEBUG USE ONLY
@@ -953,7 +955,6 @@ void sd_make_readme() {
     return;
   }
 
-  // BIG STRING WOW
   #if PRGM_MODE != 0
   static const char README_TEXT[] PROGMEM =
     "---------> || TuneStudio2560 || <---------\n"
@@ -991,5 +992,9 @@ void sd_make_readme() {
   readMe.print((__FlashStringHelper*)README_TEXT);
   readMe.close();
 
+  #if DEBUG == true
+  Serial.print(get_active_time());
+  Serial.println(F(" Generated README file."));
+  #endif
 
 }

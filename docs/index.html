@@ -229,7 +229,7 @@
                         <li><i>These optimizations mean SRAM utilization during execution is now below 2KB at any point in time meaning a potential Arduino Uno port has officially become possible.</i></li>
                     </ul>
                 </article>
-                <!-- v1.2.0-R3 -->
+                <!-- v1.2.2-R4 -->
                 <article>
                     <b><em>v1.2.2-R4</em></b>
                     <div style="font-family: monospace;">
@@ -267,6 +267,27 @@
                         </li>
                     </ul>
                 </article>
+                <!-- v1.3.0-R5 -->
+                <article>
+                    <b><em>v1.3.0-R5</em></b>
+                    <div style="font-family: monospace;">
+                        <span title="Release Date">Released: Sep, 14, 2021</span> <br />
+                        <span title="The amount of inital RAM the program uses. DOES NOT account for dynamic ram and stack ram.">RAM Usage: 1300 Bytes (1.3KB)</span> <br />
+                        <span title="The amount of Flash memory (PROGMEM) the program uses.">Flash Usage: 29914 Bytes (30.0KB)</span>
+                    </div>
+                    <u>____________________</u>
+                    <br />
+                    <ul>
+                        <li>Fixed bug where editing an SD card on a PC would sometimes break the song.</li>
+                        <li>Fixed a bug where songs made or edited in MakerStudio2560 would not work on the Arduino (Invalid Song error).</li>
+                        <li>Fixed a bug where the selected song and selected page would not reset after a user deleted a song or loaded an invalid song in ListeningMode.</li>
+                        <li>Fixed a bug where attempting to name a saved song would exit shortly after the screen is loaded.</li>
+                        <li>Fixed a bug where skipping the listening mode instructions would sometimes make additional characters appear on the Listening Mode song select</li>
+                        <li>Minor size optimizations.</li>
+                        <li><code>delay_ms</code> now uses an <code>asm("nop")</code> instead of <code>continue</code>.</li>
+                        <li>Added new option for PRGM_MODE 1 and PRGM_MODE 2 where the accuracy of the progress bar has been greatly improved due to the use of 32-bit floating point values <code>(float)</code>. Does not work on PRGM_MODE==0.</li>
+                    </ul>
+                </article>
             </section>
             <hr />
             <!-- Download Center Area -->
@@ -292,6 +313,8 @@
                             <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.2.0-R3">v1.2.0-R3</a>
                             <br />
                             <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.2.2-R4">v1.2.2-R4</a>
+                            <br />
+                            <a href="https://github.com/devjluvisi/TuneStudio2560/releases/tag/v1.3.0-R5">v1.3.0-R5</a>
                             <br />
                             <br />
                             <span><strong><u>Libraries</u></strong></span>

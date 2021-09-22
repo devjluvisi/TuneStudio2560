@@ -130,7 +130,7 @@ void CreatorModeCreateNew::loop() {
       char tempBuff[14];
       memcpy(tempBuff, buffer, sizeof(tempBuff));
 
-      sd_save_song(tempBuff, prgmSong);
+      sd_save_song(tempBuff);
 
       #if DEBUG == true
       Serial.print(get_active_time());
@@ -415,7 +415,7 @@ void CreatorModeCreateNew::set_save_name(char fileName[9]) {
       lastUpdate = millis();
       if (slideInfo == 4) {
         slideInfo = 0;
-        return;
+        continue;
       }
       slideInfo++;
     }

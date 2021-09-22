@@ -19,7 +19,7 @@
 template <> Song<MAX_SONG_LENGTH>::Song(uint8_t pin, uint8_t noteLength, uint16_t noteDelay) {
 #if DEBUG == true
     Serial.print(get_active_time());
-    Serial.println(F(" song.cpp: Initalized a new song."));
+    Serial.println(F(" song.cpp >> Initalized a new song."));
 #endif
     _pin = pin;
     _noteDelay = noteDelay;
@@ -35,7 +35,7 @@ template<> song_size_t Song<MAX_SONG_LENGTH>::get_size() {
 template <> void Song<MAX_SONG_LENGTH>::play_note(uint16_t note) {
 #if DEBUG == true
     Serial.print(get_active_time());
-    Serial.print(F(" Playing note: "));
+    Serial.print(F(" song.cpp >> Playing note: "));
     Serial.println(note);
 #endif
     // Since v1.1.0-R2
@@ -80,6 +80,10 @@ template<> void Song<MAX_SONG_LENGTH>::play_song() {
 template<> void Song<MAX_SONG_LENGTH>::clear() {
     memset(_songData, EMPTY_NOTE.frequency, sizeof(_songData));
     _currSize = 0;
+    #if DEBUG == true
+    Serial.print(get_active_time());
+    Serial.println(F(" song.cpp >> Song object has been cleared."));
+    #endif
 }
 
 template<> uint16_t Song<MAX_SONG_LENGTH>::get_note(song_size_t index) {
@@ -95,7 +99,7 @@ template<> void Song<MAX_SONG_LENGTH>::set_attributes(uint8_t noteLength, uint16
     _noteDelay = noteDelay;
 #if DEBUG == true
     Serial.print(get_active_time());
-    Serial.println(F(" Updated attributes noteLength and noteDelay for a song class."));
+    Serial.println(F(" song.cpp >> Updated attributes noteLength and noteDelay for a song class."));
 #endif
 }
 

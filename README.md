@@ -32,10 +32,10 @@ TuneStudio2560 is a simple but heavily thought out project and the repository pr
 **[Check out the real life image library!](https://drive.google.com/drive/folders/1CkPubvIi6yJfRg2Uyx3KxVqNjCzE9Wjo)**  
 <small>*See TuneStudio2560 fully assembled!*</small>
 
-Current Program Space & RAM Requirements for **v1.2.2-R4 (latest)**
+Current Program Space & RAM Requirements for **v1.3.0-R5 (latest)**
 |      BUILD     |       SRAM          |        FLASH        |
 | -------------- | ------------------- | ------------------- |
-| **v1.2.2-R4**  | 1300 Bytes (15.9%)  | 29990 Bytes (11.8%) |
+| **v1.3.0-R5**  | 1300 Bytes (15.9%)  | 29914 Bytes (11.8%) |
   
 <small>Percentages based off Arduino Mega 256K Program Space & 8K RAM.</small>  
 
@@ -154,7 +154,7 @@ TuneStudio2560 is a very comprehensive program allowing users to create, listen,
 
 As of current time, there are no known major bugs in TuneStudio2560. Any bugs can be posted on the GitHub or through direct contact with me.
 ## Future Plans
-TuneStudio2560 has officially been fully released and finished (without bugs) as of v1.2.2-R4. There is a list of potential "TODO" items on the reference website.
+TuneStudio2560 has officially been fully released and finished (without bugs) as of v1.3.0-R5. There is a list of potential "TODO" items on the reference website.
 
 In the future, there are two potential ports to other microcontrollers which can (theoretically) be done. 
 

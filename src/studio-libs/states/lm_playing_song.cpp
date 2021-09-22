@@ -26,6 +26,8 @@ void ListeningModePlayingSong::loop() {
   if (invalidSong) {
     delay_ms(1000);
     update_state(LM_MENU);
+    set_selected_page(1);
+    set_selected_song(1);
     return;
   }
 
@@ -41,6 +43,8 @@ void ListeningModePlayingSong::loop() {
       delay_ms(2000);
       sd_rem(sd_get_file(get_selected_song() - 1));
       update_state(MAIN_MENU);
+      set_selected_page(1);
+      set_selected_song(1);
       delay_ms(500);
       return;
     }else if(digitalReadFast(BTN_DEL_CANCEL) == LOW) {
@@ -217,7 +221,11 @@ void ListeningModePlayingSong::loop() {
     // If the current song note is past the requirement for the next block.
     if (currentSongNote >= blockSize) {
       // Set the cursor to a point on the LCD where the next block is to be inserted.
+      #if PRGM_MODE == 0
       lcd.setCursor(strlen_P(PROGRESS_LABEL) + (blockSize / blockRequirement < MIN_SONG_LENGTH ? blockSize / blockRequirement : MIN_SONG_LENGTH), 2);
+      #else
+      lcd.setCursor(((float)strlen_P(PROGRESS_LABEL) + (blockSize / blockRequirement < MIN_SONG_LENGTH ? blockSize / blockRequirement : MIN_SONG_LENGTH)), 2);
+      #endif
       // Set the new requirement.
       blockSize += blockRequirement;
       // Add a block to the progress.
@@ -276,7 +284,7 @@ void ListeningModePlayingSong::init() {
     lcd.write(byte(PROGRESS_BLOCK_UNFILLED_SYMBOL));
   }
 
-  if (invalidSong || sd_songcpy(prgmSong, name) == false) {
+  if (invalidSong || sd_songcpy(name) == false) {
     lcd.clear();
     lcd.print(F("Invalid Song"));
     #if PRGM_MODE == 0
@@ -295,8 +303,14 @@ void ListeningModePlayingSong::init() {
 
   currentSongSize = prgmSong.get_size();
   // Seperate the progress bar into 8 different blocks.
+  #if PRGM_MODE == 0
   blockRequirement = currentSongSize / 8;
+  #else
+  blockRequirement = (float)((float)currentSongSize / 8.0F);
+  #endif
+
   blockSize = blockRequirement;
+  
 
   delay_ms(750);
 

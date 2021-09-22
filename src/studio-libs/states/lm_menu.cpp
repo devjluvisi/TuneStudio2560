@@ -69,6 +69,7 @@ void ListeningModeMenu::init() {
 
   //TODO: Possibly add instruction for OPTION+SELECT to edit a saved song.
   delay_ms(1500);
+  lcd.clear();
   lcd.setCursor(0, 3);
   lcd.print(F("Press SELECT to play"));
   lcd.setCursor(2, 0);
